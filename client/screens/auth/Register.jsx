@@ -3,15 +3,14 @@ import React, { useState } from "react";
 import InputBox from "../../components/Forms/InputBox";
 import SubmitButton from "../../components/Forms/SubmitButton";
 import axios from "axios";
-
-export default function Register({ navigation }) {
+const Register = ({ navigation }) => {
   // states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // btn function
+  //function
+  // btn funcn
   const handleSubmit = async () => {
     try {
       setLoading(true);
@@ -35,12 +34,11 @@ export default function Register({ navigation }) {
       console.log(error);
     }
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.pageTitle}>Register</Text>
       <View style={{ marginHorizontal: 20 }}>
-        <InputBox inputTitle={"Name"} values={name} setValue={setName} />
+        <InputBox inputTitle={"Name"} value={name} setValue={setName} />
         <InputBox
           inputTitle={"Email"}
           keyboardType="email-address"
@@ -62,16 +60,15 @@ export default function Register({ navigation }) {
         loading={loading}
         handleSubmit={handleSubmit}
       />
-
       <Text style={styles.linkText}>
-        ALready Registered? Please{" "}
+        ALready Register Please{" "}
         <Text style={styles.link} onPress={() => navigation.navigate("Login")}>
           LOGIN
         </Text>{" "}
       </Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -102,3 +99,5 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
+
+export default Register;

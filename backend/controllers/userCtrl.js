@@ -128,7 +128,7 @@ const updateUserController = async (req, res) => {
       });
     }
     const hashedPassword = password ? await hashPassword(password) : undefined;
-    //updated useer
+    //updated usser
     const updatedUser = await userModel.findOneAndUpdate(
       { email },
       {
