@@ -50,8 +50,8 @@ const Login = ({ navigation }) => {
           inputTitle={"Email"}
           keyboardType="email-address"
           autoComplete="email"
-            value={email}
-            setValue={setEmail}
+          value={email}
+          setValue={setEmail}
         />
         <InputBox
           inputTitle={"Password"}
