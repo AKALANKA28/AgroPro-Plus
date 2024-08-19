@@ -36,7 +36,7 @@ app.listen(PORT, () => {
 
 
 // Routes Path
-const example = require("./routes/exampleRoute");
+const UserRoute = require("./routes/userRoutes");
 
 
 
@@ -44,7 +44,7 @@ const example = require("./routes/exampleRoute");
 
 
 // Use Routes
-app.use("/example", example); 
+app.use("/auth", UserRoute); 
 
 
 
