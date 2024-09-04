@@ -28,6 +28,8 @@ import ProcessDetails from "./components/transportDashboard/ProcessDetails";
 import CoveringDetails from "./components/transportDashboard/CoveringDetails";
 import ExpensePage from "./components/finance/ExpensePage";
 import ScheduleDetails from "./components/transportDashboard/ScheduleDetails";
+import DistributeDetails from "./components/driver/DistributeDetails";
+
 
 import PredictionDetails from "./components/farmer/PredictionDetails";
 
@@ -314,6 +316,14 @@ const router = createBrowserRouter([
     element: (
       <div>
         <ProcessDetails />
+      </div>
+    ),
+  },
+  {
+    path: "/DistributeDetails",
+    element: (
+      <div>
+        <DistributeDetails />
       </div>
     ),
   },

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
-import L from "leaflet"
+import L from "leaflet";
 
 const LocationMarker = () => {
   const [position, setPosition] = useState(null);
@@ -17,11 +17,9 @@ const LocationMarker = () => {
   const markerIcon3 = new L.Icon({
     iconUrl: require("../../../../assests/box-truck.png"),
     iconSize: [45, 45],
-    iconAnchor: [17, 45], //[left/right, top/bottom]
+    iconAnchor: [17, 45], 
     popupAnchor: [0, -46]
-  })
-
-
+  });
 
   return position === null ? null : (
     <Marker 
