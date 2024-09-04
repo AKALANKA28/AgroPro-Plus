@@ -24,6 +24,7 @@ const ScreenMenu = () => {
             name="Home"
             component={Home}
             options={{
+              headerShown: false,
               title: "Full Stack App",
               headerRight: () => <HeaderMenu />,
             }}
