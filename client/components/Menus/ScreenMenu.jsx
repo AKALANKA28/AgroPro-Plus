@@ -17,66 +17,113 @@ const ScreenMenu = () => {
   const authenticatedUser = state?.user && state?.token;
   const Stack = createNativeStackNavigator();
   return (
-    <Stack.Navigator initialRouteName="Login">
-      {authenticatedUser ? (
-        <>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,
-              title: "Full Stack App",
-              headerRight: () => <HeaderMenu />,
-            }}
-          />
-          {/* <Stack.Screen
-            name="Post"
-            component={Post}
-            options={{
-              headerBackTitle: "Back",
-              headerRight: () => <HeaderMenu />,
-            }}
-          />
-          <Stack.Screen
-            name="About"
-            component={About}
-            options={{
-              headerBackTitle: "Back",
-              headerRight: () => <HeaderMenu />,
-            }}
-          />
-          <Stack.Screen
-            name="Account"
-            component={Account}
-            options={{
-              headerBackTitle: "Back",
-              headerRight: () => <HeaderMenu />,
-            }}
-          />
-          <Stack.Screen
-            name="Myposts"
-            component={Myposts}
-            options={{
-              headerBackTitle: "Back",
-              headerRight: () => <HeaderMenu />,
-            }}
-          /> */}
-        </>
-      ) : (
-        <>
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{ headerShown: false }}
-          />
-        </>
-      )}
-    </Stack.Navigator>
+    // <Stack.Navigator initialRouteName="Login">
+    //   {authenticatedUser ? (
+    //     <>
+    //       <Stack.Screen
+    //         name="Home"
+    //         component={Home}
+    //         options={{
+    //           headerShown: false,
+    //           title: "Full Stack App",
+    //           headerRight: () => <HeaderMenu />,
+    //         }}
+    //       />
+    //       {/* <Stack.Screen
+    //         name="Post"
+    //         component={Post}
+    //         options={{
+    //           headerBackTitle: "Back",
+    //           headerRight: () => <HeaderMenu />,
+    //         }}
+    //       />
+    //       <Stack.Screen
+    //         name="About"
+    //         component={About}
+    //         options={{
+    //           headerBackTitle: "Back",
+    //           headerRight: () => <HeaderMenu />,
+    //         }}
+    //       />
+    //       <Stack.Screen
+    //         name="Account"
+    //         component={Account}
+    //         options={{
+    //           headerBackTitle: "Back",
+    //           headerRight: () => <HeaderMenu />,
+    //         }}
+    //       />
+    //       <Stack.Screen
+    //         name="Myposts"
+    //         component={Myposts}
+    //         options={{
+    //           headerBackTitle: "Back",
+    //           headerRight: () => <HeaderMenu />,
+    //         }}
+    //       /> */}
+    //     </>
+    //   ) : (
+    //     <>
+    //       <Stack.Screen
+    //         name="Login"
+    //         component={Login}
+    //         options={{ headerShown: false }}
+    //       />
+    //       <Stack.Screen
+    //         name="Register"
+    //         component={Register}
+    //         options={{ headerShown: false }}
+    //       />
+    //     </>
+    //   )}
+    // </Stack.Navigator>
+    <Stack.Navigator initialRouteName="Home">
+    {
+      <>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerShown: false,
+            title: "Full Stack App",
+            headerRight: () => <HeaderMenu />,
+          }}
+        />
+        {/* <Stack.Screen
+          name="Post"
+          component={Post}
+          options={{
+            headerBackTitle: "Back",
+            headerRight: () => <HeaderMenu />,
+          }}
+        />
+        <Stack.Screen
+          name="About"
+          component={About}
+          options={{
+            headerBackTitle: "Back",
+            headerRight: () => <HeaderMenu />,
+          }}
+        />
+        <Stack.Screen
+          name="Account"
+          component={Account}
+          options={{
+            headerBackTitle: "Back",
+            headerRight: () => <HeaderMenu />,
+          }}
+        />
+        <Stack.Screen
+          name="Myposts"
+          component={Myposts}
+          options={{
+            headerBackTitle: "Back",
+            headerRight: () => <HeaderMenu />,
+          }}
+        /> */}
+      </>
+    }
+  </Stack.Navigator>
   );
 };
 
