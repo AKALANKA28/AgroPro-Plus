@@ -6,40 +6,45 @@ import {
   Animated,
   PanResponder,
   Dimensions,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  FlatList,
 } from "react-native";
+import Weather from "../components/Weather";
+import CropCard from "../components/Cards";
+import cropData from "../components/cropData"; // Adjust the path according to your folder structure
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Home = () => {
   const pan = useRef(new Animated.Value(0)).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
   const [isExpanded, setIsExpanded] = useState(false);
 
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (e, gestureState) => {
+        return Math.abs(gestureState.dy) > 5;
+      },
       onPanResponderMove: (e, gestureState) => {
-        if (gestureState.dy > 0 && !isExpanded) {
-          pan.setValue(gestureState.dy);
-        } else if (gestureState.dy < 0 && isExpanded) {
+        if (gestureState.dy > 0 && isExpanded && scrollY._value === 0) {
           pan.setValue(gestureState.dy);
         }
       },
       onPanResponderRelease: (e, gestureState) => {
         if (gestureState.dy > SCREEN_HEIGHT / 4) {
-          setIsExpanded(true);
-          Animated.spring(pan, {
-            toValue: SCREEN_HEIGHT / 2,
-            useNativeDriver: false,
-          }).start();
-        } else if (gestureState.dy < -SCREEN_HEIGHT / 4) {
+          // Collapse the content section
           setIsExpanded(false);
-          Animated.spring(pan, {
-            toValue: -SCREEN_HEIGHT / 3,
+          Animated.timing(pan, {
+            toValue: 0,
+            duration: 300,
             useNativeDriver: false,
           }).start();
         } else {
+          // Snap back to expanded position
           Animated.spring(pan, {
-            toValue: 0,
+            toValue: SCREEN_HEIGHT - 50,
             useNativeDriver: false,
           }).start();
         }
@@ -48,25 +53,95 @@ const Home = () => {
   ).current;
 
   const weatherSectionHeight = pan.interpolate({
-    inputRange: [-SCREEN_HEIGHT / 3, 0, SCREEN_HEIGHT / 2],
-    outputRange: [SCREEN_HEIGHT / 4, SCREEN_HEIGHT / 2.5, SCREEN_HEIGHT / 1.5],
+    inputRange: [0, SCREEN_HEIGHT - 50],
+    outputRange: [SCREEN_HEIGHT / 2.5, 0],
     extrapolate: "clamp",
   });
 
   const contentSectionHeight = pan.interpolate({
-    inputRange: [-SCREEN_HEIGHT / 3, 0, SCREEN_HEIGHT / 2],
-    outputRange: [SCREEN_HEIGHT / 1.5, SCREEN_HEIGHT / 2.5, SCREEN_HEIGHT / 4],
+    inputRange: [0, SCREEN_HEIGHT - 50],
+    outputRange: [SCREEN_HEIGHT / 1.5, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
+
+  const handleScroll = (e) => {
+    const yOffset = e.nativeEvent.contentOffset.y;
+
+    // Expand on downward scroll at the bottom
+    if (yOffset > 0 && !isExpanded) {
+      setIsExpanded(true);
+      Animated.timing(pan, {
+        toValue: SCREEN_HEIGHT - 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+
+    // Collapse on upward scroll at the top
+    scrollY.setValue(yOffset);
+    if (yOffset <= 0 && e.nativeEvent.velocity.y < 0) {
+      setIsExpanded(false);
+      Animated.timing(pan, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  const handleScrollEndDrag = (e) => {
+    const yOffset = e.nativeEvent.contentOffset.y;
+    const scrollViewHeight = e.nativeEvent.layoutMeasurement.height;
+    const contentHeight = e.nativeEvent.contentSize.height;
+
+    // Collapse at the top
+    if (yOffset <= 0 && e.nativeEvent.velocity.y < 0) {
+      setIsExpanded(false);
+      Animated.timing(pan, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+
+    // Expand at the bottom
+    if (
+      yOffset + scrollViewHeight >= contentHeight &&
+      e.nativeEvent.velocity.y > 0
+    ) {
+      setIsExpanded(true);
+      Animated.timing(pan, {
+        toValue: SCREEN_HEIGHT - 50,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Animated.View
         style={[styles.weatherSection, { height: weatherSectionHeight }]}
       >
-        <Text style={styles.weatherText}>Gurgaon</Text>
-        <Text style={styles.temperature}>32°C</Text>
-        {/* Add additional weather details here */}
+        {/* <View style={styles.topView}>
+          <View>
+          <Text style={styles.welcome}>Welcome</Text>
+          <Text style={styles.userName}>Akalanka Dias</Text>
+          </View>
+
+         <View>
+          <TouchableOpacity>
+          <Image
+            style={styles.userImage}
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/128/4140/4140061.png",
+            }}
+          />
+          </TouchableOpacity>
+         
+          </View>
+        </View> */}
+        <Weather />
       </Animated.View>
 
       <Animated.View
@@ -74,11 +149,90 @@ const Home = () => {
         style={[styles.draggableSection, { height: contentSectionHeight }]}
       >
         <View style={styles.dragIndicator} />
-        <Text style={styles.userName}>Welcome Ramesh Soni</Text>
-        <View style={styles.cropButtons}>
-          <Text style={styles.cropButton}>Cabbage</Text>
-          <Text style={styles.cropButton}>Tomato</Text>
+        <View style={styles.topView}>
+          <View>
+            <Text style={styles.welcome}>Welcome</Text>
+            <Text style={styles.userName}>Akalanka Dias</Text>
+          </View>
+
+          {/* <View>
+          <TouchableOpacity>
+          <Image
+            style={styles.userImage}
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/128/4140/4140061.png",
+            }}
+          />
+          </TouchableOpacity>
+         
+          </View> */}
         </View>
+
+        <View style={styles.cropButtons}>
+          <View style={styles.cropButtonContainer}>
+            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
+            <Text style={styles.cropButtonText}>Text</Text>
+          </View>
+          <View style={styles.cropButtonContainer}>
+            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
+            <Text style={styles.cropButtonText}>Text</Text>
+          </View>
+          <View style={styles.cropButtonContainer}>
+            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
+            <Text style={styles.cropButtonText}>Text</Text>
+          </View>
+          <View style={styles.cropButtonContainer}>
+            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
+            <Text style={styles.cropButtonText}>Text</Text>
+          </View>
+        </View>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+          onScroll={handleScroll}
+          onScrollEndDrag={handleScrollEndDrag}
+          scrollEventThrottle={16}
+        >
+          <Text style={styles.sectionTitle}>Crop Information</Text>
+
+          <FlatList
+            data={cropData}
+            renderItem={({ item }) => (
+              <CropCard
+                imageUri={item.imageUri}
+                health={item.health}
+                week={item.week}
+                alerts={item.alerts}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
+
+          <Text style={styles.sectionTitle}>Crop Information</Text>
+          <Image source={{ uri: "crop_image_url" }} style={styles.cropImage} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>Health: 20%</Text>
+            <Text style={styles.infoText}>Week: 4</Text>
+          </View>
+          <Text style={styles.sectionTitle}>Alerts</Text>
+          <Text style={styles.alertText}>Possible pest attack</Text>
+          <Text style={styles.alertText}>Possible water logging</Text>
+
+          <Text style={styles.sectionTitle}>Crop Information</Text>
+          <Image source={{ uri: "crop_image_url" }} style={styles.cropImage} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>Health: 20%</Text>
+            <Text style={styles.infoText}>Week: 4</Text>
+          </View>
+          <Text style={styles.sectionTitle}>Alerts</Text>
+          <Text style={styles.alertText}>Possible pest attack</Text>
+          <Text style={styles.alertText}>Possible water logging</Text>
+
+          {/* Additional content */}
+        </ScrollView>
       </Animated.View>
     </View>
   );
@@ -87,21 +241,13 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#87CEEB", // Sky blue color for the weather section background
+    backgroundColor: "#87CEEB",
   },
   weatherSection: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  weatherText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  temperature: {
-    fontSize: 48,
-    fontWeight: "bold",
-    color: "#fff",
+    paddingTop: 60,
+    paddingHorizontal: 20,
+    //   justifyContent: "center",
+    //   alignItems: "center",
   },
   draggableSection: {
     position: "absolute",
@@ -121,6 +267,23 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 10,
   },
+  topView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  userImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  welcome: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 6,
+  },
   userName: {
     fontSize: 24,
     fontWeight: "bold",
@@ -128,15 +291,61 @@ const styles = StyleSheet.create({
   },
   cropButtons: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginTop: 20,
+    marginLeft: 10,
+  },
+  cropButtonContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "25%",
   },
   cropButton: {
     backgroundColor: "#87CEEB",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    color: "#fff",
+    paddingVertical: 40,
+    paddingHorizontal: 40,
+    borderRadius: 25,
     marginRight: 10,
+    marginBottom: 8,
+    justifyContent: 'center',
+    alignItems: 'center', 
+  },
+
+  cropButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+
+  scrollContent: {
+    paddingVertical: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  cropImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  infoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  infoText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  alertText: {
+    fontSize: 16,
+    color: "#ff5e5e",
+    marginBottom: 10,
   },
 });
 
