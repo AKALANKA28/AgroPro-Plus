@@ -47,14 +47,14 @@ import PaymentsPage from "./components/finance/PaymentsPage";
 import AddProduct from "./components/finance/AddProduct";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <div>
-        <Home />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/",
+  //   element: (
+  //     <div>
+  //       <Home />
+  //     </div>
+  //   ),
+  // },
 
   {
     path: "/about",
@@ -148,7 +148,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/finance",
+    path: "/",
     element: (
       <div>
         <Dashboard />
