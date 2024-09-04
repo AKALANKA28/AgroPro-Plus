@@ -40,13 +40,16 @@ const UserRoute = require("./routes/userRoutes");
 
 
 
-
+// Aashani
+const distributeRoute = require("./routes/distributors/distributeRoute");
 
 
 // Use Routes
 app.use("/auth", UserRoute); 
 
 
+//Aashani
+app.use("/distribute", distributeRoute);
 
 
 
