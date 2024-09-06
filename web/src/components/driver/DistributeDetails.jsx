@@ -1,0 +1,22 @@
+import React from 'react'
+import './body/main.css'
+
+// import Header from'./Components/'
+import Sidebar from './sidebar/Sidebar'
+import Distribute from './body/distributeDetails/Distribute'
+import Footer from './footer/Footer'
+
+
+
+const DistributeDetails = () => {
+  return (
+    <div>
+      {/* <Header /> */}
+      <Sidebar />
+      <Distribute />
+      <Footer />
+    </div>
+  )
+}
+
+export default DistributeDetails

@@ -1,4 +1,4 @@
-export const base_url = "http://localhost:8070/";
+export const base_url = "http://localhost:8000/";
 const getTokenFromLocalStorage = localStorage.getItem("customer")
   ? JSON.parse(localStorage.getItem("customer"))
   : null;
