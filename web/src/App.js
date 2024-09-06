@@ -29,6 +29,8 @@ import CoveringDetails from "./components/transportDashboard/CoveringDetails";
 import ExpensePage from "./components/finance/ExpensePage";
 import ScheduleDetails from "./components/transportDashboard/ScheduleDetails";
 import DistributeDetails from "./components/driver/DistributeDetails";
+import StockDetails from "./components/driver/StockDetails";
+import Map from "./components/driver/Components/map/Map";
 
 
 import PredictionDetails from "./components/farmer/PredictionDetails";
@@ -41,7 +43,7 @@ import Contact from "./Website/Contact";
 import SingleProduct from "./Website/Shop/Products/SingleProduct";
 import Cart from "./Website/Shop/Cart/Cart";
 import Checkout from "./Website/Shop/Checkout/Checkout";
-import Map from "./components/transportDashboard/Map";
+// import Map from "./components/transportDashboard/Map";
 import JoinWithUsSelect from "./Website/JoinWithUsSelect";
 import DriverDetails from "./components/transportDashboard/DriverDetails";
 import ApprovalPage from "./components/finance/ApprovalPage";
@@ -324,6 +326,14 @@ const router = createBrowserRouter([
     element: (
       <div>
         <DistributeDetails />
+      </div>
+    ),
+  },
+  {
+    path: "/StockDetails",
+    element: (
+      <div>
+        <StockDetails />
       </div>
     ),
   },
