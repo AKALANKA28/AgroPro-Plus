@@ -2,6 +2,8 @@ import { View, Text } from "react-native";
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../../screens/Home";
+import FertilizerSchedule from "../../screens/FertilizerSchedule";
+
 import Register from "../../screens/auth/Register";
 import Login from "../../screens/auth/Login";
 import { AuthContext } from "../../context/authContext";
@@ -29,15 +31,12 @@ const ScreenMenu = () => {
               headerRight: () => <HeaderMenu />,
             }}
           />
-          {/* <Stack.Screen
-            name="Post"
-            component={Post}
-            options={{
-              headerBackTitle: "Back",
-              headerRight: () => <HeaderMenu />,
-            }}
+       <Stack.Screen
+            name="FertilizerSchedule"
+            component={FertilizerSchedule}
+           
           />
-          <Stack.Screen
+          {/*    <Stack.Screen
             name="About"
             component={About}
             options={{

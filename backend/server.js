@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 // app.use(morgan("dev"));
 
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8070;
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
