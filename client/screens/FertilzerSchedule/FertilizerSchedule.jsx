@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
+import FertilizerForm from '../../components/Forms/FertilizerForm'; // Import the FertilizerForm component
 
 const fertilizerAPI = axios.create({
   baseURL: 'http://192.168.1.159:8000', // FastAPI backend URL
@@ -8,25 +9,17 @@ const fertilizerAPI = axios.create({
 });
 
 const FertilizerSchedule = () => {
-  // Hardcoded data
-  const cropType = 'rice';
-  const plantingDate = '2023-09-01';
-  const soilCondition =  "pH: 6.8, nitrogen: 'low'" ;
-  const weatherForecast = 'low rainfall';
-
   const [schedule, setSchedule] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchFertilizerSchedule = async () => {
-    setLoading(true);
+  const fetchFertilizerSchedule = async (formData) => {
     try {
       const response = await fertilizerAPI.post('/generate_schedule', {
-        crop_type: cropType,
-        planting_date: plantingDate,
-        soil_condition: soilCondition,
-        weather_forecast: weatherForecast,
+        crop_type: formData.cropType,
+        planting_date: formData.plantingDate,
+        soil_condition: formData.soilCondition,
+        weather_forecast: formData.weatherForecast,
       });
       console.log('Response data:', response.data); // Log the response data
       if (response.data && response.data.schedule) {
@@ -37,24 +30,23 @@ const FertilizerSchedule = () => {
     } catch (err) {
       console.error('Error details:', err.response ? err.response.data : err.message);
       setError('Failed to fetch the fertilizer schedule');
-    } finally {
-      setLoading(false);
     }
   };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchFertilizerSchedule().finally(() => setRefreshing(false));
+    // Fetch schedule with default empty values (or use last submitted values if applicable)
+    fetchFertilizerSchedule({
+      cropType: '',
+      plantingDate: '',
+      soilCondition: '',
+      weatherForecast: ''
+    }).finally(() => setRefreshing(false));
   }, []);
 
-  // Fetch data on component mount
-  useEffect(() => {
-    fetchFertilizerSchedule();
-  }, []);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#006400" />;
-  }
+  const handleFormSubmit = (formData) => {
+    fetchFertilizerSchedule(formData);
+  };
 
   if (error) {
     return <Text style={styles.errorText}>{error}</Text>;
@@ -65,6 +57,8 @@ const FertilizerSchedule = () => {
       contentContainerStyle={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
+      <FertilizerForm onSubmit={handleFormSubmit} />
+
       {schedule ? (
         <View>
           <Text style={styles.title}>Fertilizer Schedule for {schedule.fertilizer_schedule.crop_type}</Text>
