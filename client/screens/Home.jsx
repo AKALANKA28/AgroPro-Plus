@@ -14,10 +14,15 @@ import {
 import Weather from "../components/Weather";
 import CropCard from "../components/Cards";
 import cropData from "../components/cropData"; // Adjust the path according to your folder structure
+import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { useNavigation } from "@react-navigation/native";
+
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Home = () => {
+  const navigation = useNavigation(); // Get the navigation object
+
   const pan = useRef(new Animated.Value(0)).current;
   const scrollY = useRef(new Animated.Value(0)).current;
   const [isExpanded, setIsExpanded] = useState(false);
@@ -170,21 +175,34 @@ const Home = () => {
 
         <View style={styles.cropButtons}>
           <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
-            <Text style={styles.cropButtonText}>Text</Text>
+            <TouchableOpacity style={styles.cropButton}
+            onPress={() => navigation.navigate('FertilizerSchedule')}
+            >
+              <EvilIcons name="calendar" size={50} color="#006400" />
+            </TouchableOpacity>
+            <Text style={styles.cropButtonText}>Fertilizer Schedule</Text>
+          </View>
+        
+          <View style={styles.cropButtonContainer}>
+            <TouchableOpacity style={styles.cropButton}>
+              <EvilIcons name="camera" size={50} color="#006400" />
+            </TouchableOpacity>
+            <Text style={styles.cropButtonText}>Camera</Text>
           </View>
           <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
-            <Text style={styles.cropButtonText}>Text</Text>
+            <TouchableOpacity style={styles.cropButton}>
+              <EvilIcons name="chart" size={50} color="#006400" />
+            </TouchableOpacity>
+            <Text style={styles.cropButtonText}>Finance</Text>
           </View>
           <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
-            <Text style={styles.cropButtonText}>Text</Text>
+            <TouchableOpacity style={styles.cropButton}>
+              <EvilIcons name="location" size={50} color="#006400" />
+            </TouchableOpacity>
+            <Text style={styles.cropButtonText}>Distributors</Text>
           </View>
-          <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}></TouchableOpacity>
-            <Text style={styles.cropButtonText}>Text</Text>
-          </View>
+          
+         
         </View>
 
         <ScrollView
@@ -246,8 +264,6 @@ const styles = StyleSheet.create({
   weatherSection: {
     paddingTop: 60,
     paddingHorizontal: 20,
-    //   justifyContent: "center",
-    //   alignItems: "center",
   },
   draggableSection: {
     position: "absolute",
@@ -267,17 +283,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 10,
   },
-  topView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  userImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
   welcome: {
     fontSize: 16,
     fontWeight: "bold",
@@ -289,36 +294,36 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
   },
+  topView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
   cropButtons: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
     marginTop: 20,
-    marginLeft: 10,
   },
   cropButtonContainer: {
-    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    width: "25%",
+    flex: 1,
   },
   cropButton: {
-    backgroundColor: "#87CEEB",
-    paddingVertical: 40,
-    paddingHorizontal: 40,
+    backgroundColor: "#4CAF50",
+    paddingHorizontal: 15,
+    paddingVertical: 18,
     borderRadius: 25,
-    marginRight: 10,
-    marginBottom: 8,
-    justifyContent: 'center',
-    alignItems: 'center', 
+    justifyContent: "center",
+    alignItems: "center",
   },
-
   cropButtonText: {
-    fontSize: 16,
+    marginTop: 5, // Space between the icon and the text
+    fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
   },
-
   scrollContent: {
     paddingVertical: 20,
   },
@@ -326,6 +331,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#FF9800", // Fixed the color to have a valid hex value
   },
   cropImage: {
     width: "100%",
@@ -344,9 +350,10 @@ const styles = StyleSheet.create({
   },
   alertText: {
     fontSize: 16,
-    color: "#ff5e5e",
+    color: "#FF9800",
     marginBottom: 10,
   },
 });
+
 
 export default Home;
