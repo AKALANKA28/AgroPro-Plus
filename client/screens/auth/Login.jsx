@@ -1,47 +1,72 @@
-import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import InputBox from "../../components/Forms/InputBox";
 import SubmitButton from "../../components/Forms/SubmitButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+
+// Uncomment the base URL if needed
+// axios.defaults.baseURL = "http://192.168.1.159:8000";
+
 const Login = ({ navigation }) => {
-  //global state
+  // Global state
   const [state, setState] = useContext(AuthContext);
 
-  // states
+  // States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  //function
-  // btn funcn
+
+  // Function to handle form submission
   const handleSubmit = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       if (!email || !password) {
         Alert.alert("Please Fill All Fields");
         setLoading(false);
         return;
       }
-      setLoading(false);
+      
+      console.log("Sending login request with data:", { email, password });
+
       const { data } = await axios.post("/auth/login", { email, password });
+
+      console.log("Login response data:", data);
+
       setState(data);
       await AsyncStorage.setItem("@auth", JSON.stringify(data));
-      alert(data && data.message);
+
+      Alert.alert("Success", data.message || "Login successful");
       navigation.navigate("Home");
+      
       console.log("Login Data==> ", { email, password });
     } catch (error) {
-      alert(error.response.data.message);
+      // Check if error.response exists before accessing its properties
+      const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
+      Alert.alert("Error", errorMessage);
+      
+      console.log("Login error:", error);
+    } finally {
       setLoading(false);
-      console.log(error);
     }
   };
-  //temp function to check local storage data
-  const getLcoalStorageData = async () => {
-    let data = await AsyncStorage.getItem("@auth");
-    console.log("Local Storage ==> ", data);
+
+  // Temporary function to check local storage data
+  const getLocalStorageData = async () => {
+    try {
+      let data = await AsyncStorage.getItem("@auth");
+      console.log("Local Storage Data==>", data);
+    } catch (error) {
+      console.log("Error fetching local storage data:", error);
+    }
   };
-  getLcoalStorageData();
+
+  // Call getLocalStorageData on component mount
+  React.useEffect(() => {
+    getLocalStorageData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.pageTitle}>Login</Text>
@@ -61,14 +86,13 @@ const Login = ({ navigation }) => {
           setValue={setPassword}
         />
       </View>
-      {/* <Text>{JSON.stringify({ name, email, password }, null, 4)}</Text> */}
       <SubmitButton
         btnTitle="Login"
         loading={loading}
         handleSubmit={handleSubmit}
       />
       <Text style={styles.linkText}>
-        not a user Please{" "}
+        Not a user? Please{" "}
         <Text
           style={styles.link}
           onPress={() => navigation.navigate("Register")}
@@ -92,15 +116,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#1e2225",
     marginBottom: 20,
-  },
-  inputBox: {
-    height: 40,
-    marginBottom: 20,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    marginTop: 10,
-    paddingLeft: 10,
-    color: "#af9f85",
   },
   linkText: {
     textAlign: "center",
