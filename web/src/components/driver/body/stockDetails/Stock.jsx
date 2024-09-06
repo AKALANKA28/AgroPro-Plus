@@ -7,95 +7,76 @@ import SearchBar from './SearchBar';
 import Excel from "../../../../assests/img/icons/excel.png";
 import Pdf from "../../../../assests/img/icons/pdf.png";
 import Refresh from "../../../../assests/img/icons/refresh.png";
-import DistributeForm from "./DistributeForm";
-import DistributeReport from "./DistributeReport";
-import "./Distribute.css";
+import StockForm from "./StockForm";
+import StockReport from "./StockReport";
+import "./Stock.css";
 import { ToastContainer, toast } from "react-toastify";
 import * as XLSX from "xlsx";
 import { writeFile } from "xlsx";
-//import Map from "./Map"; 
 
-axios.defaults.baseURL = "http://127.0.0.1:8070";
+axios.defaults.baseURL = "http://localhost:8070/";
 
-function Distribute() {
+function Stock() { // Changed 'stock' to 'Stock'
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
-  const [selectedDistribute, setSelectedDistribute] = useState(null);
+  const [selectedstock, setSelectedstock] = useState(null);
   const [filter, setFilter] = useState('Today');
 
-  const [filteredDataList, setFilteredDataList] = useState([]); 
+  const [filteredDataList, setFilteredDataList] = useState([]);
 
   useEffect(() => {
     getFetchData();
   }, []);
 
   useEffect(() => {
-    setFilteredDataList(dataList); // Initialize filteredDataList with dataList
+    setFilteredDataList(dataList);
   }, [dataList]);
 
   const getFetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8070/distribute/");
+      const response = await axios.get("/Stock/");
       setDataList(response.data);
     } catch (err) {
       toast.error(err.message);
     }
   };
 
-
-  // const locations = filteredDataList.map(item => ({
-  //   name: item.situated_place,
-  //   lat: parseFloat(item.latitude),
-  //   lng: parseFloat(item.longitude)
-  // }));
-  // Search functionality
   const handleSearch = (query) => {
-    const filteredList = dataList.filter((Distribute) => {
+    const filteredList = dataList.filter((stock) => {
       const searchFields = [
-        "business_name",
-        "registation_no",
-        "situated_place",
-        "Owner_name",
-        "email",
-        "phone_no"
-        
+        "ferti_name",
+        "amount",
+        "price",
+        "description",
+        "availability"
       ];
       return searchFields.some((field) => {
-        const fieldValue = Distribute[field];
+        const fieldValue = stock[field];
         if (typeof fieldValue === "string") {
           return fieldValue.toLowerCase().includes(query.toLowerCase());
         }
-        // If fieldValue is not a string (like current_status), convert it to string and then check for inclusion
         return String(fieldValue).toLowerCase().includes(query.toLowerCase());
       });
     });
     setFilteredDataList(filteredList);
   };
-  
 
   const handleRefreshClick = () => {
     getFetchData();
-    
   };
 
   const generateExcelFile = () => {
-    // Define the worksheet
     const ws = XLSX.utils.json_to_sheet(dataList);
-  
-    // Define the workbook
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Distribute Report");
-  
-    // Generate the Excel file
-    writeFile(wb, "Distribute_report.xlsx");
+    XLSX.utils.book_append_sheet(wb, ws, "Stock Report");
+    writeFile(wb, "Stock_report.xlsx");
   };
-  
+
   const handleButtonClick = () => {
-    getFetchData(); // Fetch the latest data if needed
+    getFetchData();
     generateExcelFile();
   };
-  
 
   const handleAddModalOpen = () => {
     setAddModalOpen(true);
@@ -105,8 +86,8 @@ function Distribute() {
     setAddModalOpen(false);
   };
 
-  const handleEditModalOpen = (Distribute) => {
-    setSelectedDistribute(Distribute);
+  const handleEditModalOpen = (stock) => {
+    setSelectedstock(stock);
     setEditModalOpen(true);
   };
 
@@ -116,38 +97,33 @@ function Distribute() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:8070/distribute/delete/${id}`);
+      await axios.delete(`/stock/delete/${id}`);
       toast.error("Successfully Deleted");
       getFetchData();
     } catch (err) {
       toast.error(err.message);
     }
   };
-const handleAddSubmit = async (formData) => {
-  try {
-    console.log("Form Data being submitted:", formData); // Log formData before the request
-    
-    const response = await axios.post("http://127.0.0.1:8070/distribute/add", formData);
-    
-    console.log("Server response:", response); // Log the server response
-    
-    toast.success("Distribute Details Added");
-    handleAddModalClose();
-    getFetchData();
-  } catch (err) {
-    console.error("Error occurred:", err.message); // Log the error message
-    toast.error(err.message);
-  }
-};
+
+  const handleAddSubmit = async (formData) => {
+    try {
+      await axios.post("/stock/add", formData);
+      toast.success("Stock Details Added");
+      handleAddModalClose();
+      getFetchData();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   const handleEditSubmit = async (formData) => {
     try {
-      await axios.patch(`http://127.0.0.1:8070/distribute/update/${formData._id}`, formData);
-      toast.success("Distribute Details Updated");
+      await axios.patch(`/stock/update/${formData._id}`, formData);
+      toast.success("Stock Details Updated");
       handleEditModalClose();
       getFetchData();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -161,31 +137,30 @@ const handleAddSubmit = async (formData) => {
       <div className="card recent-sales overflow-auto">
         <div className="card-body">
           <div className="page-header">
-            <div class="add-item d-flex">
-              <div class="card-title">
-              Distribute Details<span>| {filter}</span>
-
-                <h6>Manage Distribute</h6>
+            <div className="add-item d-flex">
+              <div className="card-title">
+                Stock Details<span>| {filter}</span>
+                <h6>Manage stock</h6>
               </div>
             </div>
-            <ul class="table-top-head">
-            <li>
-            <BlobProvider
-                        document={<DistributeReport dataList={dataList} />}
-                        fileName="Distribute_Report.pdf"
-                      >
-                        {({ url, blob }) => (
-                          <div className="button-container">
-                            <a href={url} target="_blank">
-                              <img src={Pdf} alt="Pdf Icon" className="icon" />
-                            </a>
-                          </div>
-                        )}
-                      </BlobProvider>
-      </li>
+            <ul className="table-top-head">
               <li>
-                <div className="button-container"> 
-                  <a  onClick={handleButtonClick}>
+                <BlobProvider
+                  document={<StockReport dataList={dataList} />}
+                  fileName="Stock_Report.pdf"
+                >
+                  {({ url, blob }) => (
+                    <div className="button-container">
+                      <a href={url} target="_blank" rel="noopener noreferrer">
+                        <img src={Pdf} alt="Pdf Icon" className="icon" />
+                      </a>
+                    </div>
+                  )}
+                </BlobProvider>
+              </li>
+              <li>
+                <div className="button-container">
+                  <a onClick={handleButtonClick}>
                     <img src={Excel} alt="Excel Icon" className="icon" />
                   </a>
                 </div>
@@ -198,74 +173,71 @@ const handleAddSubmit = async (formData) => {
                 </div>
               </li>
             </ul>
-            <div class="page-btn">
+            <div className="page-btn">
               <button
                 type="button"
                 className="btn btn-added"
                 onClick={handleAddModalOpen}
               >
-                <i className="bi bi-plus-circle"></i> Add Distribute
+                <i className="bi bi-plus-circle"></i> Add Stock {/* Changed from <stock></stock> to Add Stock */}
               </button>
             </div>
           </div>
 
           <Modal show={addModalOpen} onHide={handleAddModalClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Add Distribute</Modal.Title>
+              <Modal.Title>Add Stock</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <DistributeForm handleSubmit={handleAddSubmit} />
+              <StockForm handleSubmit={handleAddSubmit} />
             </Modal.Body>
           </Modal>
 
           <Modal show={editModalOpen} onHide={handleEditModalClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Edit Distribute</Modal.Title>
+              <Modal.Title>Edit Stock</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <DistributeForm
+              <StockForm
                 handleSubmit={handleEditSubmit}
-                initialData={selectedDistribute}
+                initialData={selectedstock}
               />
             </Modal.Body>
           </Modal>
 
           <div className="table-container">
-          <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} />
             <table className="table table-borderless datatable">
               <thead className="table-light">
                 <tr>
-                  <th scope="col">Business Name</th>
-                  <th scope="col">Registation Number</th>
-                  <th scope="col">Situated Place</th>
-                  <th scope="col">Owner Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Phone Number</th>
+                  <th scope="col">Fertilizer Type</th>
+                  <th scope="col">Stock Amount</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Availability Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-              {filteredDataList.length ? (
-                  filteredDataList.map((Distribute) => (
-                    <tr key={Distribute._id}>
-                      <td>{Distribute.business_name}</td>
-                      <td>{Distribute.registation_no}</td>
-                      <td>{Distribute.situated_place}</td>
-                      <td>{Distribute.Owner_name}</td>
-                      <td>{Distribute.email}</td>
-                      <td>{Distribute.phone_no}</td>
-                      
+                {filteredDataList.length ? (
+                  filteredDataList.map((stock) => (
+                    <tr key={stock._id}>
+                      <td>{stock.ferti_name}</td>
+                      <td>{stock.amount}</td>
+                      <td>{stock.price}</td>
+                      <td>{stock.description}</td>
+                      <td>{stock.availability}</td>
                       <td className="action">
                         <div className="buttons">
                           <button
                             className="btn btn-edit"
-                            onClick={() => handleEditModalOpen(Distribute)}
+                            onClick={() => handleEditModalOpen(stock)}
                           >
                             <i className="bi bi-pencil-square"></i>
                           </button>
                           <button
                             className="btn btn-delete"
-                            onClick={() => handleDelete(Distribute._id)}
+                            onClick={() => handleDelete(stock._id)}
                           >
                             <i className="bi bi-trash-fill"></i>
                           </button>
@@ -283,7 +255,6 @@ const handleAddSubmit = async (formData) => {
           </div>
         </div>
       </div>
-      
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -295,10 +266,9 @@ const handleAddSubmit = async (formData) => {
         draggable
         pauseOnHover
         theme="light"
-        // transition: Bounce
       />
     </div>
   );
 }
 
-export default Distribute;
+export default Stock; // Changed 'stock' to 'Stock'
