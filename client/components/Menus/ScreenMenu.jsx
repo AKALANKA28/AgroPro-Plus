@@ -2,7 +2,8 @@ import { View, Text } from "react-native";
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../../screens/Home";
-import FertilizerSchedule from "../../screens/FertilizerSchedule";
+import FertilizerSchedule from "../../screens/FertilzerSchedule/FertilizerSchedule";
+import ScheduleDetails from "../../screens/FertilzerSchedule/ScheduleDetails";
 
 import Register from "../../screens/auth/Register";
 import Login from "../../screens/auth/Login";
@@ -31,10 +32,19 @@ const ScreenMenu = () => {
               headerRight: () => <HeaderMenu />,
             }}
           />
-       <Stack.Screen
+          <Stack.Screen
             name="FertilizerSchedule"
             component={FertilizerSchedule}
-           
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ScheduleDetails"
+            component={ScheduleDetails}
+            options={{
+              headerShown: false,
+            }}
           />
           {/*    <Stack.Screen
             name="About"
