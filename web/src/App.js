@@ -152,7 +152,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/",
+    path: "/finance",
     element: (
       <div>
         <Dashboard />
@@ -201,7 +201,7 @@ const router = createBrowserRouter([
 
 
   {
-    path: "/Driver",
+    path: "/",
     element: (
       <div>
         <DriverDashboard />

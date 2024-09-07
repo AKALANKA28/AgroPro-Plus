@@ -283,9 +283,17 @@ font-family:'Trebuchet MS', sans-serif;
 
 
 
-.vehicle-details .vehicle-img{
-    width: 100%;
+.vehicle-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the image horizontally */
+    align-items: center;     /* Center the image vertically (optional) */
+}
+
+.vehicle-details .vehicle-img {
+    width: 75%;      /* Set the width */
+    height: auto;    /* Maintain aspect ratio */
+    max-height: 20%; /* Optional: Limit height to container height */
     object-fit: cover;
-    margin-top: -18px;
-    filter: drop-shadow(-2px 4px 5px rgba(0, 0, 0, 0.3))  /* Example shadow */
+    margin: 0;       /* Reset the margin */
 }

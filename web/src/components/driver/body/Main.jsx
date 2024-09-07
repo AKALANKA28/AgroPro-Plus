@@ -2,7 +2,7 @@ import React from 'react'
 import './main.css'
 import PageTitle from './PageTitle'
 import Body from './Body'
-import img from "../../../assests/driver.jpg"
+import img from "../../../assests/image.png"
 import { Link } from 'react-router-dom'
 import News from './Transactions'
 import AssingedOrders from './AssingedOrders'
@@ -24,7 +24,7 @@ const Main = () => {
                   <img src={img} className='img-fluid rounded-circle profile-img' alt='profile-img'></img>
                   </div>
                  <div className="profile-name-col col-8">
-                 <h6>Sunil Samarakoon</h6>
+                 <h6>Ashoka Perera</h6>
                  <Link to={""} className='Link'>
                    <p>View Profile</p>
                  </Link>

@@ -97,7 +97,7 @@ function Stock() { // Changed 'stock' to 'Stock'
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/stock/delete/${id}`);
+      await axios.delete(`/Stock/delete/${id}`);
       toast.error("Successfully Deleted");
       getFetchData();
     } catch (err) {
@@ -107,7 +107,7 @@ function Stock() { // Changed 'stock' to 'Stock'
 
   const handleAddSubmit = async (formData) => {
     try {
-      await axios.post("/stock/add", formData);
+      await axios.post("/Stock/add", formData);
       toast.success("Stock Details Added");
       handleAddModalClose();
       getFetchData();
@@ -118,7 +118,7 @@ function Stock() { // Changed 'stock' to 'Stock'
 
   const handleEditSubmit = async (formData) => {
     try {
-      await axios.patch(`/stock/update/${formData._id}`, formData);
+      await axios.patch(`/Stock/update/${formData._id}`, formData);
       toast.success("Stock Details Updated");
       handleEditModalClose();
       getFetchData();

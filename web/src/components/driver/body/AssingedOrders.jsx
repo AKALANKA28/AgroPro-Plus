@@ -37,14 +37,14 @@ const AssingedOrders = () => {
   return (
     <div className="card">
       <div className="card-body" >
-        <h5 className="card-title">Assigned Orders</h5>
+        <h5 className="card-title">TODAY</h5>
         <div className="activity text-dark">
           <div>
             <table className="table table-bordeless datatable mb-0" style={{marginTop:"-3px"}}>
               <thead className="table-light">
                 <tr>
                   <th className="col" d>
-                    Location
+                    Target
                   </th>
                   <th className="col" d>
                     Date
@@ -56,10 +56,10 @@ const AssingedOrders = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td>Thirappane, Anurdhapura</td>
-                  <td>28/05/24</td>
+                  <td>20 Customers</td>
+                  <td>07/09/24</td>
                   <td>
-                    <span className="bg-success rounded" style={{padding: "6px 12px", color: "White"}}>Accept</span>
+                    <span className="bg-success rounded" style={{padding: "6px 12px", color: "White"}}>Checklist</span>
                   </td>
                 </tr>
               </tbody>

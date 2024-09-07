@@ -149,7 +149,7 @@ const TableHead = () => {
         <Text>Business Name</Text>   
       </View>
       <View style={styles.theader}>
-        <Text>Registation Number</Text>   
+        <Text>Registration No</Text>   
       </View>
       <View style={styles.theader}>
         <Text>Situated Place</Text>   
