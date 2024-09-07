@@ -36,7 +36,7 @@ function Distribute() {
 
   const getFetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8070/distribute/");
+      const response = await axios.get("/Distribute/");
       setDataList(response.data);
     } catch (err) {
       toast.error(err.message);
@@ -113,21 +113,33 @@ function Distribute() {
   const handleEditModalClose = () => {
     setEditModalOpen(false);
   };
-
+ 
+  // toast.success("Distribute Details Added");
+  // handleAddModalClose();
+  // getFetchData();
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:8070/distribute/delete/${id}`);
-      toast.error("Successfully Deleted");
+      await axios.delete(`/Distribute/delete/${id}`);
+      toast.success("Successfully Deleted");
+      // handleDeleteModalClose();
       getFetchData();
     } catch (err) {
       toast.error(err.message);
     }
+    // try {
+    //   await axios.delete(`/Distribute/delete/${id}`);
+    //   toast.success("Distribute Details successfully deleted");
+    //   handleEditModalClose();
+    //   getFetchData();
+    // } catch (err) {
+    //   alert(err.message);
+    // }
   };
 const handleAddSubmit = async (formData) => {
   try {
     console.log("Form Data being submitted:", formData); // Log formData before the request
     
-    const response = await axios.post("http://127.0.0.1:8070/distribute/add", formData);
+    const response = await axios.post("/Distribute/add", formData);
     
     console.log("Server response:", response); // Log the server response
     
@@ -142,7 +154,7 @@ const handleAddSubmit = async (formData) => {
 
   const handleEditSubmit = async (formData) => {
     try {
-      await axios.patch(`http://127.0.0.1:8070/distribute/update/${formData._id}`, formData);
+      await axios.patch(`/Distribute/update/${formData._id}`, formData);
       toast.success("Distribute Details Updated");
       handleEditModalClose();
       getFetchData();
@@ -236,7 +248,7 @@ const handleAddSubmit = async (formData) => {
               <thead className="table-light">
                 <tr>
                   <th scope="col">Business Name</th>
-                  <th scope="col">Registation Number</th>
+                  <th scope="col">Registration Number</th>
                   <th scope="col">Situated Place</th>
                   <th scope="col">Owner Name</th>
                   <th scope="col">Email</th>
