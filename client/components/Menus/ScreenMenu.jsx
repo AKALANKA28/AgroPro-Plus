@@ -36,10 +36,16 @@ const ScreenMenu = () => {
             name="FertilizerSchedule"
             component={FertilizerSchedule}
             options={{
-              headerShown: true,
+              headerShown: false,
             }}
           />
-          <Stack.Screen name="ScheduleDetails" component={ScheduleDetails} />
+          <Stack.Screen
+            name="ScheduleDetails"
+            component={ScheduleDetails}
+            options={{
+              headerShown: false,
+            }}
+          />
           {/*    <Stack.Screen
             name="About"
             component={About}

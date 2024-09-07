@@ -10,13 +10,14 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  ImageBackground,
 } from "react-native";
 import Weather from "../components/Weather";
 import CropCard from "../components/Cards";
 import cropData from "../components/cropData"; // Adjust the path according to your folder structure
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { useNavigation } from "@react-navigation/native";
-
+import { LinearGradient } from "expo-linear-gradient";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -65,7 +66,7 @@ const Home = () => {
 
   const contentSectionHeight = pan.interpolate({
     inputRange: [0, SCREEN_HEIGHT - 50],
-    outputRange: [SCREEN_HEIGHT / 1.5, SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT / 3.8, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
 
@@ -123,143 +124,144 @@ const Home = () => {
     }
   };
 
+  const handleToggle = (expanded) => {
+    setIsExpanded(expanded);
+    Animated.timing(pan, {
+      toValue: expanded ? 0 : SCREEN_HEIGHT / 1.65, // Toggle between full screen and partial screen
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+  const backgroundImageUri =
+    "https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg"; // Use your own image URL
+
   return (
-    <View style={styles.container}>
-      <Animated.View
-        style={[styles.weatherSection, { height: weatherSectionHeight }]}
-      >
-        {/* <View style={styles.topView}>
-          <View>
-          <Text style={styles.welcome}>Welcome</Text>
-          <Text style={styles.userName}>Akalanka Dias</Text>
-          </View>
+    <ImageBackground
+      source={require("../assets/images/default-weather.jpg")}
+      style={styles.container}
+    >
+      <LinearGradient
+        colors={["rgba(255, 165, 0, 0.8)", "rgba(0, 128, 128, 0.8)"]} // Orange and Teal with 80% opacity
+        // colors={['rgba(34, 139, 34, 0.8)', 'rgba(255, 215, 0, 0.8)']} // Green to Yellow gradient with opacity
 
-         <View>
-          <TouchableOpacity>
-          <Image
-            style={styles.userImage}
-            source={{
-              uri: "https://cdn-icons-png.flaticon.com/128/4140/4140061.png",
-            }}
-          />
-          </TouchableOpacity>
-         
-          </View>
-        </View> */}
-        <Weather />
-      </Animated.View>
-
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={[styles.draggableSection, { height: contentSectionHeight }]}
-      >
-        <View style={styles.dragIndicator} />
-        <View style={styles.topView}>
-          <View>
-            <Text style={styles.welcome}>Welcome</Text>
-            <Text style={styles.userName}>Akalanka Dias</Text>
-          </View>
-
-          {/* <View>
-          <TouchableOpacity>
-          <Image
-            style={styles.userImage}
-            source={{
-              uri: "https://cdn-icons-png.flaticon.com/128/4140/4140061.png",
-            }}
-          />
-          </TouchableOpacity>
-         
-          </View> */}
-        </View>
-
-        <View style={styles.cropButtons}>
-          <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}
-            onPress={() => navigation.navigate('FertilizerSchedule')}
-            >
-              <EvilIcons name="calendar" size={50} color="#006400" />
-            </TouchableOpacity>
-            <Text style={styles.cropButtonText}>Fertilizer Schedule</Text>
-          </View>
-        
-          <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}>
-              <EvilIcons name="camera" size={50} color="#006400" />
-            </TouchableOpacity>
-            <Text style={styles.cropButtonText}>Camera</Text>
-          </View>
-          <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}>
-              <EvilIcons name="chart" size={50} color="#006400" />
-            </TouchableOpacity>
-            <Text style={styles.cropButtonText}>Finance</Text>
-          </View>
-          <View style={styles.cropButtonContainer}>
-            <TouchableOpacity style={styles.cropButton}>
-              <EvilIcons name="location" size={50} color="#006400" />
-            </TouchableOpacity>
-            <Text style={styles.cropButtonText}>Distributors</Text>
-          </View>
-          
-         
-        </View>
-
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-          onScroll={handleScroll}
-          onScrollEndDrag={handleScrollEndDrag}
-          scrollEventThrottle={16}
+        style={styles.gradient}
+      />
+      <View style={styles.container}>
+        <Animated.View
+          style={[styles.weatherSection, { height: weatherSectionHeight }]}
         >
-          <Text style={styles.sectionTitle}>Crop Information</Text>
+          <Weather onToggle={handleToggle} />
+        </Animated.View>
 
-          <FlatList
-            data={cropData}
-            renderItem={({ item }) => (
-              <CropCard
-                imageUri={item.imageUri}
-                health={item.health}
-                week={item.week}
-                alerts={item.alerts}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
-
-          <Text style={styles.sectionTitle}>Crop Information</Text>
-          <Image source={{ uri: "crop_image_url" }} style={styles.cropImage} />
-          <View style={styles.infoContainer}>
-            <Text style={styles.infoText}>Health: 20%</Text>
-            <Text style={styles.infoText}>Week: 4</Text>
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={[styles.draggableSection, { height: contentSectionHeight }]}
+        >
+          <View style={styles.dragIndicator} />
+          <View style={styles.topView}>
+            <View>
+              <Text style={styles.welcome}>Welcome</Text>
+              <Text style={styles.userName}>Akalanka Dias</Text>
+            </View>
           </View>
-          <Text style={styles.sectionTitle}>Alerts</Text>
-          <Text style={styles.alertText}>Possible pest attack</Text>
-          <Text style={styles.alertText}>Possible water logging</Text>
 
-          <Text style={styles.sectionTitle}>Crop Information</Text>
-          <Image source={{ uri: "crop_image_url" }} style={styles.cropImage} />
-          <View style={styles.infoContainer}>
-            <Text style={styles.infoText}>Health: 20%</Text>
-            <Text style={styles.infoText}>Week: 4</Text>
+          <View style={styles.cropButtons}>
+            <View style={styles.cropButtonContainer}>
+              <TouchableOpacity
+                style={styles.cropButton}
+                onPress={() => navigation.navigate("FertilizerSchedule")}
+              >
+                <EvilIcons name="calendar" size={50} color="#F1F1F1" />
+              </TouchableOpacity>
+              <Text style={styles.cropButtonText}>Fertilizer Schedule</Text>
+            </View>
+
+            <View style={styles.cropButtonContainer}>
+              <TouchableOpacity style={styles.cropButton}>
+                <EvilIcons name="camera" size={50} color="#FFFFFF" />
+              </TouchableOpacity>
+              <Text style={styles.cropButtonText}>Camera</Text>
+            </View>
+            <View style={styles.cropButtonContainer}>
+              <TouchableOpacity style={styles.cropButton}>
+                <EvilIcons name="chart" size={50} color="#F1F1F1" />
+              </TouchableOpacity>
+              <Text style={styles.cropButtonText}>Finance</Text>
+            </View>
+            <View style={styles.cropButtonContainer}>
+              <TouchableOpacity style={styles.cropButton}>
+                <EvilIcons name="location" size={50} color="#FFFFFF" />
+              </TouchableOpacity>
+              <Text style={styles.cropButtonText}>Distributors</Text>
+            </View>
           </View>
-          <Text style={styles.sectionTitle}>Alerts</Text>
-          <Text style={styles.alertText}>Possible pest attack</Text>
-          <Text style={styles.alertText}>Possible water logging</Text>
 
-          {/* Additional content */}
-        </ScrollView>
-      </Animated.View>
-    </View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            onScroll={handleScroll}
+            onScrollEndDrag={handleScrollEndDrag}
+            scrollEventThrottle={16}
+          >
+            <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
+
+            <FlatList
+              data={cropData}
+              renderItem={({ item }) => (
+                <CropCard
+                  imageUri={item.imageUri}
+                  week={item.week}
+                  health={item.health}
+                  alerts={item.alerts}
+                />
+              )}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+
+            <Text style={styles.sectionTitle}>Upcoming Fertilzer Plan</Text>
+            <Image
+              source={{ uri: "crop_image_url" }}
+              style={styles.cropImage}
+            />
+            <View style={styles.infoContainer}>
+              {/* <Text style={styles.infoText}>Health: 20%</Text>
+              <Text style={styles.infoText}>Week: 4</Text> */}
+            </View>
+            {/* <Text style={styles.sectionTitle}>Alerts</Text>
+            <Text style={styles.alertText}>Possible pest attack</Text>
+            <Text style={styles.alertText}>Possible water logging</Text> */}
+
+
+            <Text style={styles.sectionTitle}>Crop Information</Text>
+            <Image
+              source={{ uri: "crop_image_url" }}
+              style={styles.cropImage}
+            />
+            <View style={styles.infoContainer}>
+              {/* <Text style={styles.infoText}>Health: 20%</Text>
+              <Text style={styles.infoText}>Week: 4</Text> */}
+            </View>
+            {/* <Text style={styles.sectionTitle}>Alerts</Text>
+            <Text style={styles.alertText}>Possible pest attack</Text>
+            <Text style={styles.alertText}>Possible water logging</Text> */}
+
+            {/* Additional content */}
+          </ScrollView>
+        </Animated.View>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#87CEEB",
+    resizeMode: "cover",
+  },
+  gradient: {
+    ...StyleSheet.absoluteFillObject, // This ensures the gradient covers the entire background
   },
   weatherSection: {
     paddingTop: 60,
@@ -270,8 +272,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     paddingTop: 10,
     paddingHorizontal: 20,
   },
@@ -303,7 +305,9 @@ const styles = StyleSheet.create({
   cropButtons: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 20,
+    marginTop: 15,
+    marginBottom: 20,
+
   },
   cropButtonContainer: {
     alignItems: "center",
@@ -313,7 +317,7 @@ const styles = StyleSheet.create({
   cropButton: {
     backgroundColor: "#4CAF50",
     paddingHorizontal: 15,
-    paddingVertical: 18,
+    paddingVertical: 20,
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
@@ -331,7 +335,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#FF9800", // Fixed the color to have a valid hex value
+    color: "#1e441f", // Fixed the color to have a valid hex value
   },
   cropImage: {
     width: "100%",
@@ -354,6 +358,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
 
 export default Home;
