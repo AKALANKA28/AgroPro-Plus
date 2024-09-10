@@ -10,34 +10,71 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather"; // Install this package if not already
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import * as Location from "expo-location";
 
-const latitude = 6.9291;
-const longitude = 79.9828;
-const WeatherDailyURL = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latitude}&lon=${longitude}&key=444e0c7798c54693bb010ec192d21199`;
-const WeatherHourlyURL = `https://api.weatherbit.io/v2.0/forecast/hourly?lat=${latitude}&lon=${longitude}&key=444e0c7798c54693bb010ec192d21199`;
+const Weather_API = "444e0c7798c54693bb010ec192d21199";
+const WeatherDailyURL = `https://api.weatherbit.io/v2.0/forecast/daily`;
+const WeatherHourlyURL = `https://api.weatherbit.io/v2.0/forecast/hourly`;
 
 const WeatherApp = ({ onToggle }) => {
   const [dailyWeather, setDailyWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null);
   const [isExpanded, setIsExpanded] = useState(true);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
+  // Fetch weather data
   const fetchWeatherData = async () => {
+    if (!location) return;
+
+    const { latitude, longitude } = location.coords;
     try {
-      const dailyResults = await fetch(WeatherDailyURL);
+      const dailyResults = await fetch(
+        `${WeatherDailyURL}?lat=${latitude}&lon=${longitude}&key=${Weather_API}`
+      );
       const dailyData = await dailyResults.json();
       setDailyWeather(dailyData);
 
-      const hourlyResults = await fetch(WeatherHourlyURL);
+      const hourlyResults = await fetch(
+        `${WeatherHourlyURL}?lat=${latitude}&lon=${longitude}&key=${Weather_API}`
+      );
       const hourlyData = await hourlyResults.json();
       setHourlyWeather(hourlyData);
     } catch (error) {
+      setErrorMsg("Error fetching weather data. Please try again later.");
       console.error("Error fetching weather data:", error);
     }
   };
 
+  // Request location and fetch weather
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      try {
+        let currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation(currentLocation);
+      } catch (error) {
+        setErrorMsg("Error fetching location. Please try again.");
+      }
+    })();
+  }, []);
+
   useEffect(() => {
     fetchWeatherData();
-  }, []);
+  }, [location]);
+
+  if (errorMsg) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{errorMsg}</Text>
+      </View>
+    );
+  }
 
   if (!dailyWeather || !hourlyWeather) {
     return (
@@ -59,7 +96,9 @@ const WeatherApp = ({ onToggle }) => {
             </View>
             <View style={styles.tempContainer}>
               <Image
-                source={{ uri: `https://cdn-icons-png.flaticon.com/128/4814/4814489.png` }}
+                source={{
+                  uri: `https://cdn-icons-png.flaticon.com/128/4814/4814489.png`,
+                }}
                 style={styles.topweatherIcon}
               />
               <Text style={styles.temp}>{Math.round(todayWeather.temp)}°C</Text>
@@ -68,7 +107,8 @@ const WeatherApp = ({ onToggle }) => {
         </View>
         <View style={styles.rightColumn}>
           <Text style={styles.details}>
-            {Math.round(todayWeather.min_temp)}° / {Math.round(todayWeather.max_temp)}°
+            {Math.round(todayWeather.min_temp)}° /{" "}
+            {Math.round(todayWeather.max_temp)}°
           </Text>
           <Text style={styles.details}>{todayWeather.wind_spd} km/h</Text>
           <Text style={styles.details}>Humidity: {todayWeather.rh}%</Text>
@@ -128,8 +168,11 @@ const WeatherApp = ({ onToggle }) => {
             </ScrollView>
 
             {/* Weekly forecast section */}
-            <ScrollView style={styles.weeklyScroll} showsVerticalScrollIndicator={false}>
-              {dailyWeather.data.slice(1, 8).map((day, idx) => (
+            <ScrollView
+              style={styles.weeklyScroll}
+              showsVerticalScrollIndicator={false}
+            >
+              {dailyWeather.data.slice(1, 7).map((day, idx) => (
                 <View style={styles.dailyForecast} key={idx}>
                   <Text style={styles.day}>
                     {new Date(day.datetime).toLocaleDateString("en-US", {
@@ -175,25 +218,25 @@ const styles = StyleSheet.create({
     // backgroundColor: "#D6EAF8", // Light blue background
     borderRadius: 10,
     // elevation: 0.5, // Adds a subtle shadow
-    marginBottom: 10,
+    marginBottom: 5,
   },
   weatherContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   topweatherIcon: {
     width: 65, // Adjust size as needed
     height: 65, // Adjust size as needed
-    resizeMode: 'contain', // Ensures the image fits within the bounds without stretching
+    resizeMode: "contain", // Ensures the image fits within the bounds without stretching
   },
   cityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: 'space-between',
   },
   tempContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   leftColumn: {
     flex: 1,
@@ -231,7 +274,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 5,
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingVertical: 8,
     backgroundColor: "rgba(255, 255, 255, 0.1)", // Semi-transparent white
     borderRadius: 8,
     width: 70,
@@ -270,28 +313,21 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginVertical: 3,
     paddingHorizontal: 10,
-    
   },
   day: {
     fontSize: 16,
     color: "#fff",
     fontWeight: "bold",
-
-
   },
   rainChance: {
     fontSize: 16,
     color: "#fff",
     fontWeight: "bold",
-
-
   },
   dayTemp: {
     fontSize: 16,
     color: "#fff",
     fontWeight: "bold",
-
-
   },
   loading: {
     flex: 1,
@@ -321,7 +357,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.9)", // Semi-transparent border
     shadowColor: "rgba(0, 0, 0, 0.5)", // Slight shadow to enhance effect
-    shadowOffset: { width: 0, height: 2 },
+    // shadowOffset: { width: 0, height: 2 },
   },
 
   summaryText: {
