@@ -38,7 +38,8 @@ app.listen(PORT, () => {
 // Routes Path
 const UserRoute = require("./routes/userRoutes");
 
-
+//Akalanka
+const scheduleRoute = require("./routes/schedules/scheduleRoute");
 
 // Aashani
 const distributeRoute = require("./routes/distributors/distributeRoute");
@@ -47,6 +48,8 @@ const distributeRoute = require("./routes/distributors/distributeRoute");
 // Use Routes
 app.use("/auth", UserRoute); 
 
+//Akalanka
+app.use("/schedule", scheduleRoute);
 
 //Aashani
 app.use("/distribute", distributeRoute);

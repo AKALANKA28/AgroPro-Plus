@@ -20,6 +20,15 @@ const FertilizerSchedule = () => {
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation(); // Use navigation hook
 
+  const weatherData = {
+    // Example weather data
+    temperature: 25,
+    rainfall: 10,
+    forecast: 'Partly cloudy',
+  };
+
+  console.log("Weather Data in Parent Component:", weatherData);
+
   const fetchFertilizerSchedule = async (formData) => {
     setLoading(true); // Start loading when API call begins
     try {
@@ -29,33 +38,45 @@ const FertilizerSchedule = () => {
         soil_condition: formData.soilCondition,
         weather_forecast: formData.weatherForecast,
       });
-
+  
       // Log the full response for debugging
       console.log("API Response:", response.data);
-
-      // Check if the response data contains the expected structure
-      if (
-        response.data &&
-        response.data.schedule &&
-        response.data.schedule.fertilizer_schedule
-      ) {
+  
+      let parsedData;
+      try {
+        // Check if response is already an object, otherwise parse it
+        if (typeof response.data === "string") {
+          // Parse double-escaped JSON response if it's a string
+          parsedData = JSON.parse(response.data.replace(/\\"/g, '"').replace(/^"|"$/g, ''));
+        } else {
+          parsedData = response.data;
+        }
+  
+        console.log("Parsed Data:", parsedData);
+  
+      } catch (error) {
+        console.error("Failed to parse the response:", error);
+        setLoading(false);
+        return;
+      }
+  
+      // Now you can use the parsed data
+      if (parsedData.schedule && parsedData.schedule.fertilizer_schedule) {
         setLoading(false); // Stop loading after data is fetched
         navigation.navigate("ScheduleDetails", {
-          schedule: response.data.schedule.fertilizer_schedule,
-        }); // Navigate to ScheduleDetails screen with the schedule data
+          schedule: parsedData.schedule.fertilizer_schedule,
+        });
       } else {
         setLoading(false);
-        console.error(
-          "No valid fertilizer schedule data received:",
-          response.data
-        );
+        console.error("No valid fertilizer schedule data received:", parsedData);
       }
     } catch (err) {
       setLoading(false);
       console.error("Failed to fetch the fertilizer schedule:", err);
     }
   };
-
+  
+  
   const handleFormSubmit = (formData) => {
     fetchFertilizerSchedule(formData);
   };
@@ -70,7 +91,7 @@ const FertilizerSchedule = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <FertilizerForm onSubmit={handleFormSubmit} />
+        <FertilizerForm onSubmit={handleFormSubmit} weatherData={weatherData} />
       )}
     </ScrollView>
   );

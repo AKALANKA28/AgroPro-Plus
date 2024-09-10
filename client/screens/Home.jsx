@@ -66,7 +66,7 @@ const Home = () => {
 
   const contentSectionHeight = pan.interpolate({
     inputRange: [0, SCREEN_HEIGHT - 50],
-    outputRange: [SCREEN_HEIGHT / 3.8, SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT / 3.9, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
 
@@ -220,7 +220,7 @@ const Home = () => {
               showsHorizontalScrollIndicator={false}
             />
 
-            <Text style={styles.sectionTitle}>Upcoming Fertilzer Plan</Text>
+            <Text style={styles.sectionTitle}>Nearby Distributor</Text>
             <Image
               source={{ uri: "crop_image_url" }}
               style={styles.cropImage}
@@ -234,7 +234,7 @@ const Home = () => {
             <Text style={styles.alertText}>Possible water logging</Text> */}
 
 
-            <Text style={styles.sectionTitle}>Crop Information</Text>
+            <Text style={styles.sectionTitle}>Finance</Text>
             <Image
               source={{ uri: "crop_image_url" }}
               style={styles.cropImage}
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject, // This ensures the gradient covers the entire background
   },
   weatherSection: {
-    paddingTop: 60,
+    paddingTop: 40,
     paddingHorizontal: 20,
   },
   draggableSection: {
@@ -272,9 +272,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     backgroundColor: "#fff",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingTop: 10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingTop: 8,
     paddingHorizontal: 20,
   },
   dragIndicator: {
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 15,
   },
   cropButtons: {
     flexDirection: "row",
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cropButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#47a14a",
     paddingHorizontal: 15,
     paddingVertical: 20,
     borderRadius: 25,

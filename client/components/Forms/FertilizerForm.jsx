@@ -17,6 +17,9 @@ const FertilizerForm = ({ onSubmit }) => {
   const [plantingDate, setPlantingDate] = useState("");
   const [soilCondition, setSoilCondition] = useState("");
   const [weatherForecast, setWeatherForecast] = useState("");
+  const [araa, setArea] = useState("");
+
+
   const [error, setError] = useState(null);
   const navigation = useNavigation(); // Get navigation object to go back
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -59,15 +62,15 @@ const FertilizerForm = ({ onSubmit }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Fertilizer Schedule</Text>
+        <Text style={styles.headerTitle}>Add Details</Text>
         <View style={{ width: 24 }} />
         {/* Placeholder to balance the back arrow */}
       </View>
 
       <View>
-        <Text style={styles.title}>
+        {/* <Text style={styles.title}>
           Enter details to fetch fertilizer schedule{" "}
-        </Text>
+        </Text> */}
       </View>
       <View style={styles.form}>
         <Text style={styles.label}>Crop Type:</Text>
@@ -143,10 +146,11 @@ const styles = StyleSheet.create({
   },
   form: {
     marginBottom: 20,
-    padding: 20,
+    marginTop: 10,
+    padding: 0,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
+    // borderWidth: 1,
+    // borderColor: "#e0e0e0",
     // shadowColor: '#000',
     // shadowOffset: { width: 0, height: 2 },
     // shadowOpacity: 0.1,
@@ -154,7 +158,7 @@ const styles = StyleSheet.create({
     // elevation: 3,
   },
   label: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
     color: "#333",
     marginBottom: 5,
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     backgroundColor: "#fafafa",
-    marginBottom: 15,
+    marginBottom: 20,
     // shadowColor: '#000',
     // shadowOffset: { width: 0, height: 1 },
     // shadowOpacity: 0.08,
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   button: {
-    backgroundColor: "#4caf50",
+    backgroundColor: "#183719",
     paddingVertical: 20,
     borderRadius: 25,
     alignItems: "center",
