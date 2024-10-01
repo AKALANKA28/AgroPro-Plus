@@ -15,8 +15,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import CropCard from "../../components/Cards";
 
 const fertilizerAPI = axios.create({
-  // baseURL: "http://192.168.1.159:8000",
-  baseURL: "http://192.168.21.141:8000",
+  baseURL: "http://192.168.1.159:8000",
+  // baseURL: "http://192.168.21.141:8000",
 
   timeout: 50000,
 });
@@ -26,7 +26,7 @@ const FertilizerSchedule = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
   const [savedSchedule, setSavedSchedule] = useState([]); // Initialize as empty array
-  const [showForm, setShowForm] = useState(false);
+  // const [showForm, setShowForm] = useState(false);
 
   const navigation = useNavigation();
 
@@ -137,12 +137,12 @@ const FertilizerSchedule = () => {
 
           <TouchableOpacity
             style={styles.floatingButton}
-            onPress={() => setShowForm(!showForm)}
+            onPress={() => navigation.navigate('FertilizerFormScreen')} // Navigate to the new form screen
           >
             <Icon name="plus" size={30} color="#fff" />
           </TouchableOpacity>
 
-          {showForm && <FertilizerForm onSubmit={handleFormSubmit} />}
+          {/* {showForm && <FertilizerForm onSubmit={handleFormSubmit} />} */}
         </>
       )}
     </ScrollView>

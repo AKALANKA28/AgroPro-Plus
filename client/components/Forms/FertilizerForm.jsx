@@ -10,6 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import RNPickerSelect from "react-native-picker-select";
+import { useNavigation } from "@react-navigation/native";
 
 const FertilizerForm = ({ onSubmit }) => {
   const [cropType, setCropType] = useState("");
@@ -24,6 +25,8 @@ const FertilizerForm = ({ onSubmit }) => {
   const showDatepicker = () => {
     setShowDatePicker(true);
   };
+
+  const navigation = useNavigation();
 
   // Handle date change
   const onDateChange = (event, date) => {
