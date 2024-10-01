@@ -81,7 +81,7 @@ const ScheduleDetails = ({ route }) => {
       ))}
 
       <Button title="Save Schedule" onPress={saveScheduleToDB} />
-      <Button title="Go Back" onPress={() => navigation.goBack()} />
+      {/* <Button title="Go Back" onPress={() => navigation.goBack()} /> */}
     </ScrollView>
   );
 };

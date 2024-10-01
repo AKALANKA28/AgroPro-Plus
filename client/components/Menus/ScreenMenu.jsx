@@ -22,52 +22,49 @@ const ScreenMenu = () => {
   return (
     <Stack.Navigator initialRouteName="Home">
       {/* {authenticatedUser ? ( */}
-        <>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,
-              title: "Full Stack App",
-              headerRight: () => <HeaderMenu />,
-            }}
-          />
-          <Stack.Screen
-            name="FertilizerSchedule"
-            component={FertilizerSchedule}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="ScheduleDetails"
-            component={ScheduleDetails}
-            options={{
-              headerShown: false,
-            }}
-          />
-          {/* <Stack.Screen
+      <>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerShown: false,
+            title: "Full Stack App",
+            headerRight: () => <HeaderMenu />,
+          }}
+        />
+        <Stack.Screen
+          name="FertilizerSchedule"
+          component={FertilizerSchedule}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ScheduleDetails"
+          component={ScheduleDetails}
+          options={{
+            headerShown: true,
+            headerTitle: "Schedule Details", // Set your header title
+            headerTitleAlign: "center", // Center the header title
+          }}
+        />
+
+        {/* <Stack.Screen
             name="Camera"
             component={CameraComponet}
             options={{
               headerShown: false,
             }}
           /> */}
-          {/* <Stack.Screen
-            name="FertilizerForm"
-            component={FertilizerFormScreen}
-            options={{
-              headerShown: false,
-            }}
-          /> */}
-          <Stack.Screen
-            name="FertilizerFormScreen"
-            component={FertilizerFormScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </>
+ 
+        <Stack.Screen
+          name="FertilizerFormScreen"
+          component={FertilizerFormScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </>
       {/* ) : (
         <>
           <Stack.Screen
@@ -82,7 +79,6 @@ const ScreenMenu = () => {
           />
         </>
       ) */}
-      
     </Stack.Navigator>
   );
 };
