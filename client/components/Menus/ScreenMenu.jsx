@@ -13,6 +13,14 @@ import Login from "../../screens/auth/Login";
 import { AuthContext } from "../../context/authContext";
 import HeaderMenu from "./HeaderMenu";
 
+import AddBudgetPlan from "../../components/finance/AddBudgetPlan";
+import BudgetPlansScreen from "../../components/finance/BudgetPlansScreen";
+import BudgetPlanOverviewScreen from "../../components/finance/BudgetPlanOverviewScreen";
+import EditBudgetPlanScreen from '../../components/finance/EditBudgetPlanScreen';
+import MarketPriceTable from '../../components/finance/MarketPriceTable';
+import updateExpenses from '../../components/finance/updateExpenses';
+import AnalysisScreen from '../../components/finance/AnalysisScreen'
+
 const ScreenMenu = () => {
   //global state
   const [state] = useContext(AuthContext);
@@ -63,7 +71,15 @@ const ScreenMenu = () => {
           options={{
             headerShown: false,
           }}
+          
         />
+         <Stack.Screen name="AddBudgetPlan" component={AddBudgetPlan} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="BudgetPlansScreen" component={BudgetPlansScreen} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="Budget Plan Overview" component={BudgetPlanOverviewScreen} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="EditBudgetPlanScreen" component={EditBudgetPlanScreen} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="MarketPriceTable" component={MarketPriceTable} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="updateExpenses" component={updateExpenses} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="AnalysisScreen" component={AnalysisScreen} options={{headerShown:true,headerTitle: '' }}/>
       </>
       {/* ) : (
         <>
