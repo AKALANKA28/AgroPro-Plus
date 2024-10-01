@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet, Button, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Button,
+  Alert,
+} from "react-native";
 import axios from "axios";
 
 const ScheduleDetails = ({ route }) => {
@@ -14,13 +21,13 @@ const ScheduleDetails = ({ route }) => {
         pH: parseFloat(schedule.soil_condition.pH) || 0,
       },
     };
-  
+
     try {
       const response = await axios.post(
         "http://192.168.1.159:8070/schedule/save",
         { schedule: formattedSchedule }
       );
-  
+
       if (response.status === 200) {
         Alert.alert("Success", "Fertilizer schedule saved successfully!");
       } else {
@@ -31,7 +38,7 @@ const ScheduleDetails = ({ route }) => {
       Alert.alert("Error", "An error occurred while saving the schedule.");
     }
   };
-  
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>
@@ -40,14 +47,24 @@ const ScheduleDetails = ({ route }) => {
       <Text style={styles.subtitle}>
         Planting Date: {schedule.planting_date}
       </Text>
+      <Text style={styles.subtitle}>
+        Area Size: {schedule.area_size}
+      </Text>
       <Text style={styles.subtitle}>Soil Condition:</Text>
       <Text style={styles.text}>
         Nitrogen: {schedule.soil_condition.nitrogen}
       </Text>
       <Text style={styles.text}>pH: {schedule.soil_condition.pH}</Text>
-      <Text style={styles.subtitle}>
-        Weather Forecast: {schedule.weather_forecast}
+      {/* <Text style={styles.subtitle}>Weather Forecast:</Text>
+      <Text style={styles.weatherText}>
+        Temperature: {schedule.weather_forecast.temperature}°C
       </Text>
+      <Text style={styles.weatherText}>
+        Rainfall: {schedule.weather_forecast.rainfall}mm
+      </Text>
+      <Text style={styles.weatherText}>
+        Forecast: {schedule.weather_forecast.forecast}
+      </Text> */} 
 
       {schedule.growth_stages.map((stage, index) => (
         <View key={index} style={styles.stageContainer}>

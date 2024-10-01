@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const scheduleSchema = new mongoose.Schema({
   crop_type: String,
   planting_date: String,
+  area_size: Number,
   soil_condition: {
     nitrogen: Number,
     pH: Number,
   },
-  weather_forecast: String,
+
   growth_stages: [
     {
       stage: String,

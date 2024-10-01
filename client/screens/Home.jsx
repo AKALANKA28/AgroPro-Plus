@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   FlatList,
   ImageBackground,
+  StatusBar,
 } from "react-native";
 import Weather from "../components/Weather";
 import CropCard from "../components/Cards";
@@ -177,7 +178,10 @@ const Home = () => {
             </View>
 
             <View style={styles.cropButtonContainer}>
-              <TouchableOpacity style={styles.cropButton}>
+              <TouchableOpacity
+                style={styles.cropButton}
+                // onPress={() => navigation.navigate("Camera")}
+              >
                 <EvilIcons name="camera" size={50} color="#FFFFFF" />
               </TouchableOpacity>
               <Text style={styles.cropButtonText}>Camera</Text>
@@ -233,7 +237,6 @@ const Home = () => {
             <Text style={styles.alertText}>Possible pest attack</Text>
             <Text style={styles.alertText}>Possible water logging</Text> */}
 
-
             <Text style={styles.sectionTitle}>Finance</Text>
             <Image
               source={{ uri: "crop_image_url" }}
@@ -259,6 +262,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: "cover",
+  
   },
   gradient: {
     ...StyleSheet.absoluteFillObject, // This ensures the gradient covers the entire background
@@ -307,7 +311,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 15,
     marginBottom: 20,
-
   },
   cropButtonContainer: {
     alignItems: "center",

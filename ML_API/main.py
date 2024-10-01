@@ -18,7 +18,7 @@ system_message = {
     "role": "system",
     "content": (
         "You are an expert agricultural assistant specialized in generating fertilizer schedules in Sri Lankan agriculture. "
-        "You will be given input based on {crop_type}, {soil_condition}, {planting_date}, and {weather_forecast}. "
+        "You will be given input based on {crop_type}, {soil_condition}, {planting_date}, {area_size}in acres and {weather_forecast}. "
         "Your task is to provide a detailed fertilizer schedule in JSON format, specifying the stages of plant growth, the types of fertilizers to be used, the application amounts, "
         "and the recommended dates for application in this format: "
         "{"
@@ -26,6 +26,7 @@ system_message = {
             "fertilizer_schedule: {"
                 "crop_type: crop_type,"
                 "planting_date: planting_date"","
+                "area_size: area_size"","
                 "soil_condition: {"
                     "pH: pH_value,"
                     "nitrogen: nitrogen_content"
@@ -53,7 +54,8 @@ system_message = {
 @app.route('/generate_schedule', methods=['POST'])
 def generate_schedule():
     data = request.json  # Extract the JSON input data
-    
+    print("Received data:", data)
+
     # Create the user input message for GPT
     user_input = {
         "role": "user",
@@ -62,8 +64,10 @@ def generate_schedule():
             "Here is the input: "
             f"Crop type: {data.get('crop_type')}, "
             f"Planting date: {data.get('planting_date')}, "
+            f"Area size: {data.get('area_size')}, "
             f"Soil condition: {data.get('soil_condition')}, "
             f"Weather forecast: {data.get('weather_forecast')}"
+
         )
     }
 

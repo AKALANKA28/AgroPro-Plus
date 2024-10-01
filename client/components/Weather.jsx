@@ -16,7 +16,7 @@ const Weather_API = "444e0c7798c54693bb010ec192d21199";
 const WeatherDailyURL = `https://api.weatherbit.io/v2.0/forecast/daily`;
 const WeatherHourlyURL = `https://api.weatherbit.io/v2.0/forecast/hourly`;
 
-const WeatherApp = ({ onToggle }) => {
+const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
   const [dailyWeather, setDailyWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState(null);
   const [isExpanded, setIsExpanded] = useState(true);
@@ -34,12 +34,20 @@ const WeatherApp = ({ onToggle }) => {
       );
       const dailyData = await dailyResults.json();
       setDailyWeather(dailyData);
+      // console.log("Daily weather data:", dailyData);
 
       const hourlyResults = await fetch(
         `${WeatherHourlyURL}?lat=${latitude}&lon=${longitude}&key=${Weather_API}`
       );
       const hourlyData = await hourlyResults.json();
       setHourlyWeather(hourlyData);
+
+       // Pass the weather data to the parent component
+       if (onWeatherDataUpdate && typeof onWeatherDataUpdate === 'function') {
+        // console.log("Weather Data to be Passed:");
+        onWeatherDataUpdate(dailyData);
+      }
+
     } catch (error) {
       setErrorMsg("Error fetching weather data. Please try again later.");
       console.error("Error fetching weather data:", error);
@@ -67,6 +75,8 @@ const WeatherApp = ({ onToggle }) => {
   useEffect(() => {
     fetchWeatherData();
   }, [location]);
+
+
 
   if (errorMsg) {
     return (
