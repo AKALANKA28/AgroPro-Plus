@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   FlatList,
   ImageBackground,
+  StatusBar,
 } from "react-native";
 import Weather from "../components/Weather";
 import CropCard from "../components/Cards";
@@ -66,7 +67,7 @@ const Home = () => {
 
   const contentSectionHeight = pan.interpolate({
     inputRange: [0, SCREEN_HEIGHT - 50],
-    outputRange: [SCREEN_HEIGHT / 3.8, SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT / 3.9, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
 
@@ -177,7 +178,10 @@ const Home = () => {
             </View>
 
             <View style={styles.cropButtonContainer}>
-              <TouchableOpacity style={styles.cropButton}>
+              <TouchableOpacity
+                style={styles.cropButton}
+                // onPress={() => navigation.navigate("Camera")}
+              >
                 <EvilIcons name="camera" size={50} color="#FFFFFF" />
               </TouchableOpacity>
               <Text style={styles.cropButtonText}>Camera</Text>
@@ -220,7 +224,7 @@ const Home = () => {
               showsHorizontalScrollIndicator={false}
             />
 
-            <Text style={styles.sectionTitle}>Upcoming Fertilzer Plan</Text>
+            <Text style={styles.sectionTitle}>Nearby Distributor</Text>
             <Image
               source={{ uri: "crop_image_url" }}
               style={styles.cropImage}
@@ -233,8 +237,7 @@ const Home = () => {
             <Text style={styles.alertText}>Possible pest attack</Text>
             <Text style={styles.alertText}>Possible water logging</Text> */}
 
-
-            <Text style={styles.sectionTitle}>Crop Information</Text>
+            <Text style={styles.sectionTitle}>Finance</Text>
             <Image
               source={{ uri: "crop_image_url" }}
               style={styles.cropImage}
@@ -259,12 +262,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: "cover",
+  
   },
   gradient: {
     ...StyleSheet.absoluteFillObject, // This ensures the gradient covers the entire background
   },
   weatherSection: {
-    paddingTop: 60,
+    paddingTop: 40,
     paddingHorizontal: 20,
   },
   draggableSection: {
@@ -272,9 +276,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     backgroundColor: "#fff",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingTop: 10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingTop: 8,
     paddingHorizontal: 20,
   },
   dragIndicator: {
@@ -300,14 +304,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 15,
   },
   cropButtons: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 15,
     marginBottom: 20,
-
   },
   cropButtonContainer: {
     alignItems: "center",
@@ -315,7 +318,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cropButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#47a14a",
     paddingHorizontal: 15,
     paddingVertical: 20,
     borderRadius: 25,

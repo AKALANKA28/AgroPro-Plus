@@ -2,7 +2,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 
-const CropCard = ({ imageUri, health, week, alerts }) => {
+const CropCard = ({ imageUri, health, week, alerts = [], crop_type }) => {
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
@@ -10,26 +10,31 @@ const CropCard = ({ imageUri, health, week, alerts }) => {
         <Text style={styles.imageText}>In 5 days</Text>
       </View>
       <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>Crop Type: {crop_type}</Text>
         <Text style={styles.infoText}>Week: {week}</Text>
-        <View style={styles.fertilzerType}>
+        <View style={styles.fertilizerType}>
           <Text style={styles.typeText}>
-            Fertilzer Type:
-            <Text style={styles.typeContent}>     Urea</Text>
+            Fertilizer Type:
+            <Text style={styles.typeContent}> Urea</Text>
           </Text>
           <Text style={styles.typeText}>
-            Fertilzer Amount:
-            <Text style={styles.typeContent}> 50 kg/ha </Text>
+            Fertilizer Amount:
+            <Text style={styles.typeContent}> 50 kg/ha</Text>
           </Text>
         </View>
       </View>
 
       <View style={styles.alertContainer}>
         <Text style={styles.sectionTitle}>Alerts</Text>
-        {alerts.map((alert, index) => (
-          <Text key={index} style={styles.alertText}>
-            {alert}
-          </Text>
-        ))}
+        {alerts.length > 0 ? (
+          alerts.map((alert, index) => (
+            <Text key={index} style={styles.alertText}>
+              {alert}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.alertText}>No alerts</Text>
+        )}
       </View>
     </View>
   );
