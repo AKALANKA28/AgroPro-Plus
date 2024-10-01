@@ -42,137 +42,116 @@ const DistributeForm = ({ handleSubmit, initialData }) => {
     },
   });
 
-  const handleNameChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "Owner_name") {
-      const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
-      formik.setFieldValue(name, capitalizedValue);
-    } else {
-      formik.handleChange(e);
-    }
-  };
-
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="business_name" className="form-label">
-                Business Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="business_name"
-                placeholder="Business Name"
-                value={formik.values.business_name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.business_name && formik.errors.business_name && (
-                <div className="error">{formik.errors.business_name}</div>
-              )}
-            </div>
-            <div className="mb-3">
-              <label htmlFor="registation_no" className="form-label">
-                Registation Number
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="registation_no"
-                placeholder="Registation Number"
-                value={formik.values.registation_no}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.registation_no &&
-                formik.errors.registation_no && (
-                  <div className="error">{formik.errors.registation_no}</div>
-                )}
-            </div>
-          </div>
-
-          <div className="col-md-6">
-            <div className="mb-3">
-              <label htmlFor="situated_place" className="form-label">
-                Situated Place
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="situated_place"
-                placeholder="Situated Place"
-                value={formik.values.situated_place}
-                onChange={handleNameChange} // Changed to handleNameChange
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.situated_place &&
-                formik.errors.situated_place && (
-                  <div className="error">{formik.errors.situated_place}</div>
-                )}
-            </div>
-            <div className="mb-3">
-              <label htmlFor="Owner_name" className="form-label">
-                Owner Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="Owner_name"
-                placeholder="Owner Name"
-                value={formik.values.Owner_name}
-                onChange={handleNameChange} // Use handleNameChange
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.Owner_name && formik.errors.Owner_name && (
-                <div className="error">{formik.errors.Owner_name}</div>
-              )}
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                placeholder="Email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.email && formik.errors.email && (
-                <div className="error">{formik.errors.email}</div>
-              )}
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="phone_no" className="form-label">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                name="phone_no"
-                placeholder="Phone Number"
-                value={formik.values.phone_no}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.phone_no && formik.errors.phone_no && (
-                <div className="error">{formik.errors.phone_no}</div>
-              )}
-            </div>
-          </div>
+      <div className="form-container">
+        {/* Simplified layout: One column for all fields */}
+        <div className="mb-3">
+          <label htmlFor="business_name" className="form-label">
+            Business Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="business_name"
+            placeholder="Business Name"
+            value={formik.values.business_name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.business_name && formik.errors.business_name && (
+            <div className="error">{formik.errors.business_name}</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="registation_no" className="form-label">
+            Registration Number
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="registation_no"
+            placeholder="Registration Number"
+            value={formik.values.registation_no}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.registation_no && formik.errors.registation_no && (
+            <div className="error">{formik.errors.registation_no}</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="situated_place" className="form-label">
+            Situated Place
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="situated_place"
+            placeholder="Situated Place"
+            value={formik.values.situated_place}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.situated_place && formik.errors.situated_place && (
+            <div className="error">{formik.errors.situated_place}</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="Owner_name" className="form-label">
+            Owner Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="Owner_name"
+            placeholder="Owner Name"
+            value={formik.values.Owner_name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.Owner_name && formik.errors.Owner_name && (
+            <div className="error">{formik.errors.Owner_name}</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            name="email"
+            placeholder="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.email && formik.errors.email && (
+            <div className="error">{formik.errors.email}</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="phone_no" className="form-label">
+            Phone Number
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="phone_no"
+            placeholder="Phone Number"
+            value={formik.values.phone_no}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.phone_no && formik.errors.phone_no && (
+            <div className="error">{formik.errors.phone_no}</div>
+          )}
         </div>
       </div>
       <div className="d-flex justify-content-end border-top">
         <button type="submit" className="btn btn-success">
-          {" "}
-          Submit{" "}
+          Submit
         </button>
       </div>
     </form>

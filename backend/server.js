@@ -42,7 +42,7 @@ const UserRoute = require("./routes/userRoutes");
 
 // Aashani
 const distributeRoute = require("./routes/distributors/distributeRoute");
-
+const stockRoute = require("./routes/distributors/stockRoute");
 
 // Use Routes
 app.use("/auth", UserRoute); 
@@ -50,6 +50,7 @@ app.use("/auth", UserRoute);
 
 //Aashani
 app.use("/distribute", distributeRoute);
+app.use("/stock", stockRoute);
 
 
 
