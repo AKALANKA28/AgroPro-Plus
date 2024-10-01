@@ -42,6 +42,9 @@ const UserRoute = require("./routes/userRoutes");
 
 // Aashani
 const distributeRoute = require("./routes/distributors/distributeRoute");
+//udara
+const noticeRoute = require("./routes/community/noticeRoute");
+const postRoute = require("./routes/community/postRoute");
 
 
 // Use Routes
@@ -50,7 +53,9 @@ app.use("/auth", UserRoute);
 
 //Aashani
 app.use("/distribute", distributeRoute);
-
+//udara
+app.use("/notice", noticeRoute);
+app.use("/post", postRoute);
 
 
 module.exports = app;
