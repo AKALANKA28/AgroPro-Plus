@@ -43,11 +43,17 @@ const UserRoute = require("./routes/userRoutes");
 
 
 
+
+
+
 // Use Routes
 app.use("/auth", UserRoute); 
 
 
 
+//finance
+const financeRoute = require("./routes/finance/financeRoute");
+app.use("/finance", financeRoute);
 
 
 module.exports = app;

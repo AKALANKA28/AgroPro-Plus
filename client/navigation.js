@@ -7,9 +7,7 @@ import { PostProvider } from "./context/postContext";
 const RootNavigation = () => {
   return (
     <AuthProvider>
-      <PostProvider>
         <ScreenMenu />
-      </PostProvider>
     </AuthProvider>
   );
 };
