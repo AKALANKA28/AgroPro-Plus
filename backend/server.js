@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 // app.use(morgan("dev"));
 
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8070;
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -38,10 +38,12 @@ app.listen(PORT, () => {
 // Routes Path
 const UserRoute = require("./routes/userRoutes");
 
+//Akalanka
+const scheduleRoute = require("./routes/schedules/scheduleRoute");
 
-
-
-
+// Aashani
+const distributeRoute = require("./routes/distributors/distributeRoute");
+const stockRoute = require("./routes/distributors/stockRoute");
 
 
 
@@ -49,7 +51,12 @@ const UserRoute = require("./routes/userRoutes");
 // Use Routes
 app.use("/auth", UserRoute); 
 
+//Akalanka
+app.use("/schedule", scheduleRoute);
 
+//Aashani
+app.use("/distribute", distributeRoute);
+app.use("/stock", stockRoute);
 
 //finance
 const financeRoute = require("./routes/finance/financeRoute");
