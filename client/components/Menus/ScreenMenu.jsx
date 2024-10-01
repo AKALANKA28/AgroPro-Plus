@@ -53,8 +53,15 @@ const ScreenMenu = () => {
               headerShown: false,
             }}
           /> */}
-          <Stack.Screen
+          {/* <Stack.Screen
             name="FertilizerForm"
+            component={FertilizerFormScreen}
+            options={{
+              headerShown: false,
+            }}
+          /> */}
+          <Stack.Screen
+            name="FertilizerFormScreen"
             component={FertilizerFormScreen}
             options={{
               headerShown: false,
