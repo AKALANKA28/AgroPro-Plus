@@ -35,8 +35,8 @@ const FertilizerSchedule = () => {
       setLoading(true);
       try {
         const response = await fertilizerAPI.get(
-          // "http://192.168.1.159:8070/schedule/"
-          "http://192.168.21.141:8070/schedule/"
+          "http://192.168.1.159:8070/schedule/"
+          // "http://192.168.21.141:8070/schedule/"
         );
         setSavedSchedule(response.data || []); // Ensure it's an array
       } catch (error) {
