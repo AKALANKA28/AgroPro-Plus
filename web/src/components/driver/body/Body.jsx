@@ -23,7 +23,7 @@ const Body = () => {
             <div >
                 <div className="row gap-1">
                   <div className="">
-                  <Cards />
+                  {/* <Cards /> */}
                   </div>
                   <div className="col-12">
                     <div className='card map-card'>
