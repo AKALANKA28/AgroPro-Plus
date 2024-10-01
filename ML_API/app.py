@@ -38,7 +38,6 @@ system_message = {
         "}"
         "}"
         "Ensure that the schedule is practical and tailored to the specific needs of the crop and conditions provided based on Sri Lankan agriculture. "
-      
         "Once the farmer has provided the input, you will generate the fertilizer schedule based on the given information. "
         "If the farmer regenerates with the same input, you should not generate anything again. "
         "If the farmer regenerates with different input, you will generate a different fertilizer schedule."
@@ -52,36 +51,41 @@ def generate_schedule():
     # Create the user input message for GPT
     user_input = {
         "role": "user",
-        "content": {
-            "crop_type": data.get('crop_type'),
-            "planting_date": data.get('planting_date'),
-            "soil_condition": data.get('soil_condition'),
-            "weather_forecast": data.get('weather_forecast')
-        }
+        "content": (
+            "Please generate the fertilizer schedule based on the provided input as instructions. I only need the fertilizer schedule in JSON format. No need any additional commenting. "
+            "Here is the input: "
+            f"Crop type: {data.get('crop_type')}, "
+            f"Planting date: {data.get('planting_date')}, "
+            f"Soil condition: {data.get('soil_condition')}, "
+            f"Weather forecast: {data.get('weather_forecast')}"
+        )
     }
 
     try:
         # Call the GPT API
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo",
             messages=[system_message, user_input]
         )
 
         # Extract GPT response content
         gpt_response_content = response.choices[0].message.content
 
-        # Clean the content to remove backticks and "json" formatting markers
+        # Clean the content to remove any extra formatting
         if gpt_response_content.startswith("```json"):
             gpt_response_content = gpt_response_content[7:-3]  # Remove ```json at the start and ``` at the end
         
-        # Parse the cleaned content into a JSON object
-        parsed_response = json.loads(gpt_response_content)
-        
-        # Return the cleaned JSON response
-        return jsonify(parsed_response)
-    
+        # Attempt to parse the response content as JSON
+        try:
+            parsed_response = json.loads(gpt_response_content)
+            return jsonify(parsed_response)
+        except json.JSONDecodeError:
+            # If JSON decoding fails, return the raw response content
+            return jsonify({"response": gpt_response_content})
+
     except Exception as e:
-        # Handle any errors
+        # Log any other errors
+        print(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
