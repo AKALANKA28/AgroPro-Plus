@@ -1,69 +1,88 @@
-import React from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Button,
+  Alert,
+} from "react-native";
+import axios from "axios";
 
 const ScheduleDetails = ({ route }) => {
   const { schedule } = route.params;
-  const navigation = useNavigation(); // Get navigation object to go back
 
-  // Destructure properties with fallback values to avoid undefined errors
-  const { fertilizer_schedule = {} } = schedule || {};
-  const {
-    crop_type = 'N/A',
-    planting_date = 'N/A',
-    soil_condition = { pH: 'N/A', nitrogen: 'N/A' },
-    weather_forecast = 'N/A',
-    growth_stages = []
-  } = fertilizer_schedule;
+  const saveScheduleToDB = async () => {
+    // Assuming you need to convert nitrogen and pH to numbers
+    const formattedSchedule = {
+      ...schedule,
+      soil_condition: {
+        nitrogen: parseFloat(schedule.soil_condition.nitrogen) || 0,
+        pH: parseFloat(schedule.soil_condition.pH) || 0,
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        "http://192.168.1.159:8070/schedule/save",
+        { schedule: formattedSchedule }
+      );
+
+      if (response.status === 200) {
+        Alert.alert("Success", "Fertilizer schedule saved successfully!");
+      } else {
+        Alert.alert("Error", "Failed to save the fertilizer schedule.");
+      }
+    } catch (error) {
+      console.error("Failed to save schedule:", error);
+      Alert.alert("Error", "An error occurred while saving the schedule.");
+    }
+  };
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* Header with back arrow and centered title */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Fertilizer Schedule</Text>
-        <View style={{ width: 24 }} />
-        {/* Placeholder to balance the back arrow */}
-      </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>
+        Fertilizer Schedule for {schedule.crop_type}
+      </Text>
+      <Text style={styles.subtitle}>
+        Planting Date: {schedule.planting_date}
+      </Text>
+      <Text style={styles.subtitle}>
+        Area Size: {schedule.area_size}
+      </Text>
+      <Text style={styles.subtitle}>Soil Condition:</Text>
+      <Text style={styles.text}>
+        Nitrogen: {schedule.soil_condition.nitrogen}
+      </Text>
+      <Text style={styles.text}>pH: {schedule.soil_condition.pH}</Text>
+      {/* <Text style={styles.subtitle}>Weather Forecast:</Text>
+      <Text style={styles.weatherText}>
+        Temperature: {schedule.weather_forecast.temperature}°C
+      </Text>
+      <Text style={styles.weatherText}>
+        Rainfall: {schedule.weather_forecast.rainfall}mm
+      </Text>
+      <Text style={styles.weatherText}>
+        Forecast: {schedule.weather_forecast.forecast}
+      </Text> */} 
 
-      <ScrollView contentContainerStyle={styles.container}>
-        {schedule ? (
-          <View>
-            <Text style={styles.title}>
-              Fertilizer Schedule for {crop_type}
-            </Text>
-            <Text style={styles.subtitle}>
-              Planting Date: {planting_date}
-            </Text>
-            <Text style={styles.subtitle}>
-              Soil Condition: pH {soil_condition.pH}, Nitrogen: {soil_condition.nitrogen}
-            </Text>
-            <Text style={styles.subtitle}>
-              Weather Forecast: {weather_forecast}
-            </Text>
+      {schedule.growth_stages.map((stage, index) => (
+        <View key={index} style={styles.stageContainer}>
+          <Text style={styles.stageTitle}>Stage: {stage.stage}</Text>
+          <Text style={styles.text}>Amount: {stage.amount}</Text>
+          <Text style={styles.text}>
+            Application Date: {stage.application_date}
+          </Text>
+          <Text style={styles.text}>
+            Fertilizer Type: {stage.fertilizer_type}
+          </Text>
+          <Text style={styles.text}>Notes: {stage.notes}</Text>
+        </View>
+      ))}
 
-            {growth_stages.length > 0 ? (
-              growth_stages.map((stage, index) => (
-                <View key={index} style={styles.stage}>
-                  <Text style={styles.stageTitle}>Stage: {stage.stage}</Text>
-                  <Text>Application Date: {stage.application_date}</Text>
-                  <Text>Fertilizer Type: {stage.fertilizer_type}</Text>
-                  <Text>Amount: {stage.amount}</Text>
-                  <Text>Notes: {stage.notes}</Text>
-                </View>
-              ))
-            ) : (
-              <Text style={styles.emptyText}>No growth stages available</Text>
-            )}
-          </View>
-        ) : (
-          <Text style={styles.emptyText}>No fertilizer schedule available</Text>
-        )}
-      </ScrollView>
-    </View>
+      <Button title="Save Schedule" onPress={saveScheduleToDB} />
+      <Button title="Go Back" onPress={() => navigation.goBack()} />
+    </ScrollView>
   );
 };
 
@@ -71,50 +90,36 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 16,
-  },
-  header: {
-    height: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 40,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    elevation: 0.5, // Adds a subtle shadow
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
+    backgroundColor: "#f8f8f8",
   },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
   },
   subtitle: {
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 18,
+    marginTop: 8,
+    fontWeight: "bold",
   },
-  stage: {
-    marginVertical: 10,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
+  text: {
+    fontSize: 16,
+    marginVertical: 4,
+  },
+  stageContainer: {
+    marginVertical: 12,
+    padding: 16,
+    backgroundColor: "#fff",
     borderRadius: 8,
-    backgroundColor: '#f9f9f9',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
   },
   stageTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  emptyText: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginTop: 20,
+    fontWeight: "bold",
   },
 });
 

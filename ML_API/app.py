@@ -16,22 +16,22 @@ system_message = {
         "Your task is to provide a detailed fertilizer schedule in JSON format, specifying the stages of plant growth, the types of fertilizers to be used, the application amounts, "
         "and the recommended dates for application in this format: "
         "{"
-        "\"schedule\": {"
-            "\"fertilizer_schedule\": {"
-                "\"crop_type\": \"crop_type\","
-                "\"planting_date\": \"planting_date\","
-                "\"soil_condition\": {"
-                    "\"pH\": \"pH_value\","
-                    "\"nitrogen\": \"nitrogen_content\""
+        "schedule: {"
+            "fertilizer_schedule: {"
+                "crop_type: crop_type,"
+                "planting_date: planting_date"","
+                "soil_condition: {"
+                    "pH: pH_value,"
+                    "nitrogen: nitrogen_content"
                 "},"
-                "\"weather_forecast\": \"weather_forecast\","
-                "\"growth_stages\": ["
+                "weather_forecast: weather_forecast,"
+                "growth_stages: ["
                     "{"
-                        "\"stage\": \"stage\","
-                        "\"application_date\": \"application_date\","
-                        "\"fertilizer_type\": \"fertilizer_type\","
-                        "\"amount\": \"amount\","
-                        "\"notes\": \"Provide extra notes for farmers. Include information on potential crop diseases relevant to this stage and how to prevent them.\""
+                        "stage: stage,"
+                        "application_date: application_date,"
+                        "fertilizer_type: fertilizer_type,"
+                        "amount: amount,"
+                        "notes: Provide extra notes for farmers. Include information on potential crop diseases relevant to this stage and how to prevent them."
                     "}"
                 "]"
             "}"
@@ -52,7 +52,7 @@ def generate_schedule():
     user_input = {
         "role": "user",
         "content": (
-            "Please generate the fertilizer schedule based on the provided input as instructions. I only need the fertilizer schedule in JSON format. No need any additional commenting. "
+            "Generate the fertilizer schedule based on the provided input as instructions. Only need the fertilizer schedule in JSON format. No need any additional commenting. "
             "Here is the input: "
             f"Crop type: {data.get('crop_type')}, "
             f"Planting date: {data.get('planting_date')}, "
@@ -64,7 +64,7 @@ def generate_schedule():
     try:
         # Call the GPT API
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[system_message, user_input]
         )
 
