@@ -14,7 +14,7 @@ const Map = () => {
 
     const location = useGeoLocation();
     const [center, setCenter] = useState(null);
-    const ZOOM_LEVEL = 13;
+    const ZOOM_LEVEL = 10;
     const mapRef = useRef();
 
 
@@ -42,13 +42,13 @@ const Map = () => {
 
 
   return ( 
-    <div style={{ height: '380px' }}>
+    <div style={{ height: '520px' }}>
        <MapContainer
             center={center || { lat: 7.873054, lng: 80.771797 }} // Use current location if available, otherwise use the default center
             zoom={ZOOM_LEVEL}
             ref ={mapRef}
             scrollWheelZoom={false}
-            style={{ width: '100%', height: '500px' }}
+            style={{ width: '100%', height: '600px' }}
             className="map-container"
         >
             <TileLayer

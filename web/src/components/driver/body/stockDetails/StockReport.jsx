@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DistributeReport = ({ dataList }) => {
+const StockReport = ({ dataList }) => {
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -104,7 +104,7 @@ const InvoiceTitle = () => (
   <View style={styles.titleContainer}>
     <View style={styles.spaceBetween}>
       <Image style={styles.logo} src={logo} />
-      <Text style={styles.reportTitle}>Fertilizer Distributors</Text>
+      <Text style={styles.reportTitle}>Fertilizer Stock Details</Text>
     </View>
   </View>
 );
@@ -114,7 +114,7 @@ const Address = () => (
   <View style={styles.titleContainer}>
     <View style={styles.spaceBetween}>
       <View>
-        <Text style={styles.invoice}>Distributers' Details Report</Text>
+        <Text style={styles.invoice}>Fertilizer Stock Details Report</Text>
         {/* <Text style={styles.invoiceNumber}>Invoice number: {reciept_data.invoice_no} </Text> */}
       </View>
       {/* <View>
@@ -146,22 +146,19 @@ const TableHead = () => {
   return (
     <View style={{ width:'100%', flexDirection :'row', marginTop:10}}>
       <View style={styles.theader}>
-        <Text>Business Name</Text>   
+        <Text>Frtilizer Type</Text>   
       </View>
       <View style={styles.theader}>
-        <Text>Registration No</Text>   
+        <Text>Stock Amount</Text>   
       </View>
       <View style={styles.theader}>
-        <Text>Situated Place</Text>   
+        <Text>Price</Text>   
       </View>
       <View style={styles.theader}>
-        <Text>Owner Name</Text>   
+        <Text>Description</Text>   
       </View>
       <View style={styles.theader}>
-        <Text>Email</Text>   
-      </View>
-      <View style={styles.theader}>
-        <Text>Phone Number</Text>   
+        <Text>Availability Status</Text>   
       </View>
     </View>
   );
@@ -169,27 +166,25 @@ const TableHead = () => {
 
 const TableBody = () => {
   return (
-    dataList.map((Distribute) => (
-      <Fragment key={Distribute.id}>
+    dataList.map((Stock) => (
+      <Fragment key={Stock.id}>
         <View style={{ width:'100%', flexDirection :'row'}}>
           <View style={styles.tbody}>
-            <Text>{new Date(Distribute.business_name).toLocaleDateString()}</Text>   
+            <Text>{new Date(Stock.ferti_name).toLocaleDateString()}</Text>   
           </View>
           <View style={styles.tbody}>
-            <Text>{Distribute.registation_no}</Text>   
+            <Text>{Stock.amount}</Text>   
           </View>
           <View style={styles.tbody}>
-            <Text>{Distribute.situated_place}</Text>   
+            <Text>{Stock.price}</Text>   
           </View>
           <View style={styles.tbody}>
-            <Text>{Distribute.Owner_name}</Text>   
+            <Text>{Stock.description}</Text>   
           </View>
           <View style={styles.tbody}>
-            <Text>{Distribute.email}</Text>   
+            <Text>{Stock.availability}</Text>   
           </View>
-          <View style={styles.tbody}>
-            <Text>{Distribute.phone_no}</Text>   
-          </View>
+        
           
         </View>
       </Fragment>
@@ -260,4 +255,4 @@ const TableBody = () => {
   );
 };
 
-export default DistributeReport;
+export default StockReport;

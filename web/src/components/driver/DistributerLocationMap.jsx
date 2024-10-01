@@ -3,23 +3,23 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const TransportLocationMap = ({ suppliers }) => {
+const DistributerLocationMap = ({ Distribute }) => {
   const mapCenter = [7.8731, 80.7718]; // Center of Sri Lanka
-  const mapZoom = 8; // Initial zoom level
+  const mapZoom = 7; // Initial zoom level
 
-  const [supplierCounts, setSupplierCounts] = useState({});
-  const [hoveredSupplier, setHoveredSupplier] = useState(null);
+  const [DistributerCounts, setDistributerCounts] = useState({});
+  const [hoveredDistributer, setHoveredDistributer] = useState(null);
 
-  // Calculate the total number of suppliers for each city
+  // Calculate the total number of Distributers for each city
   useEffect(() => {
-    const counts = suppliers.reduce((acc, supplier) => {
-      if (supplier.latitude && supplier.longitude && supplier.city) {
-        acc[supplier.city] = (acc[supplier.city] || 0) + 1;
+    const counts = Distribute.reduce((acc, Distribute) => {
+      if (Distribute.latitude && Distribute.longitude && Distribute.city) {
+        acc[Distribute.city] = (acc[Distribute.city] || 0) + 1;
       }
       return acc;
     }, {});
-    setSupplierCounts(counts);
-  }, [suppliers]);
+    setDistributerCounts(counts);
+  }, [Distribute]);
 
   // Define custom icon for markers
   const redIcon = new L.Icon({
@@ -34,38 +34,38 @@ const TransportLocationMap = ({ suppliers }) => {
   const markersRef = useRef([]);
 
   useEffect(() => {
-    markersRef.current = Array(suppliers.length)
+    markersRef.current = Array(Distribute.length)
       .fill()
       .map((_, index) => markersRef.current[index] || React.createRef());
-  }, [suppliers]);
+  }, [Distribute]);
 
   const handleMouseOver = (city) => {
-    setHoveredSupplier(city);
+    setHoveredDistributer(city);
   };
 
   const handleMouseOut = () => {
-    setHoveredSupplier(null);
+    setHoveredDistributer(null);
   };
 
   return (
-    <div style={{ height: '630px', borderRadius: '15px', overflow: 'hidden' }}>
+    <div style={{ height: '500px', borderRadius: '15px', overflow: 'hidden' }}>
       <MapContainer center={mapCenter} zoom={mapZoom} style={{ height: '100%', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {suppliers.map((supplier, index) => (
-          supplier.latitude &&
-          supplier.longitude && (
+        {Distribute.map((Distribute, index) => (
+          Distribute.latitude &&
+          Distribute.longitude && (
             <Marker
-              key={supplier._id}
-              position={[parseFloat(supplier.latitude), parseFloat(supplier.longitude)]}
+              key={Distribute._id}
+              position={[parseFloat(Distribute.latitude), parseFloat(Distribute.longitude)]}
               icon={redIcon}
               ref={markersRef.current[index]}
               eventHandlers={{
-                mouseover: () => handleMouseOver(supplier.city),
+                mouseover: () => handleMouseOver(Distribute.city),
                 mouseout: () => handleMouseOut(),
               }}
             >
-              {(hoveredSupplier === supplier.city) && (
-                <Popup>{supplier.city}: {supplierCounts[supplier.city] || 0} suppliers</Popup>
+              {(hoveredDistributer === Distribute.city) && (
+                <Popup>{Distribute.city}: {DistributerCounts[Distribute.city] || 0} Distributers</Popup>
               )}
             </Marker>
           )
@@ -75,4 +75,4 @@ const TransportLocationMap = ({ suppliers }) => {
   );
 };
 
-export default TransportLocationMap;
+export default DistributerLocationMap;
