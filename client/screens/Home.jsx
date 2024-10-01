@@ -136,6 +136,33 @@ const Home = () => {
   const backgroundImageUri =
     "https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg"; // Use your own image URL
 
+  const cropButtonsData = [
+    {
+      id: "1",
+      icon: "calendar",
+      text: "Fertilizer Schedule",
+      navigateTo: "FertilizerSchedule",
+    },
+    { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
+    { id: "3", icon: "chart", text: "Finance", navigateTo: "" },
+    { id: "4", icon: "location", text: "Distributors", navigateTo: "" },
+    { id: "5", icon: "location", text: "Community", navigateTo: "" },
+  ];
+  const renderCropButton = ({ item }) => (
+    <View style={styles.cropButtonContainer}>
+      <TouchableOpacity
+        style={styles.cropButton}
+        onPress={() => {
+          if (item.navigateTo) {
+            navigation.navigate(item.navigateTo);
+          }
+        }}
+      >
+        <EvilIcons name={item.icon} size={50} color="#FFFFFF" />
+      </TouchableOpacity>
+      <Text style={styles.cropButtonText}>{item.text}</Text>
+    </View>
+  );
   return (
     <ImageBackground
       source={require("../assets/images/default-weather.jpg")}
@@ -166,92 +193,60 @@ const Home = () => {
             </View>
           </View>
 
-          <View style={styles.cropButtons}>
-            <View style={styles.cropButtonContainer}>
-              <TouchableOpacity
-                style={styles.cropButton}
-                onPress={() => navigation.navigate("FertilizerSchedule")}
-              >
-                <EvilIcons name="calendar" size={50} color="#F1F1F1" />
-              </TouchableOpacity>
-              <Text style={styles.cropButtonText}>Fertilizer Schedule</Text>
-            </View>
-
-            <View style={styles.cropButtonContainer}>
-              <TouchableOpacity
-                style={styles.cropButton}
-                // onPress={() => navigation.navigate("Camera")}
-              >
-                <EvilIcons name="camera" size={50} color="#FFFFFF" />
-              </TouchableOpacity>
-              <Text style={styles.cropButtonText}>Camera</Text>
-            </View>
-            <View style={styles.cropButtonContainer}>
-              <TouchableOpacity style={styles.cropButton}>
-                <EvilIcons name="chart" size={50} color="#F1F1F1" />
-              </TouchableOpacity>
-              <Text style={styles.cropButtonText}>Finance</Text>
-            </View>
-            <View style={styles.cropButtonContainer}>
-              <TouchableOpacity style={styles.cropButton}>
-                <EvilIcons name="location" size={50} color="#FFFFFF" />
-              </TouchableOpacity>
-              <Text style={styles.cropButtonText}>Distributors</Text>
-            </View>
+          {/* Container for the navigation buttons */}
+          <View>
+          <FlatList
+            data={cropButtonsData}
+            renderItem={renderCropButton}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.cropButtons}
+          />
           </View>
+         
+          {/* Content section */}
 
+          <View style={{ flex: 1 }}>
           <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
-            onScroll={handleScroll}
-            onScrollEndDrag={handleScrollEndDrag}
-            scrollEventThrottle={16}
-          >
-            <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+              onScroll={handleScroll}
+              onScrollEndDrag={handleScrollEndDrag}
+              scrollEventThrottle={16}
+            >
+              <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
 
-            <FlatList
-              data={cropData}
-              renderItem={({ item }) => (
-                <CropCard
-                  imageUri={item.imageUri}
-                  week={item.week}
-                  health={item.health}
-                  alerts={item.alerts}
-                />
-              )}
-              keyExtractor={(item) => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            />
+              <FlatList
+                data={cropData}
+                renderItem={({ item }) => (
+                  <CropCard
+                    imageUri={item.imageUri}
+                    week={item.week}
+                    health={item.health}
+                    alerts={item.alerts}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              />
 
-            <Text style={styles.sectionTitle}>Nearby Distributor</Text>
-            <Image
-              source={{ uri: "crop_image_url" }}
-              style={styles.cropImage}
-            />
-            <View style={styles.infoContainer}>
-              {/* <Text style={styles.infoText}>Health: 20%</Text>
-              <Text style={styles.infoText}>Week: 4</Text> */}
-            </View>
-            {/* <Text style={styles.sectionTitle}>Alerts</Text>
-            <Text style={styles.alertText}>Possible pest attack</Text>
-            <Text style={styles.alertText}>Possible water logging</Text> */}
+              <Text style={styles.sectionTitle}>Nearby Distributor</Text>
+              <Image
+                source={{ uri: "crop_image_url" }}
+                style={styles.cropImage}
+              />
+              <View style={styles.infoContainer}></View>
 
-            <Text style={styles.sectionTitle}>Finance</Text>
-            <Image
-              source={{ uri: "crop_image_url" }}
-              style={styles.cropImage}
-            />
-            <View style={styles.infoContainer}>
-              {/* <Text style={styles.infoText}>Health: 20%</Text>
-              <Text style={styles.infoText}>Week: 4</Text> */}
-            </View>
-            {/* <Text style={styles.sectionTitle}>Alerts</Text>
-            <Text style={styles.alertText}>Possible pest attack</Text>
-            <Text style={styles.alertText}>Possible water logging</Text> */}
-
-            {/* Additional content */}
-          </ScrollView>
+              <Text style={styles.sectionTitle}>Finance</Text>
+              <Image
+                source={{ uri: "crop_image_url" }}
+                style={styles.cropImage}
+              />
+              <View style={styles.infoContainer}></View>
+            </ScrollView>
+          </View>
         </Animated.View>
       </View>
     </ImageBackground>
@@ -262,7 +257,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: "cover",
-  
   },
   gradient: {
     ...StyleSheet.absoluteFillObject, // This ensures the gradient covers the entire background
@@ -280,6 +274,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     paddingTop: 8,
     paddingHorizontal: 20,
+    overflow: "hidden", // Prevent the text from being clipped
+    flex: 1, // Ensure that the section can grow
   },
   dragIndicator: {
     width: 50,
@@ -306,33 +302,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 15,
   },
+  // The container for the crop buttons
   cropButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 15,
-    marginBottom: 20,
+    paddingVertical: 20,
   },
   cropButtonContainer: {
     alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
+    marginHorizontal: 10, // Add space between buttons horizontally
   },
   cropButton: {
-    backgroundColor: "#47a14a",
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-    borderRadius: 25,
+    width: 75,
+    height: 75,
+    backgroundColor: "#183719", // Custom button color
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   cropButtonText: {
-    marginTop: 5, // Space between the icon and the text
+    marginTop: 8, // Adjust margin to ensure text is spaced well
+    color: "#000",
     fontSize: 12,
     fontWeight: "bold",
     textAlign: "center",
   },
   scrollContent: {
-    paddingVertical: 20,
+    paddingTop: 20,
   },
   sectionTitle: {
     fontSize: 20,
