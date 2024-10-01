@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/Feather"; // Install this package if
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as Location from "expo-location";
 
-const Weather_API = "444e0c7798c54693bb010ec192d21199";
+const Weather_API = "087a8dbb53db441581aa5854de3eb8b4";
 const WeatherDailyURL = `https://api.weatherbit.io/v2.0/forecast/daily`;
 const WeatherHourlyURL = `https://api.weatherbit.io/v2.0/forecast/hourly`;
 
@@ -42,12 +42,11 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
       const hourlyData = await hourlyResults.json();
       setHourlyWeather(hourlyData);
 
-       // Pass the weather data to the parent component
-       if (onWeatherDataUpdate && typeof onWeatherDataUpdate === 'function') {
+      // Pass the weather data to the parent component
+      if (onWeatherDataUpdate && typeof onWeatherDataUpdate === "function") {
         // console.log("Weather Data to be Passed:");
         onWeatherDataUpdate(dailyData);
       }
-
     } catch (error) {
       setErrorMsg("Error fetching weather data. Please try again later.");
       console.error("Error fetching weather data:", error);
@@ -76,8 +75,6 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
     fetchWeatherData();
   }, [location]);
 
-
-
   if (errorMsg) {
     return (
       <View style={styles.errorContainer}>
@@ -86,13 +83,20 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
     );
   }
 
-  if (!dailyWeather || !hourlyWeather) {
+  if (!dailyWeather || !hourlyWeather || !dailyWeather.data || !hourlyWeather.data) {
+    return <ActivityIndicator size="large" color="#000" style={styles.loading} />;
+  }
+  
+  const todayWeather = dailyWeather.data.length > 0 ? dailyWeather.data[0] : null;
+  
+  if (!todayWeather) {
     return (
-      <ActivityIndicator size="large" color="#000" style={styles.loading} />
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Weather data is unavailable.</Text>
+      </View>
     );
   }
-
-  const todayWeather = dailyWeather.data[0];
+  
 
   return (
     <View style={styles.container}>
@@ -157,7 +161,7 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
               style={styles.hourlyScroll}
               showsHorizontalScrollIndicator={false}
             >
-              {hourlyWeather.data.slice(0, 12).map((hour, index) => (
+              {hourlyWeather?.data?.slice(0, 12).map((hour, index) => (
                 <View style={styles.hourBlock} key={index}>
                   <Text style={styles.hour}>
                     {new Date(hour.timestamp_utc).getHours()}:00
@@ -182,7 +186,7 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
               style={styles.weeklyScroll}
               showsVerticalScrollIndicator={false}
             >
-              {dailyWeather.data.slice(1, 7).map((day, idx) => (
+              {dailyWeather?.data?.slice(1, 7).map((day, idx) => (
                 <View style={styles.dailyForecast} key={idx}>
                   <Text style={styles.day}>
                     {new Date(day.datetime).toLocaleDateString("en-US", {
