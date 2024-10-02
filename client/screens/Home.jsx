@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
   cropButton: {
     width: 75,
     height: 75,
-    backgroundColor: "#183719", // Custom button color
+    backgroundColor: "#607F0E", // Custom button color
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
