@@ -3,24 +3,39 @@ const stock = require('../../models/distributors/stock');
 // Add a new stock record
 exports.addstock = async (req, res) => {
     try {
-        const {ferti_name, amount, price,description,availability} = req.body;
-
-        const newStock = new stock({
+        const {
+            business_name,
             ferti_name,
             amount,
             price,
             description,
             availability,
+            location // Include location from request body
+        } = req.body;
+
+        // Validate location to ensure it includes latitude and longitude
+        if (!location || !location.lat || !location.lng) {
+            return res.status(400).json({ status: "Error", error: "Location is required with latitude and longitude" });
+        }
+
+        // Create a new stock object
+        const newStock = new stock({
+            business_name,
+            ferti_name,
+            amount,
+            price,
+            description,
+            availability,
+            location // Include location here
         });
 
         await newStock.save();
-        res.json("stock Added");
+        res.status(201).json({ status: "success", message: "Stock added successfully" });
     } catch (err) {
         console.log(err);
         res.status(500).json({ status: "Error adding stock record", error: err.message });
     }
 };
-
 // Retrieve all stock records
 exports.getAllstock = async (req, res) => {
     try {
@@ -53,23 +68,38 @@ exports.getstockById = async (req, res) => {
 exports.updatestock = async (req, res) => {
     try {
         const stockId = req.params.id;
-        const {ferti_name, amount, price,description,availability} = req.body;
-
-        const updatestock = {
+        const {
+            business_name,
             ferti_name,
             amount,
             price,
             description,
             availability,
+            location // Include location from request body
+        } = req.body;
+
+        // Validate location to ensure it includes latitude and longitude
+        if (location && (!location.lat || !location.lng)) {
+            return res.status(400).json({ status: "Error", error: "Location must include latitude and longitude" });
+        }
+
+        const updatestock = {
+            business_name,
+            ferti_name,
+            amount,
+            price,
+            description,
+            availability,
+            ...(location && { location }) // Include location if it exists
         };
 
         const updatedstock = await stock.findByIdAndUpdate(stockId, updatestock, { new: true });
 
         if (!updatedstock) {
-            return res.status(404).json({ status: "stock not found" });
+            return res.status(404).json({ status: "Error", message: "Stock not found" });
         }
 
-        res.status(200).json({ status: "stock record updated", updatedstock });
+        res.status(200).json({ status: "Success", message: "Stock record updated", updatedstock });
     } catch (err) {
         console.log(err);
         res.status(500).json({ status: "Error updating stock record", error: err.message });
@@ -85,5 +115,48 @@ exports.deletestock = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ status: "Error deleting stock record", error: err.message });
+    }
+};
+
+
+exports.getFertilizerNames = async (req, res) => {
+    try {
+        const fertilizers = await stock.distinct("ferti_name"); // Get distinct fertilizer names
+        res.json(fertilizers);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: "Error retrieving fertilizers", error: err.message });
+    }
+};
+
+
+// Get stores based on selected fertilizer name and availability
+// Controller to get stores by fertilizer name and availability status
+exports.getStoresByFertilizer = async (req, res) => {
+    const { ferti_name, availability } = req.query; // Get the fertilizer name and availability from query parameters
+    if (!ferti_name || !availability) {
+        return res.status(400).json({ status: "Error", message: "Fertilizer name and availability are required." });
+    }
+
+    try {
+        // Fetch stores matching the fertilizer name and availability status
+        const stores = await stock.find({ ferti_name, availability });
+
+        // Check if any stores were found
+        if (stores.length === 0) {
+            return res.status(404).json({ status: "Error", message: "No stores found with the specified criteria." });
+        }
+
+        // Map to include only the necessary information
+        const availableStores = stores.map(store => ({
+            business_name: store.business_name,
+            location: store.location, // Ensure location is included (assuming it's stored in your stock collection)
+            ferti_name: store.ferti_name,
+        }));
+
+        res.json(availableStores);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ status: "Error retrieving stores", error: err.message });
     }
 };
