@@ -12,6 +12,7 @@ import Register from "../../screens/auth/Register";
 import Login from "../../screens/auth/Login";
 import { AuthContext } from "../../context/authContext";
 import HeaderMenu from "./HeaderMenu";
+import DistributeScreen from "../../screens/DistributeScreen";
 
 const ScreenMenu = () => {
   //global state

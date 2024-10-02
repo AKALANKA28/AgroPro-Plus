@@ -60,132 +60,108 @@ const router = createBrowserRouter([
   //   ),
   // },
 
-  {
-    path: "/about",
-    element: (
-      <div>
-        <About />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/about",
+  //   element: (
+  //     <div>
+  //       <About />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/shop",
-    element: (
-      <div>
-        <Shop />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/shop",
+  //   element: (
+  //     <div>
+  //       <Shop />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/cart",
-    element: <Cart />,
-  },
+  // {
+  //   path: "/cart",
+  //   element: <Cart />,
+  // },
 
-  {
-    path: "/checkout",
-    element: (
-      <div>
-        <Checkout />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/checkout",
+  //   element: (
+  //     <div>
+  //       <Checkout />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/JoinWithUsSelect",
-    element: (
-      <div>
-        <JoinWithUsSelect />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/JoinWithUsSelect",
+  //   element: (
+  //     <div>
+  //       <JoinWithUsSelect />
+  //     </div>
+  //   ),
+  // },
 
  
 
   
 
 
-  {
-    path: "/contact",
-    element: (
-      <div>
-        <Contact />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/contact",
+  //   element: (
+  //     <div>
+  //       <Contact />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/shop/:id",
-    element: (
-      <div>
-        <SingleProduct />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/shop/:id",
+  //   element: (
+  //     <div>
+  //       <SingleProduct />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/admin",
-    element: (
-      <div>
-        <AdminLogin />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/admin",
+  //   element: (
+  //     <div>
+  //       <AdminLogin />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/login",
-    element: (
-      <div>
-        <Login />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/login",
+  //   element: (
+  //     <div>
+  //       <Login />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/register",
-    element: (
-      <div>
-        <Register />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/register",
+  //   element: (
+  //     <div>
+  //       <Register />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/finance",
-    element: (
-      <div>
-        <Dashboard />
-      </div>
-    ),
-  },
 
-  {
-    path: "/approvals",
-    element: (
-      <div>
-        <ApprovalPage />
-      </div>
-    ),
-  },
-
-  {
-    path: "/payments_page",
-    element: (
-      <div>
-        <PaymentsPage />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/payments_page",
+  //   element: (
+  //     <div>
+  //       <PaymentsPage />
+  //     </div>
+  //   ),
+  // },
   
-  {
-    path: "/tdashboard",
-    element: (
-      <div>
-        <TDashboard />
-      </div>
-    ),
-  },
+ 
 
   {
     path: "/map",
@@ -209,86 +185,86 @@ const router = createBrowserRouter([
     ),
   },
 
-  {
-    path: "/SMDashboard",
-    element: (
-      <div>
-        <SMDashboard />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/SMDashboard",
+  //   element: (
+  //     <div>
+  //       <SMDashboard />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/SupplierDetails",
-    element: (
-      <div>
-        <SupplierDetails />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/SupplierDetails",
+  //   element: (
+  //     <div>
+  //       <SupplierDetails />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/SupplierRequests",
-    element: (
-      <div>
-        <SupplierRequests />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/SupplierRequests",
+  //   element: (
+  //     <div>
+  //       <SupplierRequests />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/FDashboard",
-    element: (
-      <div>
-        <FDashboard />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/FDashboard",
+  //   element: (
+  //     <div>
+  //       <FDashboard />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/PredictionDetails",
-    element: (
-      <div>
-        <PredictionDetails />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/PredictionDetails",
+  //   element: (
+  //     <div>
+  //       <PredictionDetails />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/SupplyRequests",
-    element: (
-      <div>
-        <SupplyRequests />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/SupplyRequests",
+  //   element: (
+  //     <div>
+  //       <SupplyRequests />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/ApprovedSupplies",
-    element: (
-      <div>
-        <ApprovedSupplies />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/ApprovedSupplies",
+  //   element: (
+  //     <div>
+  //       <ApprovedSupplies />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/DeclinedSupplies",
-    element: (
-      <div>
-        <DeclinedSupplies />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/DeclinedSupplies",
+  //   element: (
+  //     <div>
+  //       <DeclinedSupplies />
+  //     </div>
+  //   ),
+  // },
 
-  {
-    path: "/SupplierLocations",
-    element: (
-      <div>
-        <SupplierLocations />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/SupplierLocations",
+  //   element: (
+  //     <div>
+  //       <SupplierLocations />
+  //     </div>
+  //   ),
+  // },
 
 
  
@@ -296,14 +272,14 @@ const router = createBrowserRouter([
   
 
 
-  {
-    path: "/SalesPage",
-    element: (
-      <div>
-        <SalesPage />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/SalesPage",
+  //   element: (
+  //     <div>
+  //       <SalesPage />
+  //     </div>
+  //   ),
+  // },
 
   {
     path: "/VehicleDetails",
@@ -347,14 +323,14 @@ const router = createBrowserRouter([
   },
 
  
-  {
-    path: "/ExpensePage",
-    element: (
-      <div>
-        <ExpensePage />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/ExpensePage",
+  //   element: (
+  //     <div>
+  //       <ExpensePage />
+  //     </div>
+  //   ),
+  // },
 
 
   {
@@ -375,14 +351,14 @@ const router = createBrowserRouter([
     ),
   },
 
-  {
-    path: "/addproduct",
-    element: (
-      <div>
-        <AddProduct />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/addproduct",
+  //   element: (
+  //     <div>
+  //       <AddProduct />
+  //     </div>
+  //   ),
+  // },
 
 ]);
 
