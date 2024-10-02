@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 
 
 const stock = mongoose.Schema({
+    business_name: {
+        type: String,
+        required: true
+    },
 
     ferti_name: {
         type: String,

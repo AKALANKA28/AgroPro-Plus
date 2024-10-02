@@ -45,6 +45,7 @@ function Stock() { // Changed 'stock' to 'Stock'
   const handleSearch = (query) => {
     const filteredList = dataList.filter((stock) => {
       const searchFields = [
+        "business_name",
         "ferti_name",
         "amount",
         "price",
@@ -210,6 +211,7 @@ function Stock() { // Changed 'stock' to 'Stock'
             <table className="table table-borderless datatable">
               <thead className="table-light">
                 <tr>
+                  <th scope="col">Business Name </th>
                   <th scope="col">Fertilizer Type</th>
                   <th scope="col">Stock Amount</th>
                   <th scope="col">Price</th>
@@ -222,6 +224,7 @@ function Stock() { // Changed 'stock' to 'Stock'
                 {filteredDataList.length ? (
                   filteredDataList.map((stock) => (
                     <tr key={stock._id}>
+                      <td>{stock.bussiness_name}</td>
                       <td>{stock.ferti_name}</td>
                       <td>{stock.amount}</td>
                       <td>{stock.price}</td>

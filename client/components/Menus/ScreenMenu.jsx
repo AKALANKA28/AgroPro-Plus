@@ -46,6 +46,13 @@ const ScreenMenu = () => {
               headerShown: false,
             }}
           />
+           <Stack.Screen
+            name="DistributeScreen"
+            component={DistributeScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
           {/* <Stack.Screen
             name="Camera"
             component={CameraComponet}
