@@ -10,113 +10,67 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import FertilizerForm from "../../components/Forms/FertilizerForm";
 import Icon from "react-native-vector-icons/FontAwesome";
-import CropCard from "../../components/Cards";
 import Header from "../../components/Header";
-
-const fertilizerAPI = axios.create({
-  baseURL: "http://192.168.1.159:8000",
-  // baseURL: "http://192.168.21.141:8000",
-
-  timeout: 50000,
-});
+import ScheduleCard from "../../components/ScheduleCard";
+import { Ionicons } from "@expo/vector-icons";
 
 const FertilizerSchedule = () => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [weatherData, setWeatherData] = useState(null);
   const [savedSchedule, setSavedSchedule] = useState([]); // Initialize as empty array
-  // const [showForm, setShowForm] = useState(false);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchSavedSchedule = async () => {
-      setLoading(true);
-      try {
-        const response = await fertilizerAPI.get(
-          "http://192.168.1.159:8070/schedule/"
-          // "http://192.168.21.141:8070/schedule/"
-        );
-        setSavedSchedule(response.data || []); // Ensure it's an array
-      } catch (error) {
-        console.error("Failed to fetch saved schedule:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchSavedSchedule();
   }, []);
 
-  const handleCardClick = (schedule) => {
-    navigation.navigate("ScheduleDetails", { schedule });
-  };
-
-  const renderCard = (schedule) => {
-    // Ensure schedule and crop_type exist
-    const { _id, crop_type, imageUri } = schedule || {};
-
-    return (
-      <CropCard
-        key={_id || Math.random().toString()} // Ensure a unique key
-        imageUri={imageUri}
-        crop_type={crop_type}
-        onPress={() => handleCardClick(schedule)}
-      />
-    );
-  };
-
-  const handleWeatherDataUpdate = (data) => {
-    setWeatherData(data);
-  };
-
-  const fetchFertilizerSchedule = async (formData) => {
+  // Fetch the schedules from the database
+  const fetchSavedSchedule = async () => {
     setLoading(true);
     try {
-      const response = await fertilizerAPI.post("/generate_schedule", {
-        crop_type: formData.cropType,
-        planting_date: formData.plantingDate,
-        area_size: formData.areaSize,
-        soil_condition: formData.soilCondition,
-        weather_forecast: weatherData,
-      });
-
-      let parsedData;
-      try {
-        if (typeof response.data === "string") {
-          parsedData = JSON.parse(
-            response.data.replace(/\\"/g, '"').replace(/^"|"$/g, "")
-          );
-        } else {
-          parsedData = response.data;
-        }
-      } catch (error) {
-        console.error("Failed to parse the response:", error);
-        setLoading(false);
-        return;
-      }
-
-      if (parsedData.schedule && parsedData.schedule.fertilizer_schedule) {
-        navigation.navigate("ScheduleDetails", {
-          schedule: parsedData.schedule.fertilizer_schedule,
-        });
-      } else {
-        console.error(
-          "No valid fertilizer schedule data received:",
-          parsedData
-        );
-      }
-    } catch (err) {
-      console.error("Failed to fetch the fertilizer schedule:", err);
+      const response = await axios.get("/schedule/");
+      setSavedSchedule(response.data || []); // Ensure it's an array
+    } catch (error) {
+      console.error("Failed to fetch saved schedule:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleFormSubmit = (formData) => {
-    fetchFertilizerSchedule(formData);
+  // Handle the deletion of a schedule
+  const handleDelete = async (id) => {
+    try {
+      // Send a DELETE request to the backend
+      await axios.delete(`/schedule/${id}`);
+
+      // After successful deletion, remove the card from the state
+      setSavedSchedule((prevSchedules) =>
+        prevSchedules.filter((schedule) => schedule._id !== id)
+      );
+    } catch (error) {
+      console.error("Failed to delete schedule:", error);
+    }
+  };
+
+  const handleCardClick = (schedule) => {
+    navigation.navigate("ScheduleDetails", { schedule }); // Navigate to ScheduleDetails with the schedule data
+  };
+
+  const renderCard = (schedule) => {
+    const { _id, crop_type, imageUri, week } = schedule || {};
+
+    return (
+      <ScheduleCard
+        key={_id}
+        imageUri={imageUri}
+        crop_type={crop_type}
+        week={week}
+        onPress={() => handleCardClick(schedule)} // When a card is clicked, navigate with schedule data
+        onDelete={() => handleDelete(_id)} // Pass the delete handler
+      />
+    );
   };
 
   return (
@@ -144,7 +98,7 @@ const FertilizerSchedule = () => {
         style={styles.floatingButton}
         onPress={() => navigation.navigate("FertilizerFormScreen")} // Navigate to the new form screen
       >
-        <Icon name="plus" size={30} color="#fff" />
+        <Ionicons name="add" size={40} color="#fff" />
       </TouchableOpacity>
     </>
   );
@@ -153,7 +107,7 @@ const FertilizerSchedule = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 16,
+    alignItems: "center",
   },
   loadingContainer: {
     flex: 1,
@@ -163,17 +117,17 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: "absolute",
-    bottom: 20, // Adjust the distance from the bottom of the screen
-    right: 20, // Adjust the distance from the right of the screen
-    backgroundColor: "#183719", // Button color
+    bottom: 20,
+    right: 20,
+    backgroundColor: "#607F0E",
     borderRadius: 50,
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 5, // Adds shadow for Android
+    elevation: 5,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 }, // Adds shadow for iOS
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
   },
