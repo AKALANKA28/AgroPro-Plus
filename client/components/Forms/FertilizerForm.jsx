@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   button: {
-    backgroundColor: "#183719",
+    backgroundColor: "#607F0E",
     paddingVertical: 20,
     borderRadius: 25,
     alignItems: "center",

@@ -57,10 +57,10 @@ const ScheduleCard = ({
           {/* Fertilizer Information */}
           <View style={styles.fertilizerInfo}>
             <Text style={styles.detailText}>
-              Fertilizer Type: <Text style={styles.detailValue}>Urea</Text>
+              Est. Harverting Date: <Text style={styles.detailValue}>25 Jan 03</Text>
             </Text>
             <Text style={styles.detailText}>
-              Fertilizer Amount: <Text style={styles.detailValue}>50 kg/ha</Text>
+               Est. Total Cost: <Text style={styles.detailValue}>Rs. 100000.00</Text>
             </Text>
           </View>
         </View>
