@@ -26,6 +26,8 @@ system_message = {
             "fertilizer_schedule: {"
                 "crop_type: crop_type,"
                 "planting_date: planting_date"","
+                "estimated_harveting_date: harveting_date"","
+                "estimated_total_cost: total_cost"","
                 "area_size: area_size"","
                 "soil_condition: {"
                     "pH: pH_value,"
@@ -38,7 +40,9 @@ system_message = {
                         "application_date: application_date,"
                         "fertilizer_type: fertilizer_type,"
                         "amount: amount,"
+                        "cost: cost,"
                         "notes: Provide extra notes for farmers. Include information on potential crop diseases relevant to this stage and how to prevent them."
+
                     "}"
                 "]"
             "}"

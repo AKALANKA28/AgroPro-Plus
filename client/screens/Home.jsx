@@ -148,7 +148,7 @@ const Home = () => {
     { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
     { id: "3", icon: "chart", text: "Finance", navigateTo: "" },
     { id: "4", icon: "location", text: "Distributors", navigateTo: "" },
-    { id: "5", icon: "users", text: "Community", navigateTo: "" },
+    { id: "5", icon: "user", text: "Community", navigateTo: "" },
   ];
   const renderCropButton = ({ item }) => (
     <View style={styles.cropButtonContainer}>
