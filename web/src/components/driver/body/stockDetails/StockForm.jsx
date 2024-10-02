@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const StockSchema = yup.object({
+  business_name: yup
+  .string()
+  .required("Business Name is required"),
   ferti_name: yup
     .string()
     .required("Fertilizer Name is required"),
@@ -33,6 +36,7 @@ const StockForm = ({ handleSubmit, initialData }) => {
   const formik = useFormik({
     initialValues: {
       _id: initialData ? initialData._id : "",
+      business_name: initialData ? initialData.business_name : "",
       ferti_name: initialData ? initialData.ferti_name : "",
       amount: initialData ? initialData.amount : "",
       price: initialData ? initialData.price : "",
@@ -49,6 +53,23 @@ const StockForm = ({ handleSubmit, initialData }) => {
     <form onSubmit={formik.handleSubmit} className="container">
       <div className="row">
         {/* Single column layout by using col-12 */}
+        <div className="col-12 mb-3">
+          <label htmlFor="business_name" className="form-label">
+            Business Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="business_name"
+            placeholder="Business Name"
+            value={formik.values.business_name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.business_name && formik.errors.business_name && (
+            <div className="error">{formik.errors.business_name}</div>
+          )}
+        </div>
         <div className="col-12 mb-3">
           <label htmlFor="ferti_name" className="form-label">
             Fertilizer Name

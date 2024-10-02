@@ -3,7 +3,7 @@ const stock = require('../../models/distributors/stock');
 // Add a new stock record
 exports.addstock = async (req, res) => {
     try {
-        const {ferti_name, amount, price,description,availability} = req.body;
+        const {business_name,ferti_name, amount, price,description,availability} = req.body;
 
         const newStock = new stock({
             ferti_name,
@@ -53,9 +53,10 @@ exports.getstockById = async (req, res) => {
 exports.updatestock = async (req, res) => {
     try {
         const stockId = req.params.id;
-        const {ferti_name, amount, price,description,availability} = req.body;
+        const {business_name,ferti_name, amount, price,description,availability} = req.body;
 
         const updatestock = {
+            business_name,
             ferti_name,
             amount,
             price,

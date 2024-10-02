@@ -176,7 +176,6 @@ const Home = () => {
               </TouchableOpacity>
               <Text style={styles.cropButtonText}>Fertilizer Schedule</Text>
             </View>
-
             <View style={styles.cropButtonContainer}>
               <TouchableOpacity
                 style={styles.cropButton}
