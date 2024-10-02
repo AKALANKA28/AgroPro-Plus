@@ -22,7 +22,7 @@
     "@react-navigation/native-stack": "^6.11.0",
     "axios": "^1.7.7",
     "expo": "~51.0.28",
-    "expo-camera": "~15.0.15",
+    "expo-camera": "~15.0.16",
     "expo-linear-gradient": "~13.0.2",
     "expo-location": "~17.0.1",
     "expo-print": "~13.0.1",
