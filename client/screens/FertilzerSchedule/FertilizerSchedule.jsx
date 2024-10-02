@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import FertilizerForm from "../../components/Forms/FertilizerForm";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CropCard from "../../components/Cards";
+import Header from "../../components/Header";
 
 const fertilizerAPI = axios.create({
   baseURL: "http://192.168.1.159:8000",
@@ -119,33 +120,33 @@ const FertilizerSchedule = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      refreshControl={<RefreshControl refreshing={refreshing} />}
-    >
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      ) : (
-        <>
-          {savedSchedule.length > 0 ? (
-            savedSchedule.map(renderCard)
-          ) : (
-            <Text>No schedules available</Text>
-          )}
-
-          <TouchableOpacity
-            style={styles.floatingButton}
-            onPress={() => navigation.navigate('FertilizerFormScreen')} // Navigate to the new form screen
-          >
-            <Icon name="plus" size={30} color="#fff" />
-          </TouchableOpacity>
-
-          {/* {showForm && <FertilizerForm onSubmit={handleFormSubmit} />} */}
-        </>
-      )}
-    </ScrollView>
+    <>
+      <Header title="Fertilizer Schedule" />
+      <ScrollView
+        contentContainerStyle={styles.container}
+        refreshControl={<RefreshControl refreshing={refreshing} />}
+      >
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        ) : (
+          <>
+            {savedSchedule.length > 0 ? (
+              savedSchedule.map(renderCard)
+            ) : (
+              <Text>No schedules available</Text>
+            )}
+          </>
+        )}
+      </ScrollView>
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => navigation.navigate("FertilizerFormScreen")} // Navigate to the new form screen
+      >
+        <Icon name="plus" size={30} color="#fff" />
+      </TouchableOpacity>
+    </>
   );
 };
 
@@ -162,15 +163,19 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: "absolute",
-    bottom: 16,
-    right: 16,
-    width: 56,
-    height: 56,
-    backgroundColor: "#ff5722",
-    borderRadius: 28,
+    bottom: 20, // Adjust the distance from the bottom of the screen
+    right: 20, // Adjust the distance from the right of the screen
+    backgroundColor: "#183719", // Button color
+    borderRadius: 50,
+    width: 60,
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 8,
+    elevation: 5, // Adds shadow for Android
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 }, // Adds shadow for iOS
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
   },
 });
 

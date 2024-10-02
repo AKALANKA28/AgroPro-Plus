@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import RNPickerSelect from "react-native-picker-select";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../Header";
 
 const FertilizerForm = ({ onSubmit }) => {
   const [cropType, setCropType] = useState("");
@@ -55,14 +56,15 @@ const FertilizerForm = ({ onSubmit }) => {
   return (
     <View style={{ flex: 1 }}>
       {/* Header with back arrow and centered title */}
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Add Details</Text>
         <View style={{ width: 24 }} />
-        {/* Placeholder to balance the back arrow */}
-      </View>
+      </View> */}
+
+<Header title="Add Details"/>
 
       <View style={styles.form}>
         <Text style={styles.label}>Crop Type:</Text>
