@@ -12,6 +12,7 @@ import Register from "../../screens/auth/Register";
 import Login from "../../screens/auth/Login";
 import { AuthContext } from "../../context/authContext";
 import HeaderMenu from "./HeaderMenu";
+import DistributeScreen from "../../screens/DistributeScreen";
 
 import AddBudgetPlan from "../../components/finance/AddBudgetPlan";
 import BudgetPlansScreen from "../../components/finance/BudgetPlansScreen";
@@ -51,12 +52,18 @@ const ScreenMenu = () => {
           name="ScheduleDetails"
           component={ScheduleDetails}
           options={{
-            headerShown: true,
+            headerShown: false,
             headerTitle: "Schedule Details", // Set your header title
             headerTitleAlign: "center", // Center the header title
           }}
         />
-
+<Stack.Screen
+            name="DistributeScreen"
+            component={DistributeScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
         {/* <Stack.Screen
             name="Camera"
             component={CameraComponet}

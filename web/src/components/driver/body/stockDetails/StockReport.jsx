@@ -146,6 +146,9 @@ const TableHead = () => {
   return (
     <View style={{ width:'100%', flexDirection :'row', marginTop:10}}>
       <View style={styles.theader}>
+        <Text>Business Name</Text>   
+      </View>
+      <View style={styles.theader}>
         <Text>Frtilizer Type</Text>   
       </View>
       <View style={styles.theader}>
@@ -170,7 +173,10 @@ const TableBody = () => {
       <Fragment key={Stock.id}>
         <View style={{ width:'100%', flexDirection :'row'}}>
           <View style={styles.tbody}>
-            <Text>{new Date(Stock.ferti_name).toLocaleDateString()}</Text>   
+            <Text>{new Date(Stock.business_name).toLocaleDateString()}</Text>   
+          </View>
+          <View style={styles.tbody}>
+            <Text>{Stock.ferti_name}</Text>   
           </View>
           <View style={styles.tbody}>
             <Text>{Stock.amount}</Text>   

@@ -4,7 +4,6 @@ import './body/main.css'
 // import Header from'./Components/'
 import Sidebar from './sidebar/Sidebar'
 import Stock from './body/stockDetails/Stock'
-import Footer from './footer/Footer'
 
 
 
@@ -14,7 +13,6 @@ const StockDetails = () => {
       {/* <Header /> */}
       <Sidebar />
       <Stock />
-      <Footer />
     </div>
   )
 }
