@@ -224,7 +224,7 @@ function Stock() { // Changed 'stock' to 'Stock'
                 {filteredDataList.length ? (
                   filteredDataList.map((stock) => (
                     <tr key={stock._id}>
-                      <td>{stock.bussiness_name}</td>
+                      <td>{stock.business_name}</td>
                       <td>{stock.ferti_name}</td>
                       <td>{stock.amount}</td>
                       <td>{stock.price}</td>
