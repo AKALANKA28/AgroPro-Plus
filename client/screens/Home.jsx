@@ -17,6 +17,8 @@ import Weather from "../components/Weather";
 import CropCard from "../components/Cards";
 import cropData from "../components/cropData"; // Adjust the path according to your folder structure
 import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { Ionicons } from "@expo/vector-icons";
+
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -145,8 +147,8 @@ const Home = () => {
     },
     { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
     { id: "3", icon: "chart", text: "Finance", navigateTo: "" },
-    { id: "4", icon: "location", text: "Distributors", navigateTo: "" },
-    { id: "5", icon: "location", text: "Community", navigateTo: "" },
+    { id: "4", icon: "location", text: "Distributors", navigateTo: "DistributeScreen" },
+    { id: "5", icon: "user", text: "Community", navigateTo: "" },
   ];
   const renderCropButton = ({ item }) => (
     <View style={styles.cropButtonContainer}>
@@ -313,7 +315,7 @@ const styles = StyleSheet.create({
   cropButton: {
     width: 75,
     height: 75,
-    backgroundColor: "#183719", // Custom button color
+    backgroundColor: "#607F0E", // Custom button color
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",

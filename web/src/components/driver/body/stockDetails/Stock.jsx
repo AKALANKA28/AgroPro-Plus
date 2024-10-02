@@ -13,6 +13,7 @@ import "./Stock.css";
 import { ToastContainer, toast } from "react-toastify";
 import * as XLSX from "xlsx";
 import { writeFile } from "xlsx";
+import useGeoLocation from "../../Components/map/useGeoLocation"; // Import the useGeoLocation hook
 
 axios.defaults.baseURL = "http://localhost:8070/";
 
@@ -24,6 +25,7 @@ function Stock() { // Changed 'stock' to 'Stock'
   const [filter, setFilter] = useState('Today');
 
   const [filteredDataList, setFilteredDataList] = useState([]);
+  const location = useGeoLocation(); // Use the custom hook to get current location
 
   useEffect(() => {
     getFetchData();
@@ -45,6 +47,7 @@ function Stock() { // Changed 'stock' to 'Stock'
   const handleSearch = (query) => {
     const filteredList = dataList.filter((stock) => {
       const searchFields = [
+        "business_name",
         "ferti_name",
         "amount",
         "price",
@@ -107,7 +110,17 @@ function Stock() { // Changed 'stock' to 'Stock'
 
   const handleAddSubmit = async (formData) => {
     try {
-      await axios.post("/Stock/add", formData);
+      // Prepare the data to send, including actual location
+      const newStockData = { 
+        ...formData, 
+        location: { 
+          lat: location.coordinates?.lat || 'N/A', 
+          lng: location.coordinates?.lng || 'N/A' 
+        } 
+      };
+  
+      // Post the new data
+      await axios.post("/Stock/add", newStockData);
       toast.success("Stock Details Added");
       handleAddModalClose();
       getFetchData();
@@ -115,10 +128,20 @@ function Stock() { // Changed 'stock' to 'Stock'
       toast.error(err.message);
     }
   };
-
+  
   const handleEditSubmit = async (formData) => {
     try {
-      await axios.patch(`/Stock/update/${formData._id}`, formData);
+      // Append the location to the form data for updating
+      const updatedStockData = { 
+        ...formData, 
+        location: { 
+          lat: location.coordinates?.lat || 'N/A', 
+          lng: location.coordinates?.lng || 'N/A' 
+        } 
+      };
+  
+      // Send the updated data
+      await axios.patch(`/Stock/update/${formData._id}`, updatedStockData);
       toast.success("Stock Details Updated");
       handleEditModalClose();
       getFetchData();
@@ -126,6 +149,7 @@ function Stock() { // Changed 'stock' to 'Stock'
       toast.error(err.message);
     }
   };
+  
 
   const [showReportModal, setShowReportModal] = useState(false);
 
@@ -210,6 +234,7 @@ function Stock() { // Changed 'stock' to 'Stock'
             <table className="table table-borderless datatable">
               <thead className="table-light">
                 <tr>
+                  <th scope="col">Business Name </th>
                   <th scope="col">Fertilizer Type</th>
                   <th scope="col">Stock Amount</th>
                   <th scope="col">Price</th>
@@ -222,6 +247,7 @@ function Stock() { // Changed 'stock' to 'Stock'
                 {filteredDataList.length ? (
                   filteredDataList.map((stock) => (
                     <tr key={stock._id}>
+                      <td>{stock.business_name}</td>
                       <td>{stock.ferti_name}</td>
                       <td>{stock.amount}</td>
                       <td>{stock.price}</td>
