@@ -138,21 +138,21 @@ const FertilizerForm = ({ onSubmit }) => {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 20,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
+  // header: {
+  //   height: 60,
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   marginVertical: 20,
+  //   paddingHorizontal: 16,
+  //   borderBottomWidth: 1,
+  //   borderBottomColor: "#ccc",
+  // },
+  // headerTitle: {
+  //   flex: 1,
+  //   textAlign: "center",
+  //   fontSize: 20,
+  //   fontWeight: "bold",
+  // },
   form: {
     marginBottom: 20,
     marginTop: 10,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   button: {
-    backgroundColor: "#183719",
+    backgroundColor: "#607F0E",
     paddingVertical: 20,
     borderRadius: 25,
     alignItems: "center",

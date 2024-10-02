@@ -1,10 +1,17 @@
 // CropCard.js
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const CropCard = ({ imageUri, health, week, alerts = [], crop_type }) => {
+const CropCard = ({
+  imageUri,
+  health,
+  week,
+  alerts = [],
+  crop_type,
+  onPress,
+}) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity onPress={onPress} style={styles.card}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: imageUri }} style={styles.cropImage} />
         <Text style={styles.imageText}>In 5 days</Text>
@@ -23,7 +30,6 @@ const CropCard = ({ imageUri, health, week, alerts = [], crop_type }) => {
           </Text>
         </View>
       </View>
-
       <View style={styles.alertContainer}>
         <Text style={styles.sectionTitle}>Alerts</Text>
         {alerts.length > 0 ? (
@@ -36,7 +42,7 @@ const CropCard = ({ imageUri, health, week, alerts = [], crop_type }) => {
           <Text style={styles.alertText}>No alerts</Text>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

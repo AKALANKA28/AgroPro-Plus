@@ -44,7 +44,7 @@ const ScreenMenu = () => {
           name="ScheduleDetails"
           component={ScheduleDetails}
           options={{
-            headerShown: true,
+            headerShown: false,
             headerTitle: "Schedule Details", // Set your header title
             headerTitleAlign: "center", // Center the header title
           }}
