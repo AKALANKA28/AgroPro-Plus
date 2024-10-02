@@ -17,4 +17,10 @@ router.patch("/update/:id", stockController.updatestock);
 // Delete a process record
 router.delete("/delete/:id", stockController.deletestock);
 
+router.get("/fertilizers", stockController.getFertilizerNames);
+
+// Route for getting stores by selected fertilizer name
+router.get('/stores', stockController.getStoresByFertilizer);
+
+
 module.exports = router;
