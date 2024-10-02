@@ -134,6 +134,8 @@ exports.getFertilizerNames = async (req, res) => {
 // Controller to get stores by fertilizer name and availability status
 exports.getStoresByFertilizer = async (req, res) => {
     const { ferti_name, availability } = req.query; // Get the fertilizer name and availability from query parameters
+
+    // Validate the presence of required query parameters
     if (!ferti_name || !availability) {
         return res.status(400).json({ status: "Error", message: "Fertilizer name and availability are required." });
     }
@@ -144,7 +146,8 @@ exports.getStoresByFertilizer = async (req, res) => {
 
         // Check if any stores were found
         if (stores.length === 0) {
-            return res.status(404).json({ status: "Error", message: "No stores found with the specified criteria." });
+            // Return a message indicating stocks are out
+            return res.status(200).json({ status: "Warning", message: "Stocks are out of stock." });
         }
 
         // Map to include only the necessary information
@@ -154,9 +157,11 @@ exports.getStoresByFertilizer = async (req, res) => {
             ferti_name: store.ferti_name,
         }));
 
+        // Return the available stores
         res.json(availableStores);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ status: "Error retrieving stores", error: err.message });
+        // Return a server error response
+        res.status(500).json({ status: "Error", message: "Error retrieving stores", error: err.message });
     }
 };
