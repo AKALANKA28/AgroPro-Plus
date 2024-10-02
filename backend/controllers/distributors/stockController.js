@@ -6,6 +6,7 @@ exports.addstock = async (req, res) => {
         const {business_name,ferti_name, amount, price,description,availability} = req.body;
 
         const newStock = new stock({
+            business_name,
             ferti_name,
             amount,
             price,
