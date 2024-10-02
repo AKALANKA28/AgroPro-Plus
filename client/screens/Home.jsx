@@ -145,7 +145,7 @@ const Home = () => {
     },
     { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
     { id: "3", icon: "chart", text: "Finance", navigateTo: "" },
-    { id: "4", icon: "location", text: "Distributors", navigateTo: "" },
+    { id: "4", icon: "location", text: "Distributors", navigateTo: "DistributeScreen" },
     { id: "5", icon: "location", text: "Community", navigateTo: "" },
   ];
   const renderCropButton = ({ item }) => (
