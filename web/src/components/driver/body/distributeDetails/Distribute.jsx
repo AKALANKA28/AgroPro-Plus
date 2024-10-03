@@ -3,7 +3,7 @@ import axios from "axios";
 import { PDFViewer } from "@react-pdf/renderer";
 import { Button, Modal } from "react-bootstrap";
 import { BlobProvider } from "@react-pdf/renderer";
-import SearchBar from './SearchBar';
+import SearchBar from "./SearchBar";
 import Excel from "../../../../assests/img/icons/excel.png";
 import Pdf from "../../../../assests/img/icons/pdf.png";
 import Refresh from "../../../../assests/img/icons/refresh.png";
@@ -13,7 +13,9 @@ import "./Distribute.css";
 import { ToastContainer, toast } from "react-toastify";
 import * as XLSX from "xlsx";
 import { writeFile } from "xlsx";
-//import Map from "./Map"; 
+//import Map from "./Map";
+
+import useGeoLocation from "../../Components/map/useGeoLocation"; // Import the useGeoLocation hook
 
 axios.defaults.baseURL = "http://127.0.0.1:8070";
 
@@ -22,16 +24,16 @@ function Distribute() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [dataList, setDataList] = useState([]);
   const [selectedDistribute, setSelectedDistribute] = useState(null);
-  const [filter, setFilter] = useState('Today');
+  const [filteredDataList, setFilteredDataList] = useState([]);
 
-  const [filteredDataList, setFilteredDataList] = useState([]); 
+  const location = useGeoLocation(); // Use the custom hook to get current location
 
   useEffect(() => {
     getFetchData();
   }, []);
 
   useEffect(() => {
-    setFilteredDataList(dataList); // Initialize filteredDataList with dataList
+    setFilteredDataList(dataList);
   }, [dataList]);
 
   const getFetchData = async () => {
@@ -43,13 +45,6 @@ function Distribute() {
     }
   };
 
-
-  // const locations = filteredDataList.map(item => ({
-  //   name: item.situated_place,
-  //   lat: parseFloat(item.latitude),
-  //   lng: parseFloat(item.longitude)
-  // }));
-  // Search functionality
   const handleSearch = (query) => {
     const filteredList = dataList.filter((Distribute) => {
       const searchFields = [
@@ -58,44 +53,22 @@ function Distribute() {
         "situated_place",
         "Owner_name",
         "email",
-        "phone_no"
-        
+        "phone_no",
       ];
       return searchFields.some((field) => {
         const fieldValue = Distribute[field];
         if (typeof fieldValue === "string") {
           return fieldValue.toLowerCase().includes(query.toLowerCase());
         }
-        // If fieldValue is not a string (like current_status), convert it to string and then check for inclusion
         return String(fieldValue).toLowerCase().includes(query.toLowerCase());
       });
     });
     setFilteredDataList(filteredList);
   };
-  
 
   const handleRefreshClick = () => {
     getFetchData();
-    
   };
-
-  const generateExcelFile = () => {
-    // Define the worksheet
-    const ws = XLSX.utils.json_to_sheet(dataList);
-  
-    // Define the workbook
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Distribute Report");
-  
-    // Generate the Excel file
-    writeFile(wb, "Distribute_report.xlsx");
-  };
-  
-  const handleButtonClick = () => {
-    getFetchData(); // Fetch the latest data if needed
-    generateExcelFile();
-  };
-  
 
   const handleAddModalOpen = () => {
     setAddModalOpen(true);
@@ -113,91 +86,107 @@ function Distribute() {
   const handleEditModalClose = () => {
     setEditModalOpen(false);
   };
- 
-  // toast.success("Distribute Details Added");
-  // handleAddModalClose();
-  // getFetchData();
+
+  const generateExcelFile = () => {
+    // Define the worksheet
+    const ws = XLSX.utils.json_to_sheet(dataList);
+
+    // Define the workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Distribute Report");
+
+    // Generate the Excel file
+    writeFile(wb, "Distribute_report.xlsx");
+  };
+
+  const handleButtonClick = () => {
+    getFetchData(); // Fetch the latest data if needed
+    generateExcelFile();
+  };
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/Distribute/delete/${id}`);
       toast.success("Successfully Deleted");
-      // handleDeleteModalClose();
       getFetchData();
     } catch (err) {
       toast.error(err.message);
     }
-    // try {
-    //   await axios.delete(`/Distribute/delete/${id}`);
-    //   toast.success("Distribute Details successfully deleted");
-    //   handleEditModalClose();
-    //   getFetchData();
-    // } catch (err) {
-    //   alert(err.message);
-    // }
   };
-const handleAddSubmit = async (formData) => {
-  try {
-    console.log("Form Data being submitted:", formData); // Log formData before the request
-    
-    const response = await axios.post("/Distribute/add", formData);
-    
-    console.log("Server response:", response); // Log the server response
-    
-    toast.success("Distribute Details Added");
-    handleAddModalClose();
-    getFetchData();
-  } catch (err) {
-    console.error("Error occurred:", err.message); // Log the error message
-    toast.error(err.message);
-  }
-};
+
+  const handleAddSubmit = async (formData) => {
+    try {
+      // Prepare the data to send, including actual location
+      const newDistributeData = { 
+        ...formData, 
+        location: { 
+          lat: location.coordinates?.lat || 'N/A', 
+          lng: location.coordinates?.lng || 'N/A' 
+        } 
+      };
+  
+      // Post the new data
+      await axios.post("/Distribute/add", newDistributeData);
+      toast.success("Distribute Details Added");
+      handleAddModalClose();
+      getFetchData();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+  
+
 
   const handleEditSubmit = async (formData) => {
     try {
-      await axios.patch(`/Distribute/update/${formData._id}`, formData);
+      // Append the location to the form data for updating
+      const updatedDistributeData = { 
+        ...formData, 
+        location: { 
+          lat: location.coordinates?.lat || 'N/A', 
+          lng: location.coordinates?.lng || 'N/A' 
+        } 
+      };
+  
+      // Send the updated data
+      await axios.patch(`/Distribute/update/${formData._id}`, updatedDistributeData);
       toast.success("Distribute Details Updated");
       handleEditModalClose();
       getFetchData();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
-
-  const [showReportModal, setShowReportModal] = useState(false);
-
-  const handleCloseReportModal = () => setShowReportModal(false);
-  const handleShowReportModal = () => setShowReportModal(true);
-
+  
   return (
     <div className="main">
       <div className="card recent-sales overflow-auto">
         <div className="card-body">
           <div className="page-header">
-            <div class="add-item d-flex">
-              <div class="card-title">
-              Distribute Details<span>| {filter}</span>
-
+            <div className="add-item d-flex">
+              <div className="card-title">
+                Distribute Details<span>| Today</span>
                 <h6>Manage Distribute</h6>
               </div>
             </div>
-            <ul class="table-top-head">
-            <li>
-            <BlobProvider
-                        document={<DistributeReport dataList={dataList} />}
-                        fileName="Distribute_Report.pdf"
-                      >
-                        {({ url, blob }) => (
-                          <div className="button-container">
-                            <a href={url} target="_blank">
-                              <img src={Pdf} alt="Pdf Icon" className="icon" />
-                            </a>
-                          </div>
-                        )}
-                      </BlobProvider>
-      </li>
+            <ul className="table-top-head">
               <li>
-                <div className="button-container"> 
-                  <a  onClick={handleButtonClick}>
+                <BlobProvider
+                  document={<DistributeReport dataList={dataList} />}
+                  fileName="Distribute_Report.pdf"
+                >
+                  {({ url, blob }) => (
+                    <div className="button-container">
+                      <a href={url} target="_blank">
+                        <img src={Pdf} alt="Pdf Icon" className="icon" />
+                      </a>
+                    </div>
+                  )}
+                </BlobProvider>
+              </li>
+              <li>
+                <div className="button-container">
+                  <a onClick={handleButtonClick}>
                     <img src={Excel} alt="Excel Icon" className="icon" />
                   </a>
                 </div>
@@ -210,7 +199,7 @@ const handleAddSubmit = async (formData) => {
                 </div>
               </li>
             </ul>
-            <div class="page-btn">
+            <div className="page-btn">
               <button
                 type="button"
                 className="btn btn-added"
@@ -243,7 +232,7 @@ const handleAddSubmit = async (formData) => {
           </Modal>
 
           <div className="table-container">
-          <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} />
             <table className="table table-borderless datatable">
               <thead className="table-light">
                 <tr>
@@ -257,7 +246,7 @@ const handleAddSubmit = async (formData) => {
                 </tr>
               </thead>
               <tbody>
-              {filteredDataList.length ? (
+                {filteredDataList.length ? (
                   filteredDataList.map((Distribute) => (
                     <tr key={Distribute._id}>
                       <td>{Distribute.business_name}</td>
@@ -266,7 +255,6 @@ const handleAddSubmit = async (formData) => {
                       <td>{Distribute.Owner_name}</td>
                       <td>{Distribute.email}</td>
                       <td>{Distribute.phone_no}</td>
-                      
                       <td className="action">
                         <div className="buttons">
                           <button
@@ -295,7 +283,7 @@ const handleAddSubmit = async (formData) => {
           </div>
         </div>
       </div>
-      
+
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -307,7 +295,6 @@ const handleAddSubmit = async (formData) => {
         draggable
         pauseOnHover
         theme="light"
-        // transition: Bounce
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "remixicon/fonts/remixicon.css";
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -12,43 +13,16 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // import Register from "./Website/LoginRegister/Register";
 // import AdminLogin from "./components/LoginRegister/AdminLogin";
 
-// import TDashboard from "./components/transportDashboard/TDashboard";
 import DriverDashboard from "./components/driver/DriverDashboard";
-// import SMDashboard from "./components/supplierManagerDashboard/SMDashboard";
-// import SupplierDetails from "./components/supplierManagerDashboard/SupplierDetails";
-// import SalesPage from "./components/finance/SalesPage";
-// import SupplierRequests from "./components/supplierManagerDashboard/SupplierRequests";
-// import FDashboard from "./components/farmer/FDashboard";
-// import SupplyRequests from "./components/supplierManagerDashboard/SupplyRequests";
-// import ApprovedSupplies from "./components/supplierManagerDashboard/ApprovedSupplies";
-// import DeclinedSupplies from "./components/supplierManagerDashboard/DeclinedSupplies";
-// import SupplierLocations from "./components/supplierManagerDashboard/SupplierLocations";
 import VehicleDetails from "./components/transportDashboard/VehicleDetails";
 import ProcessDetails from "./components/transportDashboard/ProcessDetails";
 import CoveringDetails from "./components/transportDashboard/CoveringDetails";
-// import ExpensePage from "./components/finance/ExpensePage";
 import ScheduleDetails from "./components/transportDashboard/ScheduleDetails";
 import DistributeDetails from "./components/driver/DistributeDetails";
 import StockDetails from "./components/driver/StockDetails";
 import Map from "./components/driver/Components/map/Map";
-
-
-// import PredictionDetails from "./components/farmer/PredictionDetails";
-
-
-// import Home from "./Website/Home";
-// import About from "./Website/About";
-// import Shop from "./Website/Shop";
-// import Contact from "./Website/Contact";
-// import SingleProduct from "./Website/Shop/Products/SingleProduct";
-// import Cart from "./Website/Shop/Cart/Cart";
-// import Checkout from "./Website/Shop/Checkout/Checkout";
-// import Map from "./components/transportDashboard/Map";
-// import JoinWithUsSelect from "./Website/JoinWithUsSelect";
 import DriverDetails from "./components/transportDashboard/DriverDetails";
-// import ApprovalPage from "./components/finance/ApprovalPage";
-// import PaymentsPage from "./components/finance/PaymentsPage";
-// import AddProduct from "./components/finance/AddProduct";
+
 
 const router = createBrowserRouter([
   // {
