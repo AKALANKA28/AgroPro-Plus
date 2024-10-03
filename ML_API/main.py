@@ -1,17 +1,23 @@
+import os
+
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from g4f.client import Client
+from g4f.cookies import set_cookies_dir, read_cookie_files
+
 import json
 
 app = Flask(__name__)
 
-# mongo_client = MongoClient("mongodb+srv://AkalankaDIas:HsY0HJTzVvJTHCGW@cluster1.wkorqmy.mongodb.net/AGROPROPLUS?retryWrites=true&w=majority&appName=Cluster1")
-# db = mongo_client['AGROPROPLUS']  # Use a database named 'fertilizer_db'
-# collection = db['fertilizer_schedules']  # Use a collection named 'schedules'
-
-
 # Initialize the GPT Client
 client = Client()
+
+# Set the directory where .har file is stored
+cookies_dir = os.path.join(os.path.dirname(__file__), "har_and_cookies")
+set_cookies_dir(cookies_dir)
+
+# Load the cookies from the .har file
+read_cookie_files(cookies_dir)
 
 # Define system message for GPT
 system_message = {
@@ -64,8 +70,7 @@ def generate_schedule():
     user_input = {
         "role": "user",
         "content": (
-            "Generate the fertilizer schedule based on the provided input as instructions. Only need the fertilizer schedule in JSON format. No need any additional commenting. "
-            "Here is the input: "
+            "Generate the fertilizer schedule based on the provided input as instructions. All the details should align with the current economy and state of Sri Lankan agriculture. Only provide the fertilizer schedule in JSON format, without any additional comments."            "Here is the input: "
             f"Crop type: {data.get('crop_type')}, "
             f"Planting date: {data.get('planting_date')}, "
             f"Area size: {data.get('area_size')}, "
@@ -78,7 +83,7 @@ def generate_schedule():
     try:
         # Call the GPT API
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[system_message, user_input]
         )
 
@@ -102,23 +107,6 @@ def generate_schedule():
         print(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-# @app.route('/save_schedule', methods=['POST'])
-# def save_schedule():
-#     try:
-#         # Get the fertilizer schedule from the request
-#         data = request.json
-#         schedule = data.get('schedule')
-        
-#         if not schedule:
-#             return jsonify({"error": "No schedule provided"}), 400
-        
-#         # Insert the schedule into MongoDB
-#         collection.insert_one(schedule)
-        
-#         return jsonify({"message": "Schedule saved successfully"}), 200
-    
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
     
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
