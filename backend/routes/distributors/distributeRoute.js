@@ -17,4 +17,7 @@ router.patch("/update/:id", distributeController.updatedistribute);
 // Delete a process record
 router.delete("/delete/:id", distributeController.deletedistribute);
 
+// Route for getting nearby distributors
+router.get('/nearby', distributeController.getNearbyDistributors);
+
 module.exports = router;

@@ -14,13 +14,13 @@ import {
   StatusBar,
 } from "react-native";
 import Weather from "../components/Weather";
-import CropCard from "../components/Cards/Cards";
-import cropData from "../components/Cards/Cards"; // Adjust the path according to your folder structure
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import NearLocation from "../components/Home/NearLocation";
+import CropCard from "../components/Home/CropCards";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -231,25 +231,13 @@ const Home = () => {
               <CropCard />
 
               <Text style={styles.sectionTitle}>Nearby Distributor</Text>
-              <Image
-                source={{ uri: "crop_image_url" }}
-                style={styles.cropImage}
-              />
-              <View style={styles.infoContainer}></View>
+              <NearLocation />
 
               <Text style={styles.sectionTitle}>Finance</Text>
-              <Image
-                source={{ uri: "crop_image_url" }}
-                style={styles.cropImage}
-              />
-              <View style={styles.infoContainer}></View>
+             
 
               <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
-              <Image
-                source={{ uri: "crop_image_url" }}
-                style={styles.cropImage}
-              />
-              <View style={styles.infoContainer}></View>
+             
             </ScrollView>
           </View>
         </Animated.View>
