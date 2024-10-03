@@ -10,11 +10,10 @@ const BudgetPlanOverviewScreen = ({ route, navigation }) => {
   const [budgetPlan, setBudgetPlan] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const baseURL = process.env.REACT_APP_API_BASE_URL;
 
   const fetchBudgetPlan = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/finance/get/${id}`);
+      const response = await axios.get(`/finance/get/${id}`);
       setBudgetPlan(response.data.BudgetPlan);
       setLoading(false);
     } catch (error) {
@@ -71,7 +70,7 @@ const BudgetPlanOverviewScreen = ({ route, navigation }) => {
           text: "Yes",
           onPress: async () => {
             try {
-              await axios.delete(`${BASE_URL}/finance/delete/${id}`);
+              await axios.delete(`/finance/delete/${id}`);
               Alert.alert("Success", "Budget plan deleted successfully.", [
                 { text: "OK", onPress: () => navigation.navigate('BudgetPlansScreen') }
               ]);

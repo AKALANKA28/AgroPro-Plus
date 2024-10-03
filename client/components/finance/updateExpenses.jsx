@@ -20,7 +20,7 @@ const UpdateExpenses = ({ route, navigation }) => {
   useEffect(() => {
     const fetchBudgetPlan = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/finance/get/${id}`);
+        const response = await axios.get(`/finance/get/${id}`);
         const data = response.data.BudgetPlan;
         setBudgetPlan({
           aseedsCost: data.aseedsCost || 0,
@@ -58,7 +58,7 @@ const UpdateExpenses = ({ route, navigation }) => {
         actualRevenue: budgetPlan.actualRevenue,
       };
 
-      const response = await axios.patch(`${BASE_URL}/finance/update/${id}`, updateData);
+      const response = await axios.patch(`/finance/update/${id}`, updateData);
 
       if (response.status === 200) {
         alert("Budget plan updated successfully!");
