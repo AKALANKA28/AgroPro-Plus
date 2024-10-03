@@ -62,7 +62,7 @@ const renderCrop = ({ item }) => {
       <View style={styles.imageContainer}>
         <Image source={{ uri: "your-image-uri-here" }} style={styles.cropImage} />
         <Text style={styles.imageText}>
-          In {daysUntilApplication} day{daysUntilApplication !== 1 ? 's' : ''}
+          In {daysUntilApplication} Day{daysUntilApplication !== 1 ? 's' : ''}
         </Text>
       </View>
       <View style={styles.infoContainer}>
