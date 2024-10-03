@@ -14,8 +14,8 @@ import {
   StatusBar,
 } from "react-native";
 import Weather from "../components/Weather";
-import CropCard from "../components/Cards";
-import cropData from "../components/cropData"; // Adjust the path according to your folder structure
+import CropCard from "../components/Cards/Cards";
+import cropData from "../components/Cards/Cards"; // Adjust the path according to your folder structure
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -69,7 +69,7 @@ const Home = () => {
 
   const contentSectionHeight = pan.interpolate({
     inputRange: [0, SCREEN_HEIGHT - 50],
-    outputRange: [SCREEN_HEIGHT / 3.9, SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT / 3.7, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
 
@@ -228,21 +228,7 @@ const Home = () => {
               scrollEventThrottle={16}
             >
               <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
-
-              <FlatList
-                data={cropData}
-                renderItem={({ item }) => (
-                  <CropCard
-                    imageUri={item.imageUri}
-                    week={item.week}
-                    health={item.health}
-                    alerts={item.alerts}
-                  />
-                )}
-                keyExtractor={(item) => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              />
+              <CropCard />
 
               <Text style={styles.sectionTitle}>Nearby Distributor</Text>
               <Image
@@ -252,6 +238,13 @@ const Home = () => {
               <View style={styles.infoContainer}></View>
 
               <Text style={styles.sectionTitle}>Finance</Text>
+              <Image
+                source={{ uri: "crop_image_url" }}
+                style={styles.cropImage}
+              />
+              <View style={styles.infoContainer}></View>
+
+              <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
               <Image
                 source={{ uri: "crop_image_url" }}
                 style={styles.cropImage}

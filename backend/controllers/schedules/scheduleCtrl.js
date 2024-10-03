@@ -29,21 +29,26 @@ exports.getAllSchedules = async (req, res) => {
 };
 
 // Controller to retrieve a schedule by ID
+const mongoose = require('mongoose');
+
 exports.getScheduleById = async (req, res) => {
-  const { id } = req.params;
+    const { id } = req.params;
 
-  try {
-    const schedule = await Schedule.findById(id);
-
-    if (!schedule) {
-      return res.status(404).json({ message: "Schedule not found." });
+    // Check if the provided ID is a valid ObjectId
+    if (!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({ message: 'Invalid schedule ID.' });
     }
 
-    res.status(200).json(schedule);
-  } catch (err) {
-    console.error("Failed to retrieve schedule by ID:", err);
-    res.status(500).json({ message: "Failed to retrieve schedule." });
-  }
+    try {
+        const schedule = await FertilizerSchedule.findById(id);
+        if (!schedule) {
+            return res.status(404).json({ message: 'Schedule not found.' });
+        }
+        res.status(200).json(schedule);
+    } catch (error) {
+        console.error('Failed to retrieve schedule by ID:', error);
+        res.status(500).json({ message: 'Failed to retrieve schedule.' });
+    }
 };
 
 // Controller to delete a schedule by ID
@@ -63,3 +68,5 @@ exports.deleteSchedule = async (req, res) => {
     res.status(500).json({ message: "Failed to delete schedule." });
   }
 };
+
+
