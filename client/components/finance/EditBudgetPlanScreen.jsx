@@ -26,7 +26,7 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
   useEffect(() => {
     const fetchBudgetPlan = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/finance/get/${id}`);
+        const response = await axios.get(`/finance/get/${id}`);
         setBudgetPlan(response.data.BudgetPlan);
         setLoading(false);
       } catch (error) {
@@ -47,7 +47,7 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.patch(`${BASE_URL}/finance/update/${id}`, budgetPlan);
+      const response = await axios.patch(`/finance/update/${id}`, budgetPlan);
       if (response.status === 200) {
         alert("Budget plan updated successfully!");
         navigation.goBack(); // Navigate back to the overview screen

@@ -16,7 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
+ // const Stack = createNativeStackNavigator();
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
