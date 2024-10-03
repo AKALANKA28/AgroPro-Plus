@@ -14,8 +14,8 @@ import {
   StatusBar,
 } from "react-native";
 import Weather from "../components/Weather";
-import CropCard from "../components/Cards";
-import cropData from "../components/cropData"; // Adjust the path according to your folder structure
+import CropCard from "../components/Cards/Cards";
+import cropData from "../components/Cards/Cards"; // Adjust the path according to your folder structure
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { Ionicons } from "@expo/vector-icons";
 
