@@ -8,15 +8,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import axios from "axios";
-import { ProgressBar } from "react-native-paper"; // Use this for soil condition progress bars
 import { Image } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // Import FontAwesome for icons
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const ScheduleDetails = ({ route }) => {
   const { schedule, isGenerated } = route.params;
   const navigation = useNavigation(); // Access navigation
+
+  console.log("Is schedule generated:", isGenerated); // Debugging
 
   const saveScheduleToDB = async () => {
     const formattedSchedule = {
@@ -43,76 +43,46 @@ const ScheduleDetails = ({ route }) => {
     }
   };
 
-  // Function to get the image path based on crop type
   const getImagePath = (cropType) => {
     switch (cropType) {
       case "Rice":
         return require("../../assets/images/plantImages/rice.png");
-      // Add more crop cases here
       default:
         return require("../../assets/images/plantImages/rice.png");
-      // Fallback image
     }
   };
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.wrapperContainer}>
-        {/* Back Button */}
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
-        {/* Three-dot Menu Icon */}
-        <TouchableOpacity
-          onPress={() => Alert.alert("Menu", "Three-dot menu pressed")}
-          style={styles.menuIcon}
-        >
+        <TouchableOpacity onPress={() => Alert.alert("Menu", "Three-dot menu pressed")} style={styles.menuIcon}>
           <Ionicons name="ellipsis-vertical" size={20} color="black" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.headerContainer}>
-        {/* Left Section for Image */}
         <View style={styles.imageContainer}>
-          <Image
-            source={getImagePath(schedule.crop_type)} // Dynamically get image based on crop type
-            style={styles.cropImage}
-            // resizeMode="contain" // Adjusts how the image fits the container
-          />
+          <Image source={getImagePath(schedule.crop_type)} style={styles.cropImage} />
         </View>
 
-        {/* Right Section for Crop Details */}
         <View style={styles.detailsContainer}>
           <View style={styles.cropTitleContainer}>
             <Text style={styles.subtitle}>Fertilizer Schedule for</Text>
             <Text style={styles.croptitle}>{schedule.crop_type}</Text>
           </View>
           <View style={styles.subDetailsContainer}>
-            <Text style={styles.subtitle}>
-              Planting Date: {schedule.planting_date}
-            </Text>
+            <Text style={styles.subtitle}>Planting Date: {schedule.planting_date}</Text>
+            <Text style={styles.subtitle}>Est.Cost: Rs.{schedule.estimated_total_cost}</Text>
+            <Text style={styles.subtitle}>Est. Harversting Date: {schedule.estimated_harvesting_date}</Text>
+
             <Text style={styles.subtitle}>Area Size: {schedule.area_size}</Text>
             <Text style={styles.subtitle}>Soil Condition:</Text>
-            <View style={styles.progressContainer}>
-              <Text>Nitrogen: {schedule.soil_condition.nitrogen}</Text>
-              <ProgressBar
-                progress={schedule.soil_condition.nitrogen / 100}
-                color="#00aaff"
-                style={styles.progressBar}
-              />
-            </View>
-            <View style={styles.progressContainer}>
-              <Text>pH: {schedule.soil_condition.pH}</Text>
-              <ProgressBar
-                progress={schedule.soil_condition.pH / 14}
-                color="#ffbb00"
-                style={styles.progressBar}
-              />
-            </View>
+            <Text>Nitrogen: {schedule.soil_condition.nitrogen}</Text>
+            <Text>pH: {schedule.soil_condition.pH}</Text>
           </View>
         </View>
       </View>
@@ -123,33 +93,27 @@ const ScheduleDetails = ({ route }) => {
             <View key={index} style={styles.stageContainer}>
               <Text style={styles.stageTitle}>Stage: {stage.stage}</Text>
               <Text style={styles.text}>Amount: {stage.amount}</Text>
-              <Text style={styles.text}>
-                Application Date: {stage.application_date}
-              </Text>
-              <Text style={styles.text}>
-                Fertilizer Type: {stage.fertilizer_type}
-              </Text>
+              <Text style={styles.text}>Application Date: {stage.application_date}</Text>
+              <Text style={styles.text}>Fertilizer Type: {stage.fertilizer_type}</Text>
               <Text style={styles.text}>Notes: {stage.notes}</Text>
+              <Text style={styles.text}>Cost: Rs. {stage.cost}</Text>
+
             </View>
           ))}
         </ScrollView>
       </View>
 
       {/* Conditionally show the Save button if the schedule is generated */}
-      {isGenerated && (
+      {/* {isGenerated && ( */}
         <View style={styles.saveButtonContainer}>
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={saveScheduleToDB}
-          >
+          <TouchableOpacity style={styles.saveButton} onPress={saveScheduleToDB}>
             <Text style={styles.saveButtonText}>Save Schedule</Text>
           </TouchableOpacity>
         </View>
-      )}
+      {/* )} */}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
@@ -280,6 +244,7 @@ const styles = StyleSheet.create({
     bottom: 20, // Position at the bottom
     width: "100%", // Ensure it stretches across the width
     alignItems: "center", // Center horizontally
+    zIndex: 3,
   },
   saveButton: {
     backgroundColor: "#183719", // Button background color

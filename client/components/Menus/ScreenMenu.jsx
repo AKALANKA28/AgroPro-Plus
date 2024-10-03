@@ -5,8 +5,9 @@ import Home from "../../screens/Home";
 import FertilizerSchedule from "../../screens/FertilzerSchedule/FertilizerSchedule";
 import ScheduleDetails from "../../screens/FertilzerSchedule/ScheduleDetails";
 import FertilizerFormScreen from "../../screens/FertilzerSchedule/FertilzerFormScreen";
+import { useFonts } from "expo-font";
 
-import CameraComponet from "../../components/CameraComponent";
+// import CameraComponet from "../../components/CameraComponent";
 
 import Register from "../../screens/auth/Register";
 import Login from "../../screens/auth/Login";
@@ -28,6 +29,17 @@ const ScreenMenu = () => {
   //auth condition true false
   const authenticatedUser = state?.user && state?.token;
   const Stack = createNativeStackNavigator();
+
+  const [fontsLoaded] = useFonts({
+    "roboto": require("../../assets/fonts/Roboto-Regular.ttf"),
+    "roboto-medium": require("../../assets/fonts/Roboto-Medium.ttf"),
+    "roboto-bold": require("../../assets/fonts/Roboto-Bold.ttf"),
+    "poppins": require("../../assets/fonts/Poppins-Regular.ttf"),
+    "poppins-semibold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
+    "poppins-bold": require("../../assets/fonts/Poppins-Bold.ttf"),
+    "roboto-black": require("../../assets/fonts/Roboto-Black.ttf"),
+  });
+
   return (
     <Stack.Navigator initialRouteName="Home">
       {/* {authenticatedUser ? ( */}
@@ -64,13 +76,13 @@ const ScreenMenu = () => {
             headerShown: false,
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="CameraComponent"
           component={CameraComponet}
           options={{
             headerShown: false,
           }}
-        />
+        /> */}
 
         <Stack.Screen
           name="FertilizerFormScreen"
