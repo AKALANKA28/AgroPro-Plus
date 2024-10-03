@@ -146,8 +146,18 @@ const Home = () => {
       navigateTo: "FertilizerSchedule",
     },
     { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
-    { id: "3", icon: "chart", text: "Finance", navigateTo: "" },
-    { id: "4", icon: "location", text: "Distributors", navigateTo: "DistributeScreen" },
+    {
+      id: "3",
+      icon: "chart",
+      text: "Finance",
+      navigateTo: "BudgetPlansScreen",
+    },
+    {
+      id: "4",
+      icon: "location",
+      text: "Distributors",
+      navigateTo: "DistributeScreen",
+    },
     { id: "5", icon: "user", text: "Community", navigateTo: "" },
   ];
   const renderCropButton = ({ item }) => (
@@ -197,20 +207,20 @@ const Home = () => {
 
           {/* Container for the navigation buttons */}
           <View>
-          <FlatList
-            data={cropButtonsData}
-            renderItem={renderCropButton}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.cropButtons}
-          />
+            <FlatList
+              data={cropButtonsData}
+              renderItem={renderCropButton}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.cropButtons}
+            />
           </View>
-         
+
           {/* Content section */}
 
           <View style={{ flex: 1 }}>
-          <ScrollView
+            <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.scrollContent}
               onScroll={handleScroll}

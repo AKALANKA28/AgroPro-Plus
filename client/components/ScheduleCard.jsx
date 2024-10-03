@@ -6,8 +6,8 @@ import { Swipeable } from "react-native-gesture-handler";
 const cropImages = {
   rice: require("../assets/images/plantImages/rice.jpeg"),
   corn: require("../assets/images/plantImages/corn.jpeg"),
-  soybeans: require("../assets/images/plantImages/rice.jpeg"),
-  cotton: require("../assets/images/plantImages/rice.jpeg"),
+  soybeans: require("../assets/images/plantImages/soybean.jpeg"),
+  watermelon: require("../assets/images/plantImages/watermelon.jpeg"),
 };
 
 const ScheduleCard = ({
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff",
     borderRadius: 10,
-    marginTop: 10,
     marginBottom: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

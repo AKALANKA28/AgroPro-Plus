@@ -71,11 +71,12 @@ const FertilizerForm = ({ onSubmit }) => {
         <RNPickerSelect
           onValueChange={(value) => setCropType(value)}
           items={[
-            { label: "Wheat", value: "wheat" },
             { label: "Rice", value: "rice" },
             { label: "Corn", value: "corn" },
             { label: "Soybeans", value: "soybeans" },
-            { label: "Cotton", value: "cotton" },
+            { label: "Watermelon", value: "watermelon" },
+            { label: "Onion", value: "onion" },
+
           ]}
           placeholder={{ label: "Select a crop type", value: null }}
           style={pickerSelectStyles}
