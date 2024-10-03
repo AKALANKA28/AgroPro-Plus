@@ -37,6 +37,8 @@ const ScheduleDetails = ({ route }) => {
       } else {
         Alert.alert("Error", "Failed to save the fertilizer schedule.");
       }
+      navigation.navigate('FertilizerSchedule'); // Replace 'YourDesiredPage' with the specific route you want to navigate to
+
     } catch (error) {
       console.error("Failed to save schedule:", error);
       Alert.alert("Error", "An error occurred while saving the schedule.");
@@ -166,14 +168,10 @@ const styles = StyleSheet.create({
     flex: 2,
     paddingLeft: 10,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
+
   cropTitleContainer: {
     top: 10, // Align at the top
-    right: -90, // Align to the right side with some padding
+    right: -40, // Align to the right side with some padding
     zIndex: 0, // Make sure it appears above other content
     backgroundColor: "#fff", // Add a background to make it stand out
     padding: 10, // Add padding for spacing
@@ -186,10 +184,9 @@ const styles = StyleSheet.create({
   },
   croptitle: {
     fontSize: 40, // Make it larger
-    fontWeight: "bold", // Bolder text
     alignSelf: "left", // Align to the top right corner
-    marginBottom: 10, // Adjust margin as needed
-    textTransform: "uppercase", // Capitalize the text
+    fontFamily: "poppins-bold",
+    textTransform: "capitalize", // Capitalize the text
   },
   subDetailsContainer: {
     marginTop: 100, // Ensure the remaining content does not overlap with the crop title
@@ -199,7 +196,8 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 18,
     marginTop: 8,
-    fontWeight: "bold",
+    fontFamily: "poppins",
+    marginBottom: -8,
   },
   text: {
     fontSize: 16,
