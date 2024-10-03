@@ -69,7 +69,7 @@ const Home = () => {
 
   const contentSectionHeight = pan.interpolate({
     inputRange: [0, SCREEN_HEIGHT - 50],
-    outputRange: [SCREEN_HEIGHT / 3.9, SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT / 3.7, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
 
@@ -228,21 +228,7 @@ const Home = () => {
               scrollEventThrottle={16}
             >
               <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
-
-              <FlatList
-                data={cropData}
-                renderItem={({ item }) => (
-                  <CropCard
-                    imageUri={item.imageUri}
-                    week={item.week}
-                    health={item.health}
-                    alerts={item.alerts}
-                  />
-                )}
-                keyExtractor={(item) => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              />
+              <CropCard />
 
               <Text style={styles.sectionTitle}>Nearby Distributor</Text>
               <Image
