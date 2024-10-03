@@ -1,48 +1,45 @@
-// CropCard.js
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import cropData from "./cropData"; // Adjust the path according to your folder structure
 
-const CropCard = ({
-  imageUri,
-  health,
-  week,
-  alerts = [],
-  crop_type,
-  onPress,
-}) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.card}>
+const CropCard = () => {
+  // Render each crop card dynamically
+  const renderCrop = ({ item }) => (
+    <TouchableOpacity style={styles.card}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: imageUri }} style={styles.cropImage} />
+        <Image source={{ uri: item.imageUri }} style={styles.cropImage} />
         <Text style={styles.imageText}>In 5 days</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Crop Type: {crop_type}</Text>
-        <Text style={styles.infoText}>Week: {week}</Text>
+        <Text style={styles.infoText}>Crop Type: {item.crop_type}</Text>
+        <Text style={styles.infoText}>Week: {item.week}</Text>
         <View style={styles.fertilizerType}>
           <Text style={styles.typeText}>
-            Fertilizer Type:
-            <Text style={styles.typeContent}> Urea</Text>
-          </Text>
-          <Text style={styles.typeText}>
-            Fertilizer Amount:
-            <Text style={styles.typeContent}> 50 kg/ha</Text>
+            Fertilizer Type: <Text style={styles.typeContent}>{item.fertilizerType}</Text>
           </Text>
         </View>
-      </View>
-      <View style={styles.alertContainer}>
-        <Text style={styles.sectionTitle}>Alerts</Text>
-        {alerts.length > 0 ? (
-          alerts.map((alert, index) => (
-            <Text key={index} style={styles.alertText}>
-              {alert}
-            </Text>
-          ))
-        ) : (
-          <Text style={styles.alertText}>No alerts</Text>
+        {item.alerts.length > 0 && (
+          <View>
+            <Text style={styles.alertText}>Alerts:</Text>
+            {item.alerts.map((alert, index) => (
+              <Text key={index} style={styles.alertText}>
+                {alert}
+              </Text>
+            ))}
+          </View>
         )}
       </View>
     </TouchableOpacity>
+  );
+
+  return (
+    <FlatList
+      data={cropData} // Using the cropData here
+      renderItem={renderCrop}
+      keyExtractor={(item) => item.id}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    />
   );
 };
 
@@ -50,90 +47,59 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 10,
-    padding: 4,
-
-    marginTop: 10,
-    marginBottom: 40,
-    marginRight: 15,
-    width: 350,
+    marginHorizontal: 10,
+    overflow: "hidden",
+    width: 270,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+    marginBottom: 20,
+
   },
   imageContainer: {
-    position: "relative", // Ensures that the child elements can be positioned absolutely
+    width: "100%",
+    height: 140,
+    borderRadius: 10,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    overflow: "hidden",
   },
   cropImage: {
     width: "100%",
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 10,
+    height: "100%",
   },
   imageText: {
-    position: "absolute", // Positioning the text absolutely within the parent container
-    top: 10, // Distance from the top of the image
-    left: 250, // You can adjust this based on where you want the text
-    color: "#fff", // Color of the text
-    fontSize: 16,
-    backgroundColor: "rgba(0, 0, 0, 0.7)", // Optional background for better text readability
-    paddingHorizontal: 10,
+    position: "absolute",
+    bottom: 5,
+    left: 5,
+    color: "#fff",
+    fontWeight: "bold",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 5,
   },
   infoContainer: {
-    flexDirection: "row",
     padding: 10,
-    justifyContent: "space-between",
-    marginBottom: 10,
   },
   infoText: {
-    fontSize: 16,
-    color: "#fff",
-    fontWeight: "bold",
-    backgroundColor: "#8BC34A",
-    textAlign: "center", // Horizontally center the text
-    height: 35, // Set a fixed height for the Text component
-    lineHeight: 30, // Make lineHeight equal to height to center the text vertically
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-  },
-  infoContent: {
-    fontSize: 20,
+    fontSize: 14,
     color: "#333",
-    fontWeight: "bold",
+  },
+  fertilizerType: {
+    marginTop: 8,
   },
   typeText: {
-    fontSize: 15,
-    color: "#333",
     fontWeight: "bold",
-    display: "flex",
-    justifyContent: "space-between",
   },
   typeContent: {
-    fontSize: 19,
-    color: "#333",
-    fontWeight: "bold",
-  },
-  alertContainer: {
-    padding: 10,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
+    color: "#607F0E",
   },
   alertText: {
-    fontSize: 16,
-    color: "#ff5e5e",
-    marginBottom: 5,
-  },
-  fertilzerType: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-    gap: 10,
+    color: "#FF9800",
+    marginTop: 5,
   },
 });
 
