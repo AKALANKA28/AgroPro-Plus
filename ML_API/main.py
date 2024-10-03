@@ -1,7 +1,5 @@
 import os
-
 from flask import Flask, request, jsonify
-from pymongo import MongoClient
 from g4f.client import Client
 from g4f.cookies import set_cookies_dir, read_cookie_files
 
@@ -43,6 +41,7 @@ system_message = {
                 "growth_stages: ["
                     "{"
                         "stage: stage,"
+                        "stage_image_URI: Find a valid image URI relevant to the Seedling stage of rice from reputable sources such as Unsplash, Pixabay, or Pexels. The URI should link directly to an image that is accessible online and suitable for agricultural purposes, ending in .jpg or .png.,"
                         "application_date: application_date,"
                         "fertilizer_type: fertilizer_type,"
                         "amount: amount,"
@@ -54,7 +53,7 @@ system_message = {
             "}"
         "}"
         "}"
-        "Ensure that the schedule is practical and tailored to the specific needs of the crop and conditions provided based on Sri Lankan agriculture. "
+        "Ensure that the schedule is practical and tailored to the specific needs of the crop and conditions provided based on Sri Lankan agriculture."
         "Once the farmer has provided the input, you will generate the fertilizer schedule based on the given information. "
         "If the farmer regenerates with the same input, you should not generate anything again. "
         "If the farmer regenerates with different input, you will generate a different fertilizer schedule."
@@ -83,7 +82,7 @@ def generate_schedule():
     try:
         # Call the GPT API
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=[system_message, user_input]
         )
 
