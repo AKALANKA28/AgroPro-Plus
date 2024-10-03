@@ -22,6 +22,7 @@ import EditBudgetPlanScreen from "../../components/finance/EditBudgetPlanScreen"
 import MarketPriceTable from "../../components/finance/MarketPriceTable";
 import updateExpenses from "../../components/finance/updateExpenses";
 import AnalysisScreen from "../../components/finance/AnalysisScreen";
+import MapDisplay from "../DistributorsMap/MapDisplay";
 
 const ScreenMenu = () => {
   //global state
@@ -76,6 +77,13 @@ const ScreenMenu = () => {
             headerShown: false,
           }}
         />
+        {/* <Stack.Screen
+          name="MapDisplay"
+          component={MapDisplay}
+          options={{
+            headerShown: false,
+          }}
+        /> */}
         {/* <Stack.Screen
           name="CameraComponent"
           component={CameraComponet}

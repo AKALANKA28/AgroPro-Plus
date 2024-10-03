@@ -11,7 +11,7 @@ import axios from "axios";
 import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import imageMapping from "../../components/Cards/ImageData"; // Adjust the path as necessary
+import imageMapping from "../../components/Home/ImageData"; // Adjust the path as necessary
 
 const getImageUri = (crop_type, stage) => {
   if (imageMapping[crop_type] && imageMapping[crop_type][stage]) {
