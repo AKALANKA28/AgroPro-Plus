@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const scheduleSchema = new mongoose.Schema({
   crop_type: String,
   planting_date: String,
+  estimated_harvesting_date: String,
+  estimated_total_cost: String,
   area_size: String,
   soil_condition: {
     nitrogen: Number,
@@ -13,6 +15,7 @@ const scheduleSchema = new mongoose.Schema({
     {
       stage: String,
       amount: String,
+      cost: String,
       application_date: String,
       fertilizer_type: String,
       notes: String,

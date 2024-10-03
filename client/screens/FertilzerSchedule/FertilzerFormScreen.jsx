@@ -1,74 +1,61 @@
-import React, { useState } from 'react'; // Import useState
-import { View, StyleSheet, ActivityIndicator, Alert } from 'react-native'; // Import Alert for error handling
-import FertilizerForm from '../../components/Forms/FertilizerForm'; // Import the form component
-import axios from 'axios'; // Import axios
+import React, { useState } from 'react';
+import { View, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import FertilizerForm from '../../components/Forms/FertilizerForm';
+import axios from 'axios';
+
 const FertilizerFormScreen = ({ navigation }) => {
-  const [loading, setLoading] = useState(false); // State for loading
+  const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
 
+  // Create a reusable instance of axios
   const fertilizerAPI = axios.create({
     baseURL: "http://192.168.1.159:8000",
-    // baseURL: "http://192.168.21.141:8000",
-  
     timeout: 50000,
   });
+
+  // Function to fetch fertilizer schedule
   const fetchFertilizerSchedule = async (formData) => {
     setLoading(true);
     try {
-      const response = await fertilizerAPI.post("/generate_schedule", {
+      // API request
+      const { data } = await fertilizerAPI.post("/generate_schedule", {
         crop_type: formData.cropType,
         planting_date: formData.plantingDate,
         area_size: formData.areaSize,
         soil_condition: formData.soilCondition,
-        weather_forecast: weatherData,
+        weather_forecast: weatherData || null,  // Gracefully handle null weather data
       });
 
-      let parsedData;
-      try {
-        if (typeof response.data === "string") {
-          parsedData = JSON.parse(
-            response.data.replace(/\\"/g, '"').replace(/^"|"$/g, "")
-          );
-        } else {
-          parsedData = response.data;
-        }
-      } catch (error) {
-        console.error("Failed to parse the response:", error);
-        Alert.alert("Error", "Failed to parse the response.");
-        return; // Early return if parsing fails
-      }
-
-      if (parsedData.schedule && parsedData.schedule.fertilizer_schedule) {
+      // Check if valid data is received
+      if (data.schedule && data.schedule.fertilizer_schedule) {
         navigation.navigate("ScheduleDetails", {
-          schedule: parsedData.schedule.fertilizer_schedule,
+          schedule: data.schedule.fertilizer_schedule,
         });
       } else {
-        console.error(
-          "No valid fertilizer schedule data received:",
-          parsedData
-        );
+        console.error("No valid fertilizer schedule data received:", data);
         Alert.alert("Error", "No valid schedule data received.");
       }
-    } catch (err) {
-      console.error("Failed to fetch the fertilizer schedule:", err);
+
+    } catch (error) {
+      console.error("Failed to fetch the fertilizer schedule:", error);
       Alert.alert("Error", "Failed to fetch the fertilizer schedule.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleWeatherDataUpdate = (data) => {
-    setWeatherData(data);
-  };
+  // Handle weather data updates
+  const handleWeatherDataUpdate = (data) => setWeatherData(data);
 
+  // Handle form submission
   const handleFormSubmit = (formData) => {
     console.log('Form data submitted:', formData);
-    fetchFertilizerSchedule(formData); // Call fetchFertilizerSchedule with form data
+    fetchFertilizerSchedule(formData);  // Fetch schedule based on form data
   };
 
   return (
     <View style={styles.container}>
-      {loading && <ActivityIndicator size="large" color="#0000ff" />} 
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <FertilizerForm onSubmit={handleFormSubmit} />
     </View>
   );
