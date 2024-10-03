@@ -105,7 +105,7 @@ const FertilizerForm = ({ onSubmit }) => {
           style={styles.input}
           value={areaSize}
           onChangeText={setAreaSize}
-          placeholder="Enter your area size in acres"
+          placeholder="Enter your area size in hectares"
         />
         <Text style={styles.label}>Soil Type:</Text>
         <RNPickerSelect
