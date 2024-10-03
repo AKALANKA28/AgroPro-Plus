@@ -11,12 +11,18 @@ import axios from "axios";
 import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import imageMapping from "../../components/Cards/ImageData"; // Adjust the path as necessary
+
+const getImageUri = (crop_type, stage) => {
+  if (imageMapping[crop_type] && imageMapping[crop_type][stage]) {
+    return imageMapping[crop_type][stage];
+  }
+  return null; // Return null if no matching image is found
+};
 
 const ScheduleDetails = ({ route }) => {
   const { schedule, isGenerated } = route.params;
   const navigation = useNavigation(); // Access navigation
-
-  console.log("Is schedule generated:", isGenerated); // Debugging
 
   const saveScheduleToDB = async () => {
     const formattedSchedule = {
@@ -37,6 +43,7 @@ const ScheduleDetails = ({ route }) => {
       } else {
         Alert.alert("Error", "Failed to save the fertilizer schedule.");
       }
+      navigation.navigate("FertilizerSchedule");
     } catch (error) {
       console.error("Failed to save schedule:", error);
       Alert.alert("Error", "An error occurred while saving the schedule.");
@@ -52,21 +59,32 @@ const ScheduleDetails = ({ route }) => {
     }
   };
 
+  const imageUri = getImageUri(schedule.crop_type, schedule.stage); // Refer to schedule directly
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.wrapperContainer}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => Alert.alert("Menu", "Three-dot menu pressed")} style={styles.menuIcon}>
+        <TouchableOpacity
+          onPress={() => Alert.alert("Menu", "Three-dot menu pressed")}
+          style={styles.menuIcon}
+        >
           <Ionicons name="ellipsis-vertical" size={20} color="black" />
         </TouchableOpacity>
       </View>
 
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <View style={styles.imageContainer}>
-          <Image source={getImagePath(schedule.crop_type)} style={styles.cropImage} />
+          <Image
+            source={getImagePath(schedule.crop_type)}
+            style={styles.cropImage}
+          />
         </View>
 
         <View style={styles.detailsContainer}>
@@ -75,9 +93,15 @@ const ScheduleDetails = ({ route }) => {
             <Text style={styles.croptitle}>{schedule.crop_type}</Text>
           </View>
           <View style={styles.subDetailsContainer}>
-            <Text style={styles.subtitle}>Planting Date: {schedule.planting_date}</Text>
-            <Text style={styles.subtitle}>Est.Cost: Rs.{schedule.estimated_total_cost}</Text>
-            <Text style={styles.subtitle}>Est. Harversting Date: {schedule.estimated_harvesting_date}</Text>
+            <Text style={styles.subtitle}>
+              Planting Date: {schedule.planting_date}
+            </Text>
+            <Text style={styles.subtitle}>
+              Est. Cost: Rs. {schedule.estimated_total_cost}
+            </Text>
+            <Text style={styles.subtitle}>
+              Est. Harvesting Date: {schedule.estimated_harvesting_date}
+            </Text>
 
             <Text style={styles.subtitle}>Area Size: {schedule.area_size}</Text>
             <Text style={styles.subtitle}>Soil Condition:</Text>
@@ -85,54 +109,69 @@ const ScheduleDetails = ({ route }) => {
             <Text>pH: {schedule.soil_condition.pH}</Text>
           </View>
         </View>
-      </View>
+      </View> */}
 
       <View style={styles.animatedContainer}>
-        <ScrollView contentContainerStyle={styles.container}>
-          {schedule.growth_stages.map((stage, index) => (
-            <View key={index} style={styles.stageContainer}>
-              <Text style={styles.stageTitle}>Stage: {stage.stage}</Text>
-              <Text style={styles.text}>Amount: {stage.amount}</Text>
-              <Text style={styles.text}>Application Date: {stage.application_date}</Text>
-              <Text style={styles.text}>Fertilizer Type: {stage.fertilizer_type}</Text>
-              <Text style={styles.text}>Notes: {stage.notes}</Text>
-              <Text style={styles.text}>Cost: Rs. {stage.cost}</Text>
+        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+          {schedule.growth_stages.map((stage, index) => {
+            const imageSource = getImageUri(schedule.crop_type, stage.stage);
 
-            </View>
-          ))}
+            return (
+              <View key={index} style={styles.stageContainer}>
+                <View style={styles.rowContainer}>
+                  <View style={styles.imageContainer}>
+                    {imageSource ? (
+                      <Image source={imageSource} style={styles.stageImage} />
+                    ) : (
+                      <Text style={styles.noImageText}>No Image Available</Text>
+                    )}
+                  </View>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.stageTitle}>Stage: {stage.stage}</Text>
+                    <Text style={styles.text}>Amount: {stage.amount}</Text>
+                    <Text style={styles.text}>
+                      Application Date: {stage.application_date}
+                    </Text>
+                    <Text style={styles.text}>
+                      Fertilizer Type: {stage.fertilizer_type}
+                    </Text>
+                    <Text style={styles.text}>Notes: {stage.notes}</Text>
+                    <Text style={styles.text}>Cost: Rs. {stage.cost}</Text>
+                  </View>
+                </View>
+              </View>
+            );
+          })}
         </ScrollView>
       </View>
 
-      {/* Conditionally show the Save button if the schedule is generated */}
-      {/* {isGenerated && ( */}
-        <View style={styles.saveButtonContainer}>
-          <TouchableOpacity style={styles.saveButton} onPress={saveScheduleToDB}>
-            <Text style={styles.saveButtonText}>Save Schedule</Text>
-          </TouchableOpacity>
-        </View>
-      {/* )} */}
+      <View style={styles.saveButtonContainer}>
+        <TouchableOpacity style={styles.saveButton} onPress={saveScheduleToDB}>
+          <Text style={styles.saveButtonText}>Save Schedule</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
+  // Keep the same styles but ensure there are no duplicates
+  wrapper: { flex: 1 },
   wrapperContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", // Spread back icon, title, and menu icon
+    justifyContent: "space-between",
   },
   backButton: {
     position: "absolute",
-    top: 40, // Adjust according to your header height
+    top: 40,
     left: 20,
     zIndex: 10,
     padding: 10,
   },
   menuIcon: {
     position: "absolute",
-    top: 40, // Adjust according to your header height
+    top: 40,
     right: 20,
     zIndex: 10,
     padding: 10,
@@ -140,105 +179,95 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 8, // Reduced padding to decrease height
-    paddingTop: 0,
-    paddingBottom: 0, // Reduce padding from the bottom
+    padding: 8,
     backgroundColor: "#fff",
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
-    // borderWidth: 1,
   },
-  imageContainer: {
-    flex: 1,
-    paddingRight: 10,
-    zIndex: 1,
-  },
-  cropImage: {
-    width: "350%", // Setting width to 200%
-    height: 580, // Set a larger height for the image
-    resizeMode: "cover", // Cover to maintain aspect ratio
-    position: "relative", // To allow for absolute positioning adjustments if needed
-    left: "-80%", // Move the image left by 50% of its width to center
-    top: "10%", // Move the image up by 50% of its height to center
-  },
-
-  detailsContainer: {
-    flex: 2,
-    paddingLeft: 10,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  cropTitleContainer: {
-    top: 10, // Align at the top
-    right: -90, // Align to the right side with some padding
-    zIndex: 0, // Make sure it appears above other content
-    backgroundColor: "#fff", // Add a background to make it stand out
-    padding: 10, // Add padding for spacing
-    borderRadius: 8, // Optional: round the corners
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5, // Add elevation for shadow on Android
-  },
-  croptitle: {
-    fontSize: 40, // Make it larger
-    fontWeight: "bold", // Bolder text
-    alignSelf: "left", // Align to the top right corner
-    marginBottom: 10, // Adjust margin as needed
-    textTransform: "uppercase", // Capitalize the text
-  },
-  subDetailsContainer: {
-    marginTop: 100, // Ensure the remaining content does not overlap with the crop title
-    paddingLeft: 10,
-  },
-
-  subtitle: {
-    fontSize: 18,
-    marginTop: 8,
-    fontWeight: "bold",
-  },
-  text: {
-    fontSize: 16,
-    marginVertical: 4,
-  },
-  progressContainer: { marginBottom: 10 },
-  progressBar: { height: 10, borderRadius: 5 },
-
+  imageContainer: { flex: 1, paddingRight: 10, zIndex: 1 },
+  // cropImage: {
+  //   width: "350%",
+  //   height: 580,
+  //   resizeMode: "cover",
+  //   left: "-80%",
+  //   top: "10%",
+  // },
+  // detailsContainer: { flex: 2, paddingLeft: 10 },
+  // cropTitleContainer: {
+  //   top: 10,
+  //   right: -40,
+  //   zIndex: 0,
+  //   backgroundColor: "#fff",
+  //   padding: 10,
+  //   borderRadius: 8,
+  //   shadowColor: "#000",
+  //   shadowOffset: { width: 0, height: 2 },
+  //   shadowOpacity: 0.2,
+  //   shadowRadius: 4,
+  //   elevation: 5,
+  // },
+  // croptitle: {
+  //   fontSize: 40,
+  //   alignSelf: "left",
+  //   fontFamily: "poppins-bold",
+  //   textTransform: "capitalize",
+  // },
+  // subDetailsContainer: { marginTop: 100, paddingLeft: 10 },
+  // subtitle: {
+  //   fontSize: 18,
+  //   marginTop: 8,
+  //   fontFamily: "poppins",
+  //   marginBottom: -8,
+  // },
   animatedContainer: {
-    position: "absolute", // Set to absolute positioning
-    top: 530, // Align to the top of the parent
-    left: 0,
-    right: 0,
-    bottom: 0, // Allow it to stretch down
-    backgroundColor: "#f8f8f8", // Background color for visibility
-    zIndex: 2, // Ensure it appears above the header
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    // position: "absolute",
+    // top: 530,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    // backgroundColor: "#f8f8f8",
+    // zIndex: 2,
+    // borderTopLeftRadius: 30,
+    // borderTopRightRadius: 30,
+
     padding: 16,
+
   },
-  container: {
-    flexGrow: 1,
-    paddingBottom: 80,
-  },
+  container: { flexGrow: 1, paddingBottom: 80 },
   stageContainer: {
     marginVertical: 12,
-    padding: 16,
     backgroundColor: "#fff",
-    borderRadius: 8,
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    justifyContent: "center", // Center vertically
+    padding: 14,
+    paddingLeft: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
+    shadowRadius: 2,
+    elevation: 5,
+
   },
-  stageTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+  stageImage: {
+    width: "100%",
+    height: 200,
+    minHeight: 210,
+    resizeMode: "cover",
+    borderRadius: 16,
+    // borderTopRightRadius: 0,
+    // borderBottomRightRadius: 0,
   },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  textContainer: { flex: 2,},
+  stageTitle: { fontSize: 18, fontWeight: "bold" },
+  text: { fontSize: 16, marginVertical: 4 },
+
   saveButtonContainer: {
     position: "absolute",
     bottom: 20, // Position at the bottom

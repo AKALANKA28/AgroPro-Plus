@@ -16,20 +16,20 @@ const Location = ({ onLocationChange }) => {
       onLocationChange(currentLocation);
 
       // Send location data to Flask backend
-      try {
-        await fetch('http://your-flask-server-url/location', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            latitude: currentLocation.coords.latitude,
-            longitude: currentLocation.coords.longitude,
-          }),
-        });
-      } catch (error) {
-        console.error('Error sending location data to Flask:', error);
-      }
+      // try {
+      //   await fetch('http://your-flask-server-url/location', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({
+      //       latitude: currentLocation.coords.latitude,
+      //       longitude: currentLocation.coords.longitude,
+      //     }),
+      //   });
+      // } catch (error) {
+      //   console.error('Error sending location data to Flask:', error);
+      // }
     })();
   }, []);
 
