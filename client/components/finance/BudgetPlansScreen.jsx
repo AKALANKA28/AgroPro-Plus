@@ -23,7 +23,7 @@ const BudgetPlansScreen = ({ navigation }) => {
 
   const fetchBudgetPlans = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/finance/`);
+      const response = await axios.get(`/finance/`);
       setBudgetPlans(response.data);
       console.log(response.data);
       setLoading(false);

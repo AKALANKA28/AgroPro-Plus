@@ -17,7 +17,7 @@ const AnalysisScreen = ({ route }) => {
   useEffect(() => {
     const fetchBudgetPlan = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/finance/get/${id}`);
+        const response = await axios.get(`/finance/get/${id}`);
         setBudgetPlan(response.data.BudgetPlan);
       } catch (error) {
         console.log("Error fetching budget plan:", error);
