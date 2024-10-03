@@ -257,6 +257,13 @@ const Home = () => {
                 style={styles.cropImage}
               />
               <View style={styles.infoContainer}></View>
+
+              <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
+              <Image
+                source={{ uri: "crop_image_url" }}
+                style={styles.cropImage}
+              />
+              <View style={styles.infoContainer}></View>
             </ScrollView>
           </View>
         </Animated.View>
