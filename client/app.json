@@ -36,7 +36,6 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
       [
         "react-native-vision-camera",
         {
@@ -56,6 +55,7 @@
       "eas": {
         "projectId": "991eb9ad-1440-4b0f-b455-2ba089fba68a"
       }
-    }
+    },
+    "owner": "akalankadias"
   }
 }

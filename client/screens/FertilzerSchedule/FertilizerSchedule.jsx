@@ -98,7 +98,8 @@ const FertilizerSchedule = () => {
         style={styles.floatingButton}
         onPress={() => navigation.navigate("FertilizerFormScreen")} // Navigate to the new form screen
       >
-        <Ionicons name="add" size={40} color="#fff" />
+        <Text style={styles.floatingButtonText}>Generate Schedule</Text>
+        {/* <Ionicons name="add" size={40} color="#fff" /> */}
       </TouchableOpacity>
     </>
   );
@@ -121,8 +122,8 @@ const styles = StyleSheet.create({
     right: 20,
     backgroundColor: "#607F0E",
     borderRadius: 50,
-    width: 70,
-    height: 70,
+    width: 170,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
@@ -130,6 +131,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
+  },
+  floatingButtonText: {
+    color: "#fff",
+    fontSize: 20,
+    // fontFamily: "roboto-medium",
+    fontWeight: "900",
   },
 });
 

@@ -45,6 +45,9 @@ const scheduleRoute = require("./routes/schedules/scheduleRoute");
 const distributeRoute = require("./routes/distributors/distributeRoute");
 const stockRoute = require("./routes/distributors/stockRoute");
 
+
+
+
 // Use Routes
 app.use("/auth", UserRoute); 
 
@@ -55,6 +58,9 @@ app.use("/schedule", scheduleRoute);
 app.use("/distribute", distributeRoute);
 app.use("/stock", stockRoute);
 
+//finance
+const financeRoute = require("./routes/finance/financeRoute");
+app.use("/finance", financeRoute);
 
 
 module.exports = app;
