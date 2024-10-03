@@ -1,4 +1,4 @@
-import os
+import os.path
 from flask import Flask, request, jsonify
 from g4f.client import Client
 from g4f.cookies import set_cookies_dir, read_cookie_files
@@ -9,7 +9,8 @@ app = Flask(__name__)
 
 # Initialize the GPT Client
 client = Client()
-
+import g4f.debug
+g4f.debug.logging = True
 # Set the directory where .har file is stored
 cookies_dir = os.path.join(os.path.dirname(__file__), "har_and_cookies")
 set_cookies_dir(cookies_dir)
@@ -41,7 +42,6 @@ system_message = {
                 "growth_stages: ["
                     "{"
                         "stage: stage,"
-                        "stage_image_URI: Find a valid image URI relevant to the Seedling stage of rice from reputable sources such as Unsplash, Pixabay, or Pexels. The URI should link directly to an image that is accessible online and suitable for agricultural purposes, ending in .jpg or .png.,"
                         "application_date: application_date,"
                         "fertilizer_type: fertilizer_type,"
                         "amount: amount,"
