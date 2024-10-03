@@ -12,7 +12,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Header from "../../components/Header";
-import ScheduleCard from "../../components/ScheduleCard";
+import ScheduleCard from "../../components/Cards/ScheduleCard";
 import { Ionicons } from "@expo/vector-icons";
 
 const FertilizerSchedule = () => {
