@@ -1,42 +1,97 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import cropData from "./cropData"; // Adjust the path according to your folder structure
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
+import axios from "axios"; // Make sure to install axios if you haven't already
 
 const CropCard = () => {
+  const [cropData, setCropData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/schedule/"); // Replace with your actual API URL
+        // console.log(response.data); // Log the response data
+  
+        // Check if the response data is an array
+        if (Array.isArray(response.data)) {
+          const today = new Date();
+          const nextStages = response.data.map(crop => {
+            const nextStage = crop.growth_stages.find(stage => 
+              new Date(stage.application_date) > today
+            );
+  
+            // If there's a next stage, return the crop type and next stage info
+            if (nextStage) {
+              return {
+                crop_type: crop.crop_type,
+                ...nextStage
+              };
+            }
+            return null; // Return null if no next stage is found
+          }).filter(stage => stage !== null); // Filter out null values
+  
+          // Set the next stages data
+          setCropData(nextStages);
+        } else {
+          console.error("Schedule data is undefined or incorrectly structured.");
+          setCropData([]); // Optionally set to an empty state or show a message
+        }
+  
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
   // Render each crop card dynamically
-  const renderCrop = ({ item }) => (
+ // Render each crop card dynamically
+const renderCrop = ({ item }) => {
+  // Calculate days until the application date
+  const today = new Date();
+  const applicationDate = new Date(item.application_date);
+  const timeDiff = applicationDate - today; // Difference in milliseconds
+  const daysUntilApplication = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert to days
+
+  return (
     <TouchableOpacity style={styles.card}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: item.imageUri }} style={styles.cropImage} />
-        <Text style={styles.imageText}>In 5 days</Text>
+        <Image source={{ uri: "your-image-uri-here" }} style={styles.cropImage} />
+        <Text style={styles.imageText}>
+          In {daysUntilApplication} day{daysUntilApplication !== 1 ? 's' : ''}
+        </Text>
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>Crop Type: {item.crop_type}</Text>
-        <Text style={styles.infoText}>Week: {item.week}</Text>
-        <View style={styles.fertilizerType}>
-          <Text style={styles.typeText}>
-            Fertilizer Type: <Text style={styles.typeContent}>{item.fertilizerType}</Text>
-          </Text>
-        </View>
-        {item.alerts.length > 0 && (
-          <View>
-            <Text style={styles.alertText}>Alerts:</Text>
-            {item.alerts.map((alert, index) => (
-              <Text key={index} style={styles.alertText}>
-                {alert}
-              </Text>
-            ))}
-          </View>
-        )}
+        <Text style={styles.infoText}>Stage: {item.stage}</Text>
+        <Text style={styles.infoText}>
+          Fertilizer Type: <Text style={styles.typeContent}>{item.fertilizer_type}</Text>
+        </Text>
+        <Text style={styles.infoText}>
+          Amount: {item.amount}
+        </Text>
+        <Text style={styles.infoText}>
+          Notes: {item.notes}
+        </Text>
       </View>
     </TouchableOpacity>
   );
+};
+
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
 
   return (
     <FlatList
-      data={cropData} // Using the cropData here
+      data={cropData}
       renderItem={renderCrop}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.application_date} // Use application_date as the key
       horizontal
       showsHorizontalScrollIndicator={false}
     />
@@ -56,7 +111,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     marginBottom: 20,
-
   },
   imageContainer: {
     width: "100%",
@@ -88,18 +142,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
   },
-  fertilizerType: {
-    marginTop: 8,
-  },
-  typeText: {
-    fontWeight: "bold",
-  },
   typeContent: {
     color: "#607F0E",
-  },
-  alertText: {
-    color: "#FF9800",
-    marginTop: 5,
   },
 });
 

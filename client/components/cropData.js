@@ -31,26 +31,7 @@ const cropData = [
         'No immediate concerns',
       ],
     },
-    {
-      id: '4',
-      imageUri: 'https://example.com/crop_image_4.jpg',
-      health: 65,
-      week: 6,
-      alerts: [
-        'Possible water logging',
-        'Inspect leaves for fungal growth',
-      ],
-    },
-    {
-      id: '5',
-      imageUri: 'https://example.com/crop_image_5.jpg',
-      health: 78,
-      week: 4,
-      alerts: [
-        'Check soil moisture levels',
-        'Watch for signs of nutrient imbalance',
-      ],
-    },
+
   ];
   
   export default cropData;
