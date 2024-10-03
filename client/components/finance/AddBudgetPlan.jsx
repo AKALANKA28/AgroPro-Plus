@@ -104,7 +104,7 @@ const AddBudgetPlan = ({ navigation }) => {
       };
 
       const response = await axios.post(
-        `${BASE_URL}/finance/add`,
+        `/finance/add`,
         newPlan
       );
       Alert.alert("Success", "Budget Plan Added Successfully");
