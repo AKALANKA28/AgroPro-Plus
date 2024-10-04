@@ -1,102 +1,220 @@
-import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
 import React, { useState } from "react";
-import InputBox from "../../components/Forms/InputBox";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import SubmitButton from "../../components/Forms/SubmitButton";
 import axios from "axios";
+
 const Register = ({ navigation }) => {
-  // states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  //function
-  // btn funcn
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const handleSubmit = async () => {
+    setLoading(true);
+    setNameError("");
+    setEmailError("");
+    setPasswordError("");
+
+    if (!name.trim()) {
+      setNameError("Name is required");
+      setLoading(false);
+      return;
+    }
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      setLoading(false);
+      return;
+    }
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      setLoading(false);
+      return;
+    }
+
     try {
-      setLoading(true);
-      if (!name || !email || !password) {
-        Alert.alert("Please Fill All Fields");
-        setLoading(false);
-        return;
-      }
-      setLoading(false);
-      const { data } = await axios.post("/auth/register", {
-        name,
-        email,
-        password,
-      });
-      alert(data && data.message);
+      const { data } = await axios.post("/auth/register", { name, email, password });
+      alert(data.message);
       navigation.navigate("Login");
-      console.log("Register Data==> ", { name, email, password });
     } catch (error) {
-      alert(error.response.data.message);
+      const errorMessage = error.response?.data?.message || "An error occurred";
+      setPasswordError(errorMessage);
+    } finally {
       setLoading(false);
-      console.log(error);
     }
   };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.pageTitle}>Register</Text>
-      <View style={{ marginHorizontal: 20 }}>
-        <InputBox inputTitle={"Name"} value={name} setValue={setName} />
-        <InputBox
-          inputTitle={"Email"}
-          keyboardType="email-address"
-          autoComplete="email"
-          value={email}
-          setValue={setEmail}
-        />
-        <InputBox
-          inputTitle={"Password"}
-          secureTextEntry={true}
-          autoComplete="password"
-          value={password}
-          setValue={setPassword}
-        />
+    <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+      <View style={styles.container}>
+        {/* Top Accent Shape */}
+        <View style={styles.accentShape} />
+
+        {/* Title */}
+        <Text style={styles.title}>Create Farm Account</Text>
+
+        {/* Input Fields */}
+        <View style={styles.inputContainer}>
+          <View style={[styles.inputWrapper, nameError ? styles.inputError : null]}>
+            <Ionicons name="leaf-outline" size={20} color="green" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Full Name"
+              value={name}
+              onChangeText={setName}
+              placeholderTextColor="#666"
+            />
+          </View>
+          {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
+
+          <View style={[styles.inputWrapper, emailError ? styles.inputError : null]}>
+            <Ionicons name="mail-outline" size={20} color="green" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              placeholderTextColor="#666"
+            />
+          </View>
+          {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+
+          <View style={[styles.inputWrapper, passwordError ? styles.inputError : null]}>
+            <Ionicons name="lock-closed-outline" size={20} color="green" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+              autoCapitalize="none"
+              placeholderTextColor="#666"
+            />
+          </View>
+          {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+        </View>
+
+        {/* Sign Up Button */}
+        <TouchableOpacity
+          style={styles.signUpButton}
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          <Text style={styles.signUpButtonText}>CREATE ACCOUNT</Text>
+        </TouchableOpacity>
+
+        {/* Already have account text */}
+        <Text style={styles.bottomText}>
+          Already have a farm account?{" "}
+          <Text style={styles.link} onPress={() => navigation.navigate("Login")}>
+            Sign in
+          </Text>
+        </Text>
       </View>
-      {/* <Text>{JSON.stringify({ name, email, password }, null, 4)}</Text> */}
-      <SubmitButton
-        btnTitle="Register"
-        loading={loading}
-        handleSubmit={handleSubmit}
-      />
-      <Text style={styles.linkText}>
-        ALready Register Please{" "}
-        <Text style={styles.link} onPress={() => navigation.navigate("Login")}>
-          LOGIN
-        </Text>{" "}
-      </Text>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: "center",
-    backgroundColor: "#e1d5c9",
+    alignContent: "center",
+    backgroundColor: "#fff",
   },
-  pageTitle: {
-    fontSize: 40,
+  container: {
+    paddingHorizontal: 20,
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
+  },
+  accentShape: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 120,
+    height: 120,
+    backgroundColor: "#8FBC8F",
+    borderBottomLeftRadius: 100,
+  },
+  title: {
+    fontSize: 28,
     fontWeight: "bold",
-    textAlign: "center",
-    color: "#1e2225",
+    color: "#2E8B57",
+    textAlign: "left",
+    marginBottom: 30,
+  },
+  inputContainer: {
     marginBottom: 20,
   },
-  inputBox: {
-    height: 40,
-    marginBottom: 20,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    marginTop: 10,
-    paddingLeft: 10,
-    color: "#af9f85",
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#e6e6e6",
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 3,
   },
-  linkText: {
+  icon: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+  },
+  inputError: {
+    borderColor: "red",
+    borderWidth: 1,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 10,
+  },
+  signUpButton: {
+    backgroundColor: "#3CB371",
+    paddingVertical: 15,
+    borderRadius: 30,
+    alignItems: "center",
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  signUpButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  bottomText: {
     textAlign: "center",
+    color: "#666",
+    marginTop: 20,
   },
   link: {
-    color: "red",
+    color: "#3CB371",
+    fontWeight: "bold",
   },
 });
 

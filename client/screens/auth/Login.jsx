@@ -1,104 +1,115 @@
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/authContext";
-import InputBox from "../../components/Forms/InputBox";
-import SubmitButton from "../../components/Forms/SubmitButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-
-// Uncomment the base URL if needed
-// axios.defaults.baseURL = "http://192.168.1.159:8000";
+import { Ionicons } from '@expo/vector-icons';
 
 const Login = ({ navigation }) => {
-  // Global state
   const [state, setState] = useContext(AuthContext);
-
-  // States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
 
-  // Function to handle form submission
   const handleSubmit = async () => {
     setLoading(true);
+    setEmailError("");
+    setPasswordError("");
+
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      setLoading(false);
+      return;
+    }
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      setLoading(false);
+      return;
+    }
+
     try {
-      if (!email || !password) {
-        Alert.alert("Please Fill All Fields");
-        setLoading(false);
-        return;
-      }
-      
-      console.log("Sending login request with data:", { email, password });
-
       const { data } = await axios.post("/auth/login", { email, password });
-
-      console.log("Login response data:", data);
-
       setState(data);
       await AsyncStorage.setItem("@auth", JSON.stringify(data));
-
-      Alert.alert("Success", data.message || "Login successful");
       navigation.navigate("Home");
-      
-      console.log("Login Data==> ", { email, password });
     } catch (error) {
-      // Check if error.response exists before accessing its properties
       const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
-      Alert.alert("Error", errorMessage);
-      
-      console.log("Login error:", error);
+      if (error.response?.data?.field === "email") {
+        setEmailError(errorMessage);
+      } else if (error.response?.data?.field === "password") {
+        setPasswordError(errorMessage);
+      } else {
+        setEmailError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // Temporary function to check local storage data
-  const getLocalStorageData = async () => {
-    try {
-      let data = await AsyncStorage.getItem("@auth");
-      console.log("Local Storage Data==>", data);
-    } catch (error) {
-      console.log("Error fetching local storage data:", error);
-    }
-  };
-
-  // Call getLocalStorageData on component mount
-  React.useEffect(() => {
-    getLocalStorageData();
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text style={styles.pageTitle}>Login</Text>
-      <View style={{ marginHorizontal: 20 }}>
-        <InputBox
-          inputTitle={"Email"}
-          keyboardType="email-address"
-          autoComplete="email"
-          value={email}
-          setValue={setEmail}
-        />
-        <InputBox
-          inputTitle={"Password"}
-          secureTextEntry={true}
-          autoComplete="password"
-          value={password}
-          setValue={setPassword}
-        />
+      <Text style={styles.title}>Farm Login</Text>
+      <Text style={styles.subtitle}>Please sign in to access your farm data.</Text>
+
+      <View style={styles.inputContainer}>
+        <View style={[styles.inputWrapper, emailError ? styles.inputError : null]}>
+          <Ionicons name="mail-outline" size={20} color="green" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            autoComplete="email"
+            placeholderTextColor="#666"
+          />
+        </View>
+        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+
+        <View style={[styles.inputWrapper, passwordError ? styles.inputError : null]}>
+          <Ionicons name="lock-closed-outline" size={20} color="green" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={setPassword}
+            autoCapitalize="none"
+            placeholderTextColor="#666"
+          />
+          {/* Toggle password visibility */}
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Ionicons
+              name={showPassword ? "eye-off-outline" : "eye-outline"}
+              size={20}
+              color="gray"
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </View>
+        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
       </View>
-      <SubmitButton
-        btnTitle="Login"
-        loading={loading}
-        handleSubmit={handleSubmit}
-      />
-      <Text style={styles.linkText}>
-        Not a user? Please{" "}
-        <Text
-          style={styles.link}
-          onPress={() => navigation.navigate("Register")}
-        >
-          REGISTER
-        </Text>{" "}
+
+      <TouchableOpacity
+        style={styles.forgotPassword}
+        onPress={() => console.log("Forgot Password pressed")}
+      >
+        <Text style={styles.forgotText}>Forgot?</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
+        <Text style={styles.buttonText}>LOGIN</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.bottomText}>
+        Don't have an account?{" "}
+        <Text style={styles.link} onPress={() => navigation.navigate("Register")}>
+          Sign up
+        </Text>
       </Text>
     </View>
   );
@@ -107,21 +118,77 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
     justifyContent: "center",
-    backgroundColor: "#e1d5c9",
+    backgroundColor: "#fff",
   },
-  pageTitle: {
-    fontSize: 40,
+  title: {
+    fontSize: 30,
     fontWeight: "bold",
-    textAlign: "center",
-    color: "#1e2225",
-    marginBottom: 20,
+    color: "#2E8B57", // Green for nature theme
+    marginBottom: 10,
   },
-  linkText: {
+  subtitle: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 30,
+  },
+  inputContainer: {
+    marginBottom: 10,
+  },
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f2f2f2",
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    marginBottom: 10,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+  },
+  inputError: {
+    borderColor: "red",
+    borderWidth: 1,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginBottom: 10,
+  },
+  forgotPassword: {
+    alignItems: "flex-end",
+  },
+  forgotText: {
+    color: "#3CB371", // Light green for consistency with theme
+    fontSize: 14,
+  },
+  button: {
+    backgroundColor: "#3CB371", // Green button for agricultural theme
+    padding: 15,
+    borderRadius: 30,
+    alignItems: "center",
+    marginTop: 30,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  bottomText: {
     textAlign: "center",
+    marginTop: 20,
+    color: "#666",
   },
   link: {
-    color: "red",
+    color: "#3CB371", // Link color matching theme
+    fontWeight: "bold",
   },
 });
 
