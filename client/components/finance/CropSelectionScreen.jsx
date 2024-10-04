@@ -12,6 +12,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons"; // Importing icons
 
 const CropSelectionScreen = () => {
   const [budgetPlanName, setBudgetPlanName] = useState(""); // Budget Plan Name
@@ -27,7 +28,9 @@ const CropSelectionScreen = () => {
   const [totalYield, setTotalYield] = useState(0); // Total yield
   const [estimatedIncome, setEstimatedIncome] = useState(0); // Estimated income
   const [profit, setProfit] = useState(0); // Profit
+  const [expenditureCategories, setExpenditureCategories] = useState(null); // For displaying the expenditure categories
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({}); // To store validation errors
 
   // Hardcoded crop details
   const cropDetails = {
@@ -90,6 +93,7 @@ const CropSelectionScreen = () => {
     } else {
       setZones([]);
     }
+    setExpenditureCategories(null); // Reset expenditure categories when the crop changes
   };
 
   // Function to get details for the selected crop and zone
@@ -103,79 +107,108 @@ const CropSelectionScreen = () => {
   // Function to handle start date change
   const handleStartDateChange = (event, selectedDate) => {
     setShowStartDatePicker(false);
-    if (selectedDate) setStartDate(selectedDate);
+    if (selectedDate && selectedDate >= new Date()) { // Ensure no past date is selected
+      setStartDate(selectedDate);
+      setErrors({ ...errors, startDate: null }); // Clear error for start date
+    } else {
+      setErrors({ ...errors, startDate: "Start date cannot be in the past." });
+    }
   };
 
   // Function to handle end date change
   const handleEndDateChange = (event, selectedDate) => {
     setShowEndDatePicker(false);
-    if (selectedDate) setEndDate(selectedDate);
+    if (selectedDate && selectedDate >= startDate) { // Ensure end date is not before start date
+      setEndDate(selectedDate);
+      setErrors({ ...errors, endDate: null }); // Clear error for end date
+    } else {
+      setErrors({ ...errors, endDate: "End date cannot be before start date." });
+    }
+  };
+
+  // Function to display expenditure categories when a crop and zone are selected
+  useEffect(() => {
+    const cropInfo = getCropDetails();
+    if (cropInfo) {
+      setExpenditureCategories(cropInfo.expenditures);
+    }
+  }, [crop, climateZone]);
+
+  // Function to validate area and fertilizer inputs
+  const validateInputs = () => {
+    let valid = true;
+    const newErrors = {};
+
+    if (!areaOfLand || parseFloat(areaOfLand) <= 0) {
+      newErrors.areaOfLand = "Area of land must be a positive number.";
+      valid = false;
+    }
+
+    if (!fertilizerCost || parseFloat(fertilizerCost) <= 0) {
+      newErrors.fertilizerCost = "Fertilizer cost must be a positive number.";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
   };
 
   // Function to calculate total expenditure, yield, income, and profit
   const calculateEstimates = () => {
-    const cropInfo = getCropDetails();
-    if (cropInfo && areaOfLand) {
-      const area = parseFloat(areaOfLand);
-      const yieldEstimate = cropInfo.yieldPerAcre * area;
-      const revenueEstimate = yieldEstimate * cropInfo.marketPricePerKg;
+    if (validateInputs()) {
+      const cropInfo = getCropDetails();
+      if (cropInfo && areaOfLand) {
+        const area = parseFloat(areaOfLand);
+        const yieldEstimate = cropInfo.yieldPerAcre * area;
+        const revenueEstimate = yieldEstimate * cropInfo.marketPricePerKg;
 
-      const seedsCostTotal = cropInfo.expenditures.seedsCost * area;
-      const pesticidesCostTotal = cropInfo.expenditures.pesticidesCost * area;
-      const laborCostTotal = cropInfo.expenditures.laborCost * area;
-      const waterCostTotal = cropInfo.expenditures.waterCost * area;
-      const totalExpenditure = seedsCostTotal + pesticidesCostTotal + laborCostTotal + waterCostTotal + parseFloat(fertilizerCost);
+        const seedsCostTotal = cropInfo.expenditures.seedsCost * area;
+        const pesticidesCostTotal = cropInfo.expenditures.pesticidesCost * area;
+        const laborCostTotal = cropInfo.expenditures.laborCost * area;
+        const waterCostTotal = cropInfo.expenditures.waterCost * area;
+        const totalExpenditure = seedsCostTotal + pesticidesCostTotal + laborCostTotal + waterCostTotal + parseFloat(fertilizerCost);
 
-      setTotalYield(yieldEstimate);
-      setEstimatedIncome(revenueEstimate);
-      setProfit(revenueEstimate - totalExpenditure);
-      setTotalExpenditure(totalExpenditure);
-    } else {
-      Alert.alert('Error', 'Please ensure all fields are filled correctly.');
+        setTotalYield(yieldEstimate);
+        setEstimatedIncome(revenueEstimate);
+        setProfit(revenueEstimate - totalExpenditure);
+        setTotalExpenditure(totalExpenditure);
+      } else {
+        Alert.alert('Error', 'Please ensure all fields are filled correctly.');
+      }
     }
   };
 
   // Function to save the budget plan to the database
   const handleSaveBudgetPlan = async () => {
-    // Validate input data
     if (!budgetPlanName) {
       Alert.alert('Error', 'Please enter a budget plan name.');
       return;
     }
-  
+
     if (!crop) {
       Alert.alert('Error', 'Please select a crop.');
       return;
     }
-  
+
     if (!climateZone) {
       Alert.alert('Error', 'Please select a climate zone.');
       return;
     }
-  
-    if (!areaOfLand || isNaN(parseFloat(areaOfLand))) {
-      Alert.alert('Error', 'Please enter a valid area of land in acres.');
-      return;
-    }
-  
-    if (!fertilizerCost || isNaN(parseFloat(fertilizerCost))) {
-      Alert.alert('Error', 'Please enter a valid fertilizer cost.');
-      return;
-    }
-  
+
+    if (!validateInputs()) return;
+
     if (totalExpenditure === 0) {
       Alert.alert('Error', 'Total expenditure must be calculated before saving.');
       return;
     }
-  
-    // Prepare the budget plan object
+
     const budgetPlan = {
       title: budgetPlanName,
       startDate,
       endDate,
       seedsCost: 0,
-      pesticidesCost:  0,
-      otherCost:  0,
+      pesticidesCost: 0,
+      otherCost: 0,
       estimatedYield: 0,
       estimatedRevenue: 0,
       crop,
@@ -187,13 +220,12 @@ const CropSelectionScreen = () => {
       estimatedIncome,
       profit,
     };
-  
+
     try {
       console.log(budgetPlan);
       setLoading(true); // Show loading indicator while saving
-      const response = await axios.post(`/finance/add`, budgetPlan); // Replace with your API URL
+      const response = await axios.post(`/finance/add2`, budgetPlan); // Replace with your API URL
       Alert.alert('Success', 'Budget plan saved successfully!');
-     // navigation.navigate("BudgetPlansScreen"); // Navigate back after saving
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to save the budget plan.');
@@ -201,11 +233,11 @@ const CropSelectionScreen = () => {
       setLoading(false); // Hide loading indicator
     }
   };
-  
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Crop Selection</Text>
 
+  
       <Text>Budget Plan Name</Text>
       <TextInput
         style={styles.input}
@@ -213,23 +245,25 @@ const CropSelectionScreen = () => {
         value={budgetPlanName}
         onChangeText={setBudgetPlanName}
       />
-
+  
       <Text>Start Date</Text>
       <TouchableOpacity style={styles.datePicker} onPress={() => setShowStartDatePicker(true)}>
         <Text>{startDate.toDateString()}</Text>
       </TouchableOpacity>
+      {errors.startDate && <Text style={styles.error}>{errors.startDate}</Text>}
       {showStartDatePicker && (
         <DateTimePicker value={startDate} mode="date" display="default" onChange={handleStartDateChange} />
       )}
-
+  
       <Text>End Date</Text>
       <TouchableOpacity style={styles.datePicker} onPress={() => setShowEndDatePicker(true)}>
         <Text>{endDate.toDateString()}</Text>
       </TouchableOpacity>
+      {errors.endDate && <Text style={styles.error}>{errors.endDate}</Text>}
       {showEndDatePicker && (
         <DateTimePicker value={endDate} mode="date" display="default" onChange={handleEndDateChange} />
       )}
-
+  
       <Text>Select Crop</Text>
       <Picker
         selectedValue={crop}
@@ -243,7 +277,7 @@ const CropSelectionScreen = () => {
         <Picker.Item label="Paddy" value="paddy" />
         <Picker.Item label="Tea" value="tea" />
       </Picker>
-
+  
       <Text>Select Climatic Zone</Text>
       <Picker
         selectedValue={climateZone}
@@ -254,7 +288,18 @@ const CropSelectionScreen = () => {
           <Picker.Item key={index} label={zone} value={zone} />
         ))}
       </Picker>
-
+  
+      {expenditureCategories && (
+        <View style={styles.expendituresContainer}>
+          <Text style={styles.subtitle}>Expenditure Categories (per acre):</Text>
+          {Object.keys(expenditureCategories).map((category, index) => (
+            <Text key={index} style={styles.expenditureItem}>
+              {category.replace(/([A-Z])/g, ' $1')}: Rs. {expenditureCategories[category]}
+            </Text>
+          ))}
+        </View>
+      )}
+  
       <TextInput
         style={styles.input}
         placeholder="Area of Land (in acres)"
@@ -262,7 +307,8 @@ const CropSelectionScreen = () => {
         onChangeText={setAreaOfLand}
         keyboardType="numeric"
       />
-
+      {errors.areaOfLand && <Text style={styles.error}>{errors.areaOfLand}</Text>}
+  
       <TextInput
         style={styles.input}
         placeholder="Fertilizer Cost"
@@ -270,53 +316,109 @@ const CropSelectionScreen = () => {
         onChangeText={setFertilizerCost}
         keyboardType="numeric"
       />
-
-      <Button title="Calculate Estimates" onPress={calculateEstimates} />
-
-      {/* Display calculation results */}
-      <View>
-        <Text>Total Expenditure: Rs. {totalExpenditure}</Text>
-        <Text>Total Yield: {totalYield} kg</Text>
-        <Text>Estimated Income: Rs. {estimatedIncome}</Text>
-        <Text>Profit: Rs. {profit}</Text>
+      {errors.fertilizerCost && <Text style={styles.error}>{errors.fertilizerCost}</Text>}
+  
+      <TouchableOpacity style={styles.calculateButton} onPress={calculateEstimates}>
+        <Text style={styles.buttonText}>Calculate Estimates</Text>
+      </TouchableOpacity>
+  
+      <View style={styles.resultContainer}>
+        <Text style={styles.resultText}>Total Expenditure: Rs. {totalExpenditure}</Text>
+        <Text style={styles.resultText}>Total Yield: {totalYield} kg</Text>
+        <Text style={styles.resultText}>Estimated Income: Rs. {estimatedIncome}</Text>
+        <Text style={styles.resultText}>Profit: Rs. {profit}</Text>
       </View>
-
-      <Button title="Save Budget Plan" onPress={handleSaveBudgetPlan} />
+  
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveBudgetPlan}>
+        <Text style={styles.buttonText}>Save Budget Plan</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: "#f7f7f7",
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#419F57",
-    marginBottom: 30,
-    textAlign: "center",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    color: "#333",
-    backgroundColor: "#fff",
-    marginBottom: 20,
-  },
-  datePicker: {
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 20,
-  },
-});
+  const styles = StyleSheet.create({
+    container: {
+      padding: 20,
+      backgroundColor: "#f7f7f7",
+    },
+    header: {
+      fontSize: 28,
+      fontWeight: "bold",
+      color: "#607F0E",
+      marginBottom: 30,
+      textAlign: "center",
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: "#ddd",
+      borderRadius: 8,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      fontSize: 16,
+      color: "#333",
+      backgroundColor: "#fff",
+      marginBottom: 20,
+    },
+    datePicker: {
+      paddingVertical: 12,
+      paddingHorizontal: 15,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: "#ddd",
+      marginBottom: 20,
+    },
+    expendituresContainer: {
+      marginBottom: 20,
+      padding: 15,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: "#607F0E",
+      backgroundColor: "#e7f9e7",
+    },
+    expenditureItem: {
+      fontSize: 16,
+      marginVertical: 5,
+      color: "#333",
+    },
+    subtitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      marginBottom: 10,
+    },
+    error: {
+      color: 'red',
+      marginBottom: 10,
+    },
+    calculateButton: {
+      backgroundColor: "#607F0E",
+      padding: 7,
+      borderRadius: 8,
+      marginBottom: 10,
+      alignItems: "center",
+    },
+    saveButton: {
+      backgroundColor: "#607F0E",
+      padding: 15,
+      borderRadius: 8,
+      alignItems: "center",
+    },
+    buttonText: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: "bold",
+    },
+    resultContainer: {
+      marginVertical: 20,
+      padding: 15,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: "#607F0E",
+      backgroundColor: "#e7f9e7",
+    },
+    resultText: {
+      fontSize: 16,
+      color: "#333",
+    },
+  });
+  
 
 export default CropSelectionScreen;
