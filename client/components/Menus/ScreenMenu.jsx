@@ -35,11 +35,30 @@ const ScreenMenu = () => {
     "roboto": require("../../assets/fonts/Roboto-Regular.ttf"),
     "roboto-medium": require("../../assets/fonts/Roboto-Medium.ttf"),
     "roboto-bold": require("../../assets/fonts/Roboto-Bold.ttf"),
+    "roboto-black": require("../../assets/fonts/Roboto-Black.ttf"),
+
     "poppins": require("../../assets/fonts/Poppins-Regular.ttf"),
     "poppins-semibold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
     "poppins-bold": require("../../assets/fonts/Poppins-Bold.ttf"),
-    "roboto-black": require("../../assets/fonts/Roboto-Black.ttf"),
+    
+    "Nunito-Bold": require("../../assets/fonts/Nunito-Bold.ttf"),
+    "Nunito-ExtraLight": require("../../assets/fonts/Nunito-ExtraLight.ttf"),
+    "Nunito-Light": require("../../assets/fonts/Nunito-Light.ttf"),
+    "Nunito-Medium": require("../../assets/fonts/Nunito-Medium.ttf"),
+    "Nunito-Regular": require("../../assets/fonts/Nunito-Regular.ttf"),
+    "Nunito-SemiBold": require("../../assets/fonts/Nunito-SemiBold.ttf"),
+    "Nunito-ExtraBold": require("../../assets/fonts/Nunito-ExtraBold.ttf"),
+
+
   });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <Stack.Navigator initialRouteName="Home">

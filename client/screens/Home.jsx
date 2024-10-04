@@ -145,7 +145,7 @@ const Home = () => {
       text: "Fertilizer Schedule",
       navigateTo: "FertilizerSchedule",
     },
-    { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
+    // { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
     {
       id: "3",
       icon: "chart",
@@ -230,14 +230,13 @@ const Home = () => {
               <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
               <CropCard />
 
-              <Text style={styles.sectionTitle}>Nearby Distributor</Text>
+              <Text style={styles.sectionTitle}>Nearby Distributors</Text>
               <NearLocation />
 
+
               <Text style={styles.sectionTitle}>Finance</Text>
-             
 
               <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
-             
             </ScrollView>
           </View>
         </Animated.View>
@@ -322,8 +321,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 19,
+    // fontStyle: "italic",
+    fontFamily: "Nunito-ExtraBold",
+    // fontWeight: "bold",
     marginBottom: 10,
     color: "#1e441f", // Fixed the color to have a valid hex value
   },
