@@ -6,72 +6,83 @@ import {
   StyleSheet, 
   Image, 
   SafeAreaView, 
-  Dimensions 
+  Dimensions, 
+  ImageBackground // Import ImageBackground
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
+import { Ionicons } from '@expo/vector-icons'; 
+import { useNavigation } from "@react-navigation/native"; 
 
-const { width, height } = Dimensions.get('window'); // Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 const Community = () => {
-  const navigation = useNavigation(); // Use the navigation hook
+  const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.container}>
-      
-      {/* Header */}
-      <View style={styles.header}>
-        {/* Back Button */}
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()} // Use navigation to go back
-        >
-          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
-        </TouchableOpacity>
+    // Use ImageBackground for the background image
+    <ImageBackground
+      source={require('C:\\Users\\udara\\Documents\\GitHub\\AgroPro-Plus\\client\\assets\\images\\stages\\rice-panicle-initiation.jpeg')} // Replace with the path to your image
+      style={styles.background}
+    >
+      <SafeAreaView style={styles.container}>
         
-        {/* Logo */}
-        <Image
-          source={{ uri: 'https://png.pngtree.com/png-vector/20211208/ourmid/pngtree-agricultural-logo-design-png-image_4051578.png' }} // Replace with your logo URL or local asset
-          style={styles.logo}
-        />
-        
-        {/* Header Text */}
-        <Text style={styles.headerText}>Enhance your communication</Text>
-      </View>
+        {/* Header */}
+        <View style={styles.header}>
+          {/* Back Button */}
+          <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
+          
+          {/* Logo */}
+          <Image
+            source={{ uri: 'https://png.pngtree.com/png-vector/20211208/ourmid/pngtree-agricultural-logo-design-png-image_4051578.png' }} 
+            style={styles.logo}
+          />
+          
+          {/* Header Text */}
+          <Text style={styles.headerText}>Enhance your communication</Text>
+        </View>
 
-      {/* Full-Screen Image */}
-      <Image
-          source={{ uri: 'https://blog.telebu.com/wp-content/uploads/2023/02/How-to-Communicate-With-Farmers.jpg' }} // Replace with your image URL or local asset
+        {/* Full-Screen Image */}
+        <Image
+          source={{ uri: 'https://blog.telebu.com/wp-content/uploads/2023/02/How-to-Communicate-With-Farmers.jpg' }} 
           style={styles.img}
         />
 
-      {/* Buttons Container */}
-      <View style={styles.buttonContainer}>
-        {/* Special Alerts Button */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SpecialNotices')}>
-          <Text style={styles.buttonText}>Special alerts</Text>
-        </TouchableOpacity>
+        {/* Buttons Container */}
+        <View style={styles.buttonContainer}>
+          {/* Special Alerts Button */}
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SpecialNotices')}>
+            <Text style={styles.buttonText}>Special alerts</Text>
+          </TouchableOpacity>
 
-        {/* Share Experience Button */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ShareExperience')}>
-          <Text style={styles.buttonText}>Share experience</Text>
-        </TouchableOpacity>
+          {/* Share Experience Button */}
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ShareExperience')}>
+            <Text style={styles.buttonText}>Share experience</Text>
+          </TouchableOpacity>
 
-        {/* Chat Button */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ChatApp')}>
-          <Text style={styles.buttonText}>Chat</Text>
-        </TouchableOpacity>
-      </View>
+          {/* Chat Button */}
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ChatApp')}>
+            <Text style={styles.buttonText}>Chat</Text>
+          </TouchableOpacity>
+        </View>
 
-    </SafeAreaView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 // Stylesheet
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF', 
     padding: 20,
   },
   header: {
@@ -93,11 +104,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   img: {
-    width: 370,       
+    width: 345,       
     height: height * 0.3, 
     resizeMode: 'cover', 
     marginBottom: 0,
-    borderRadius: 10,   
+    borderRadius: 10,  
   },
   headerText: {
     flex: 1,
