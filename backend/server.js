@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 // app.use(morgan("dev"));
 
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8070;
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -38,13 +38,20 @@ app.listen(PORT, () => {
 // Routes Path
 const UserRoute = require("./routes/userRoutes");
 
-
+//Akalanka
+const scheduleRoute = require("./routes/schedules/scheduleRoute");
 
 // Aashani
 const distributeRoute = require("./routes/distributors/distributeRoute");
+<<<<<<< HEAD
 //udara
 const noticeRoute = require("./routes/community/noticeRoute");
 const postRoute = require("./routes/community/postRoute");
+=======
+const stockRoute = require("./routes/distributors/stockRoute");
+
+
+>>>>>>> 24b82eede2cc6aebcd236c0111e22f9df0cc1aa1
 
 
 //udara
@@ -54,9 +61,12 @@ const postRoute = require("./routes/community/postRoute");
 // Use Routes
 app.use("/auth", UserRoute); 
 
+//Akalanka
+app.use("/schedule", scheduleRoute);
 
 //Aashani
 app.use("/distribute", distributeRoute);
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 //udara
 app.use("/notice", noticeRoute);
@@ -69,6 +79,13 @@ app.use("/notice", noticeRoute);
 app.use("/post", postRoute);
 
 >>>>>>> Stashed changes
+=======
+app.use("/stock", stockRoute);
+
+//finance
+const financeRoute = require("./routes/finance/financeRoute");
+app.use("/finance", financeRoute);
+>>>>>>> 24b82eede2cc6aebcd236c0111e22f9df0cc1aa1
 
 
 module.exports = app;
