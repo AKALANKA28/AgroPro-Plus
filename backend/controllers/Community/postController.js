@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 // controllers/postController.js
 const Post = require("../../models/community/postModel");
 
@@ -62,70 +61,3 @@ exports.deletePost = async (req, res) => {
   }
   
 };
-=======
-const express = require('express');
-const multer = require('multer');
-const router = express.Router();
-const Post = require('../models/postModel'); // Assuming you have a Post model
-
-// Set up multer for image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage });
-
-// Add a new post
-router.post('/', upload.single('image'), async (req, res) => {
-  const { text } = req.body;
-  const image = req.file ? req.file.filename : null;
-
-  const newPost = new Post({ text, image });
-
-  try {
-    const savedPost = await newPost.save();
-    res.json(savedPost);
-  } catch (error) {
-    res.status(500).json({ error: 'Error saving post' });
-  }
-});
-
-// Get all posts
-router.get('/', async (req, res) => {
-  try {
-    const posts = await Post.find();
-    res.json(posts);
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching posts' });
-  }
-});
-
-// Update a post
-router.put('/:id', async (req, res) => {
-  const { text } = req.body;
-
-  try {
-    const updatedPost = await Post.findByIdAndUpdate(req.params.id, { text }, { new: true });
-    res.json(updatedPost);
-  } catch (error) {
-    res.status(500).json({ error: 'Error updating post' });
-  }
-});
-
-// Delete a post
-router.delete('/:id', async (req, res) => {
-  try {
-    await Post.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Post deleted' });
-  } catch (error) {
-    res.status(500).json({ error: 'Error deleting post' });
-  }
-});
-
-module.exports = router;
->>>>>>> Stashed changes
