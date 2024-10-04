@@ -153,6 +153,7 @@ const updateUserController = async (req, res) => {
   }
 };
 
+
 module.exports = {
   requireSingIn,
   registerController,
