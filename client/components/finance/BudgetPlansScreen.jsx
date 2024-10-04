@@ -77,7 +77,7 @@ const BudgetPlansScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.filterButtonActive}>
           <Text style={styles.filterTextActive}>All</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.filterButtonInactive}>
+        <TouchableOpacity style={styles.filterButtonInactive} onPress={() => navigation.navigate("CropSelectionScreen")}>
           <Text style={styles.filterTextInactive}>Ongoing</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.filterButtonInactive} onPress={() => navigation.navigate("MarketPriceTable")}>

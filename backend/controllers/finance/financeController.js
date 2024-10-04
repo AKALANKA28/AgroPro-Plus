@@ -1,9 +1,11 @@
 const budgetPlan = require('../../models/finance/budgetModel');
 
+
 // Add a new budgetPlan record
 exports.addBudgetPlan = async (req, res) => {
     try {
-        const {title, crop, startDate, endDate, seedsCost,fertilizerCost,pesticidesCost,otherCost,estimatedYield,estimatedRevenue} = req.body;
+        console.log(req.body); 
+        const {title, crop, startDate, endDate, seedsCost,fertilizerCost,pesticidesCost,otherCost,estimatedYield,estimatedRevenue,climateZone,areaOfLand,totalExpenditure,totalYield,estimatedIncome,profit} = req.body;
 
         const newBudgetPlan = new budgetPlan({
             title,
@@ -16,6 +18,12 @@ exports.addBudgetPlan = async (req, res) => {
             otherCost,
             estimatedYield,
             estimatedRevenue,
+            climateZone,
+            areaOfLand,
+            totalExpenditure,
+            totalYield,
+            estimatedIncome,
+            profit
         });
 
         await newBudgetPlan.save();
@@ -101,5 +109,6 @@ exports.deleteBudgetPlan = async (req, res) => {
         res.status(500).json({ status: "Error deleting plan record", error: err.message });
     }
 };
+
 
 

@@ -20,7 +20,8 @@ import BudgetPlanOverviewScreen from "../../components/finance/BudgetPlanOvervie
 import EditBudgetPlanScreen from '../../components/finance/EditBudgetPlanScreen';
 import MarketPriceTable from '../../components/finance/MarketPriceTable';
 import updateExpenses from '../../components/finance/updateExpenses';
-import AnalysisScreen from '../../components/finance/AnalysisScreen'
+import AnalysisScreen from '../../components/finance/AnalysisScreen';
+import CropSelectionScreen from '../../components/finance/CropSelectionScreen';
 
 const ScreenMenu = () => {
   //global state
@@ -86,6 +87,7 @@ const ScreenMenu = () => {
         <Stack.Screen name="EditBudgetPlanScreen" component={EditBudgetPlanScreen} options={{headerShown:true,headerTitle: '' }}/>
         <Stack.Screen name="MarketPriceTable" component={MarketPriceTable} options={{headerShown:true,headerTitle: '' }}/>
         <Stack.Screen name="updateExpenses" component={updateExpenses} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="CropSelectionScreen" component={CropSelectionScreen} options={{headerShown:true,headerTitle: '' }}/>
         <Stack.Screen name="AnalysisScreen" component={AnalysisScreen} options={{headerShown:true,headerTitle: '' }}/>
       </>
       {/* ) : (
