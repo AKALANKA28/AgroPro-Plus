@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 8,
     padding: 15,
-    marginLeft: 15, // Adjust margin for horizontal layout
+    // marginLeft: 15, // Adjust margin for horizontal layout
     // elevation: 3,
     borderWidth: 1,
     borderColor: "#ccc",
