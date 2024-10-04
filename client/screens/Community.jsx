@@ -8,23 +8,14 @@ import {
   SafeAreaView, 
   Dimensions 
 } from 'react-native';
-<<<<<<< Updated upstream
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install expo vector icons
-import { useNavigation } from "@react-navigation/native";
-import axios from 'axios';
-const { width, height } = Dimensions.get('window'); // Get screen dimensions
-
-const Community = (navigate) => {
-=======
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 
 const { width, height } = Dimensions.get('window'); // Get screen dimensions
 
 const Community = () => {
-  const navigation = useNavigation(); // Get the navigation object
+  const navigation = useNavigation(); // Use the navigation hook
 
->>>>>>> Stashed changes
   return (
     <SafeAreaView style={styles.container}>
       
@@ -33,11 +24,7 @@ const Community = () => {
         {/* Back Button */}
         <TouchableOpacity 
           style={styles.backButton}
-<<<<<<< Updated upstream
-          onPress={() => navigate.goBack()}
-=======
-          onPress={() => navigation.goBack()} // Use the navigation object
->>>>>>> Stashed changes
+          onPress={() => navigation.goBack()} // Use navigation to go back
         >
           <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
         </TouchableOpacity>
@@ -61,29 +48,17 @@ const Community = () => {
       {/* Buttons Container */}
       <View style={styles.buttonContainer}>
         {/* Special Alerts Button */}
-<<<<<<< Updated upstream
-        <TouchableOpacity style={styles.button} onPress={() =>  useNavigation.navigate('SpecialNotices')}>
-=======
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SpecialNotices')}>
->>>>>>> Stashed changes
           <Text style={styles.buttonText}>Special alerts</Text>
         </TouchableOpacity>
 
         {/* Share Experience Button */}
-<<<<<<< Updated upstream
-        <TouchableOpacity style={styles.button} onPress={() => { /* Add your handler here */ }}>
-=======
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ShareExperience')}>
->>>>>>> Stashed changes
           <Text style={styles.buttonText}>Share experience</Text>
         </TouchableOpacity>
 
         {/* Chat Button */}
-<<<<<<< Updated upstream
-        <TouchableOpacity style={styles.button} onPress={() => { /* Add your handler here */ }}>
-=======
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ChatApp')}>
->>>>>>> Stashed changes
           <Text style={styles.buttonText}>Chat</Text>
         </TouchableOpacity>
       </View>
@@ -118,11 +93,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   img: {
-<<<<<<< Updated upstream
     width: 370,       
-=======
-    width: '100%',       // Change to cover full width
->>>>>>> Stashed changes
     height: height * 0.3, 
     resizeMode: 'cover', 
     marginBottom: 0,

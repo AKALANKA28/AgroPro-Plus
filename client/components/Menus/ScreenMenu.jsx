@@ -100,6 +100,29 @@ const ScreenMenu = () => {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="SpecialNotices"
+          component={SpecialNotices}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="ShareExperience"
+          component={ShareExperience}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="ChatApp"
+          component={ChatApp}
+          options={{
+            headerShown: false,
+          }}
+        />
         {/* <Stack.Screen
           name="MapDisplay"
           component={MapDisplay}

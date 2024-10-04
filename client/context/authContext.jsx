@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
 
   //default axios setting
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    // axios.defaults.baseURL = "http://192.168.1.159:8070";
+    axios.defaults.baseURL = "http://192.168.238.108:8070";
   // axios.defaults.baseURL = "http://192.168.43.137:8070";
   // axios.defaults.baseURL = "http://192.168.21.141:8070";
   // axios.defaults.baseURL = "http://192.168.43.12:8070";
