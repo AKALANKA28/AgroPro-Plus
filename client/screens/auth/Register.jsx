@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import SubmitButton from "../../components/Forms/SubmitButton";
 import axios from "axios";
 
 const Register = ({ navigation }) => {
@@ -19,6 +18,7 @@ const Register = ({ navigation }) => {
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -61,12 +61,12 @@ const Register = ({ navigation }) => {
         <View style={styles.accentShape} />
 
         {/* Title */}
-        <Text style={styles.title}>Create Farm Account</Text>
+        <Text style={styles.title}>Create Account</Text>
 
         {/* Input Fields */}
         <View style={styles.inputContainer}>
           <View style={[styles.inputWrapper, nameError ? styles.inputError : null]}>
-            <Ionicons name="leaf-outline" size={20} color="green" style={styles.icon} />
+            <Ionicons name="leaf-outline" size={20} color="#607F0E" style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Full Name"
@@ -78,7 +78,7 @@ const Register = ({ navigation }) => {
           {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
 
           <View style={[styles.inputWrapper, emailError ? styles.inputError : null]}>
-            <Ionicons name="mail-outline" size={20} color="green" style={styles.icon} />
+            <Ionicons name="mail-outline" size={20} color="#607F0E" style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -92,16 +92,25 @@ const Register = ({ navigation }) => {
           {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
           <View style={[styles.inputWrapper, passwordError ? styles.inputError : null]}>
-            <Ionicons name="lock-closed-outline" size={20} color="green" style={styles.icon} />
+            <Ionicons name="lock-closed-outline" size={20} color="#607F0E" style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Password"
-              secureTextEntry
+              secureTextEntry={!showPassword} // Toggle password visibility
               value={password}
               onChangeText={setPassword}
               autoCapitalize="none"
               placeholderTextColor="#666"
             />
+            {/* Toggle password visibility */}
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons
+                name={showPassword ? "eye-off-outline" : "eye-outline"}
+                size={20}
+                color="gray"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
           </View>
           {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
         </View>
@@ -126,7 +135,6 @@ const Register = ({ navigation }) => {
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
@@ -146,13 +154,13 @@ const styles = StyleSheet.create({
     right: 0,
     width: 120,
     height: 120,
-    backgroundColor: "#8FBC8F",
+    backgroundColor: "#607F0E",
     borderBottomLeftRadius: 100,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#2E8B57",
+    fontSize: 45,
+    fontFamily: "poppins-bold",
+    color: "#607F0E", // Green for nature theme
     textAlign: "left",
     marginBottom: 30,
   },
@@ -166,12 +174,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 15,
     paddingVertical: 12,
-    marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 3,
+    marginBottom: 16,
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 1 },
+    // shadowOpacity: 0.1,
+    // shadowRadius: 2,
+    // elevation: 3,
   },
   icon: {
     marginRight: 10,
@@ -182,16 +190,17 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   inputError: {
-    borderColor: "red",
+    borderColor: "#607F0E",
     borderWidth: 1,
   },
   errorText: {
     color: "red",
     fontSize: 12,
+    marginTop: -9,
     marginBottom: 10,
   },
   signUpButton: {
-    backgroundColor: "#3CB371",
+    backgroundColor: "#607F0E",
     paddingVertical: 15,
     borderRadius: 30,
     alignItems: "center",
@@ -201,6 +210,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 5,
+    fontFamily: "Nunito-Regular",
+
   },
   signUpButtonText: {
     color: "#fff",
@@ -213,7 +224,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   link: {
-    color: "#3CB371",
+    color: "#607F0E",
     fontWeight: "bold",
   },
 });

@@ -56,7 +56,7 @@ const Login = ({ navigation }) => {
 
       <View style={styles.inputContainer}>
         <View style={[styles.inputWrapper, emailError ? styles.inputError : null]}>
-          <Ionicons name="mail-outline" size={20} color="green" style={styles.icon} />
+          <Ionicons name="mail-outline" size={20} color="#607F0E" style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -71,7 +71,7 @@ const Login = ({ navigation }) => {
         {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
         <View style={[styles.inputWrapper, passwordError ? styles.inputError : null]}>
-          <Ionicons name="lock-closed-outline" size={20} color="green" style={styles.icon} />
+          <Ionicons name="lock-closed-outline" size={20} color="#607F0E" style={styles.icon} />
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -98,7 +98,7 @@ const Login = ({ navigation }) => {
         style={styles.forgotPassword}
         onPress={() => console.log("Forgot Password pressed")}
       >
-        <Text style={styles.forgotText}>Forgot?</Text>
+        <Text style={styles.forgotText}>Forgot Password?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
@@ -123,15 +123,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#2E8B57", // Green for nature theme
-    marginBottom: 10,
+    fontSize: 45,
+    fontFamily: "poppins-bold",
+    color: "#607F0E", // Green for nature theme
+    marginBottom: -10,
   },
   subtitle: {
     fontSize: 16,
     color: "#666",
     marginBottom: 30,
+    fontFamily: "Nunito-Regular",
   },
   inputContainer: {
     marginBottom: 10,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 15,
     paddingVertical: 12,
-    marginBottom: 10,
+    marginBottom: 16,
   },
   icon: {
     marginRight: 10,
@@ -166,15 +167,22 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   forgotText: {
-    color: "#3CB371", // Light green for consistency with theme
+    color: "#607F0E", // Light green for consistency with theme
     fontSize: 14,
   },
   button: {
-    backgroundColor: "#3CB371", // Green button for agricultural theme
-    padding: 15,
+    backgroundColor: "#607F0E",
+    paddingVertical: 15,
     borderRadius: 30,
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+    fontFamily: "Nunito-Regular",
+
   },
   buttonText: {
     color: "#fff",
@@ -187,7 +195,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   link: {
-    color: "#3CB371", // Link color matching theme
+    color: "#607F0E", // Link color matching theme
     fontWeight: "bold",
   },
 });
