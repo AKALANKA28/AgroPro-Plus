@@ -59,6 +59,101 @@ const Home = () => {
     extrapolate: "clamp",
   });
 
+<<<<<<< Updated upstream
+=======
+  const handleScroll = (e) => {
+    const yOffset = e.nativeEvent.contentOffset.y;
+
+    // Expand on downward scroll at the bottom
+    if (yOffset > 0 && !isExpanded) {
+      setIsExpanded(true);
+      Animated.timing(pan, {
+        toValue: SCREEN_HEIGHT - 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+
+    // Collapse on upward scroll at the top
+    scrollY.setValue(yOffset);
+    if (yOffset <= 0 && e.nativeEvent.velocity.y < 0) {
+      setIsExpanded(false);
+      Animated.timing(pan, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  const handleScrollEndDrag = (e) => {
+    const yOffset = e.nativeEvent.contentOffset.y;
+    const scrollViewHeight = e.nativeEvent.layoutMeasurement.height;
+    const contentHeight = e.nativeEvent.contentSize.height;
+
+    // Collapse at the top
+    if (yOffset <= 0 && e.nativeEvent.velocity.y < 0) {
+      setIsExpanded(false);
+      Animated.timing(pan, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+
+    // Expand at the bottom
+    if (
+      yOffset + scrollViewHeight >= contentHeight &&
+      e.nativeEvent.velocity.y > 0
+    ) {
+      setIsExpanded(true);
+      Animated.timing(pan, {
+        toValue: SCREEN_HEIGHT - 50,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
+  const handleToggle = (expanded) => {
+    setIsExpanded(expanded);
+    Animated.timing(pan, {
+      toValue: expanded ? 0 : SCREEN_HEIGHT / 1.65, // Toggle between full screen and partial screen
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+  const backgroundImageUri =
+    "https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg"; // Use your own image URL
+
+  const cropButtonsData = [
+    {
+      id: "1",
+      icon: "calendar",
+      text: "Fertilizer Schedule",
+      navigateTo: "FertilizerSchedule",
+    },
+    { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
+    { id: "3", icon: "chart", text: "Finance", navigateTo: "" },
+    { id: "4", icon: "location", text: "Distributors", navigateTo: "" },
+    { id: "5", icon: "location", text: "Community", navigateTo: "Community" },
+  ];
+  const renderCropButton = ({ item }) => (
+    <View style={styles.cropButtonContainer}>
+      <TouchableOpacity
+        style={styles.cropButton}
+        onPress={() => {
+          if (item.navigateTo) {
+            navigation.navigate(item.navigateTo);
+          }
+        }}
+      >
+        <EvilIcons name={item.icon} size={50} color="#FFFFFF" />
+      </TouchableOpacity>
+      <Text style={styles.cropButtonText}>{item.text}</Text>
+    </View>
+  );
+>>>>>>> Stashed changes
   return (
     <View style={styles.container}>
       <Animated.View

@@ -6,10 +6,18 @@ import Register from "../../screens/auth/Register";
 import Login from "../../screens/auth/Login";
 import { AuthContext } from "../../context/authContext";
 import HeaderMenu from "./HeaderMenu";
+<<<<<<< Updated upstream
 // import Post from "../../screens/Post";
 // import About from "../../screens/About";
 // import Account from "../../screens/Account";
 // import Myposts from "../../screens/Myposts";
+=======
+import Community from "../../screens/Community";
+import SpecialNotices from "../../screens/SpecialNotices";
+import ShareExperience from "../../screens/ShareExperience";
+import ChatApp from "../../screens/ChatApp";
+
+>>>>>>> Stashed changes
 const ScreenMenu = () => {
   //global state
   const [state] = useContext(AuthContext);
@@ -89,6 +97,62 @@ const ScreenMenu = () => {
             headerRight: () => <HeaderMenu />,
           }}
         />
+<<<<<<< Updated upstream
+=======
+        <Stack.Screen
+          name="FertilizerSchedule"
+          component={FertilizerSchedule}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ScheduleDetails"
+          component={ScheduleDetails}
+          options={{
+            headerShown: true,
+            headerTitle: "Schedule Details", // Set your header title
+            headerTitleAlign: "center", // Center the header title
+          }}
+        />
+
+        <Stack.Screen
+          name="Community"
+          component={Community}
+          options={{
+            headerShown: false,
+          }}
+          
+        />
+
+        <Stack.Screen
+          name="SpecialNotices"
+          component={SpecialNotices}
+          options={{
+            headerShown: false,
+          }}
+          
+        />
+
+        <Stack.Screen
+          name="ShareExperience"
+          component={ShareExperience}
+          options={{
+            headerShown: false,
+          }}
+          
+        />
+
+        <Stack.Screen
+          name="ChatApp"
+          component={ChatApp}
+          options={{
+            headerShown: false,
+          }}
+          
+        />
+
+>>>>>>> Stashed changes
         {/* <Stack.Screen
           name="Post"
           component={Post}
