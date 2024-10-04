@@ -4,10 +4,10 @@ import { Swipeable } from "react-native-gesture-handler";
 
 // Import the images (or require them dynamically)
 const cropImages = {
-  rice: require("../assets/images/plantImages/rice.jpeg"),
-  corn: require("../assets/images/plantImages/corn.jpeg"),
-  soybeans: require("../assets/images/plantImages/soybean.jpeg"),
-  watermelon: require("../assets/images/plantImages/watermelon.jpeg"),
+  rice: require("../../assets/images/plantImages/rice.jpeg"),
+  corn: require("../../assets/images/plantImages/corn.jpeg"),
+  soybeans: require("../../assets/images/plantImages/soybean.jpeg"),
+  watermelon: require("../../assets/images/plantImages/watermelon.jpeg"),
 };
 
 const ScheduleCard = ({
@@ -36,7 +36,7 @@ const ScheduleCard = ({
   };
 
   // Use the crop_type to dynamically choose the image
-  const cropImage = cropImages[crop_type] || require("../assets/images/plantImages/rice.jpeg");
+  const cropImage = cropImages[crop_type] || require("../../assets/images/plantImages/rice.jpeg");
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
