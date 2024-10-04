@@ -17,4 +17,5 @@ router.patch("/update/:id", financeController.updateBudgetPlan);
 // Delete a process record
 router.delete("/delete/:id", financeController.deleteBudgetPlan);
 
+
 module.exports = router;
