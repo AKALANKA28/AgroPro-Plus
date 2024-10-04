@@ -6,40 +6,56 @@ import {
   Animated,
   PanResponder,
   Dimensions,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ImageBackground,
+  StatusBar,
 } from "react-native";
+import Weather from "../components/Weather";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { Ionicons } from "@expo/vector-icons";
+
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import NearLocation from "../components/Home/NearLocation";
+import CropCard from "../components/Home/CropCards";
+import HeaderMenu from "../components/Menus/HeaderMenu";
+import UserInfo from "../components/Home/UserInfo";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Home = () => {
+  const navigation = useNavigation(); // Get the navigation object
+
   const pan = useRef(new Animated.Value(0)).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
   const [isExpanded, setIsExpanded] = useState(false);
 
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (e, gestureState) => {
+        return Math.abs(gestureState.dy) > 5;
+      },
       onPanResponderMove: (e, gestureState) => {
-        if (gestureState.dy > 0 && !isExpanded) {
-          pan.setValue(gestureState.dy);
-        } else if (gestureState.dy < 0 && isExpanded) {
+        if (gestureState.dy > 0 && isExpanded && scrollY._value === 0) {
           pan.setValue(gestureState.dy);
         }
       },
       onPanResponderRelease: (e, gestureState) => {
         if (gestureState.dy > SCREEN_HEIGHT / 4) {
-          setIsExpanded(true);
-          Animated.spring(pan, {
-            toValue: SCREEN_HEIGHT / 2,
-            useNativeDriver: false,
-          }).start();
-        } else if (gestureState.dy < -SCREEN_HEIGHT / 4) {
+          // Collapse the content section
           setIsExpanded(false);
-          Animated.spring(pan, {
-            toValue: -SCREEN_HEIGHT / 3,
+          Animated.timing(pan, {
+            toValue: 0,
+            duration: 300,
             useNativeDriver: false,
           }).start();
         } else {
+          // Snap back to expanded position
           Animated.spring(pan, {
-            toValue: 0,
+            toValue: SCREEN_HEIGHT - 50,
             useNativeDriver: false,
           }).start();
         }
@@ -48,19 +64,17 @@ const Home = () => {
   ).current;
 
   const weatherSectionHeight = pan.interpolate({
-    inputRange: [-SCREEN_HEIGHT / 3, 0, SCREEN_HEIGHT / 2],
-    outputRange: [SCREEN_HEIGHT / 4, SCREEN_HEIGHT / 2.5, SCREEN_HEIGHT / 1.5],
+    inputRange: [0, SCREEN_HEIGHT - 50],
+    outputRange: [SCREEN_HEIGHT / 2.5, 0],
     extrapolate: "clamp",
   });
 
   const contentSectionHeight = pan.interpolate({
-    inputRange: [-SCREEN_HEIGHT / 3, 0, SCREEN_HEIGHT / 2],
-    outputRange: [SCREEN_HEIGHT / 1.5, SCREEN_HEIGHT / 2.5, SCREEN_HEIGHT / 4],
+    inputRange: [0, SCREEN_HEIGHT - 50],
+    outputRange: [SCREEN_HEIGHT / 3.7, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
 
-<<<<<<< Updated upstream
-=======
   const handleScroll = (e) => {
     const yOffset = e.nativeEvent.contentOffset.y;
 
@@ -133,10 +147,20 @@ const Home = () => {
       text: "Fertilizer Schedule",
       navigateTo: "FertilizerSchedule",
     },
-    { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
-    { id: "3", icon: "chart", text: "Finance", navigateTo: "" },
-    { id: "4", icon: "location", text: "Distributors", navigateTo: "" },
-    { id: "5", icon: "location", text: "Community", navigateTo: "Community" },
+    // { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
+    {
+      id: "3",
+      icon: "chart",
+      text: "Finance",
+      navigateTo: "BudgetPlansScreen",
+    },
+    {
+      id: "4",
+      icon: "location",
+      text: "Distributors",
+      navigateTo: "DistributeScreen",
+    },
+    { id: "5", icon: "user", text: "Community", navigateTo: "Community" },
   ];
   const renderCropButton = ({ item }) => (
     <View style={styles.cropButtonContainer}>
@@ -153,60 +177,100 @@ const Home = () => {
       <Text style={styles.cropButtonText}>{item.text}</Text>
     </View>
   );
->>>>>>> Stashed changes
   return (
-    <View style={styles.container}>
-      <Animated.View
-        style={[styles.weatherSection, { height: weatherSectionHeight }]}
-      >
-        <Text style={styles.weatherText}>Gurgaon</Text>
-        <Text style={styles.temperature}>32°C</Text>
-        {/* Add additional weather details here */}
-      </Animated.View>
+    <ImageBackground
+      source={require("../assets/images/default-weather.jpg")}
+      style={styles.container}
+    >
+      <LinearGradient
+        colors={["rgba(255, 165, 0, 0.8)", "rgba(0, 128, 128, 0.8)"]} // Orange and Teal with 80% opacity
+        // colors={['rgba(34, 139, 34, 0.8)', 'rgba(255, 215, 0, 0.8)']} // Green to Yellow gradient with opacity
 
-      <Animated.View
-        {...panResponder.panHandlers}
-        style={[styles.draggableSection, { height: contentSectionHeight }]}
-      >
-        <View style={styles.dragIndicator} />
-        <Text style={styles.userName}>Welcome Ramesh Soni</Text>
-        <View style={styles.cropButtons}>
-          <Text style={styles.cropButton}>Cabbage</Text>
-          <Text style={styles.cropButton}>Tomato</Text>
-        </View>
-      </Animated.View>
-    </View>
+        style={styles.gradient}
+      />
+      <View style={styles.container}>
+        <Animated.View
+          style={[styles.weatherSection, { height: weatherSectionHeight }]}
+        >
+          <Weather onToggle={handleToggle} />
+        </Animated.View>
+
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={[styles.draggableSection, { height: contentSectionHeight }]}
+        >
+          <View style={styles.dragIndicator} />
+          <View style={styles.topView}>
+            <View>
+              <Text style={styles.welcome}>Welcome</Text>
+              <UserInfo/>
+            </View>
+          </View>
+
+          {/* Container for the navigation buttons */}
+          <View>
+            <FlatList
+              data={cropButtonsData}
+              renderItem={renderCropButton}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.cropButtons}
+            />
+          </View>
+
+          {/* Content section */}
+
+          <View style={{ flex: 1 }}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollContent}
+              onScroll={handleScroll}
+              onScrollEndDrag={handleScrollEndDrag}
+              scrollEventThrottle={16}
+            >
+              <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
+              <CropCard />
+
+              <Text style={styles.sectionTitle}>Nearby Distributors</Text>
+              <NearLocation />
+
+
+              <Text style={styles.sectionTitle}>Finance</Text>
+
+              <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
+              <HeaderMenu/>
+            </ScrollView>
+          </View>
+        </Animated.View>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#87CEEB", // Sky blue color for the weather section background
+    resizeMode: "cover",
+  },
+  gradient: {
+    ...StyleSheet.absoluteFillObject, // This ensures the gradient covers the entire background
   },
   weatherSection: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  weatherText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  temperature: {
-    fontSize: 48,
-    fontWeight: "bold",
-    color: "#fff",
+    paddingTop: 40,
+    paddingHorizontal: 20,
   },
   draggableSection: {
     position: "absolute",
     bottom: 0,
     width: "100%",
     backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingTop: 10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingTop: 8,
     paddingHorizontal: 20,
+    overflow: "hidden", // Prevent the text from being clipped
+    flex: 1, // Ensure that the section can grow
   },
   dragIndicator: {
     width: 50,
@@ -216,22 +280,76 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 10,
   },
+  welcome: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 6,
+  },
   userName: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
   },
-  cropButtons: {
+  topView: {
     flexDirection: "row",
-    marginTop: 20,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  // The container for the crop buttons
+  cropButtons: {
+    paddingVertical: 20,
+  },
+  cropButtonContainer: {
+    alignItems: "center",
+    marginHorizontal: 10, // Add space between buttons horizontally
   },
   cropButton: {
-    backgroundColor: "#87CEEB",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    width: 75,
+    height: 75,
+    backgroundColor: "#607F0E", // Custom button color
     borderRadius: 20,
-    color: "#fff",
-    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cropButtonText: {
+    marginTop: 8, // Adjust margin to ensure text is spaced well
+    color: "#000",
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  scrollContent: {
+    paddingTop: 20,
+  },
+  sectionTitle: {
+    fontSize: 19,
+    // fontStyle: "italic",
+    fontFamily: "Nunito-ExtraBold",
+    // fontWeight: "bold",
+    marginBottom: 10,
+    color: "#1e441f", // Fixed the color to have a valid hex value
+  },
+  cropImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  infoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  infoText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  alertText: {
+    fontSize: 16,
+    color: "#FF9800",
+    marginBottom: 10,
   },
 });
 
