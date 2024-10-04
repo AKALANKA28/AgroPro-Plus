@@ -23,6 +23,7 @@ import MarketPriceTable from "../../components/finance/MarketPriceTable";
 import updateExpenses from "../../components/finance/updateExpenses";
 import AnalysisScreen from "../../components/finance/AnalysisScreen";
 import MapDisplay from "../DistributorsMap/MapDisplay";
+import CropSelectionScreen from "../../components/finance/CropSelectionScreen";
 
 const ScreenMenu = () => {
   //global state
