@@ -14,13 +14,15 @@ import {
   StatusBar,
 } from "react-native";
 import Weather from "../components/Weather";
-import CropCard from "../components/Cards";
-import cropData from "../components/cropData"; // Adjust the path according to your folder structure
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import NearLocation from "../components/Home/NearLocation";
+import CropCard from "../components/Home/CropCards";
+import HeaderMenu from "../components/Menus/HeaderMenu";
+import UserInfo from "../components/Home/UserInfo";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -69,7 +71,7 @@ const Home = () => {
 
   const contentSectionHeight = pan.interpolate({
     inputRange: [0, SCREEN_HEIGHT - 50],
-    outputRange: [SCREEN_HEIGHT / 3.9, SCREEN_HEIGHT],
+    outputRange: [SCREEN_HEIGHT / 3.7, SCREEN_HEIGHT],
     extrapolate: "clamp",
   });
 
@@ -145,7 +147,7 @@ const Home = () => {
       text: "Fertilizer Schedule",
       navigateTo: "FertilizerSchedule",
     },
-    { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
+    // { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
     {
       id: "3",
       icon: "chart",
@@ -201,7 +203,7 @@ const Home = () => {
           <View style={styles.topView}>
             <View>
               <Text style={styles.welcome}>Welcome</Text>
-              <Text style={styles.userName}>Akalanka Dias</Text>
+              <UserInfo/>
             </View>
           </View>
 
@@ -228,35 +230,16 @@ const Home = () => {
               scrollEventThrottle={16}
             >
               <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
+              <CropCard />
 
-              <FlatList
-                data={cropData}
-                renderItem={({ item }) => (
-                  <CropCard
-                    imageUri={item.imageUri}
-                    week={item.week}
-                    health={item.health}
-                    alerts={item.alerts}
-                  />
-                )}
-                keyExtractor={(item) => item.id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              />
+              <Text style={styles.sectionTitle}>Nearby Distributors</Text>
+              <NearLocation />
 
-              <Text style={styles.sectionTitle}>Nearby Distributor</Text>
-              <Image
-                source={{ uri: "crop_image_url" }}
-                style={styles.cropImage}
-              />
-              <View style={styles.infoContainer}></View>
 
               <Text style={styles.sectionTitle}>Finance</Text>
-              <Image
-                source={{ uri: "crop_image_url" }}
-                style={styles.cropImage}
-              />
-              <View style={styles.infoContainer}></View>
+
+              <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
+              <HeaderMenu/>
             </ScrollView>
           </View>
         </Animated.View>
@@ -341,8 +324,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 19,
+    // fontStyle: "italic",
+    fontFamily: "Nunito-ExtraBold",
+    // fontWeight: "bold",
     marginBottom: 10,
     color: "#1e441f", // Fixed the color to have a valid hex value
   },

@@ -40,6 +40,24 @@ const MapDisplay = ({ locations }) => {
     }
   };
 
+  useEffect(() => {
+    // Center the map on the first location in the locations array if it exists
+    if (locations.length > 0 && mapRef.current) {
+      const { lat, lng } = locations[0]; // Assuming locations has at least one element
+      mapRef.current.animateToRegion(
+        {
+          latitude: lat,
+          longitude: lng,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        },
+        1000
+      );
+    }
+
+  }, [locations]);
+
+  
   return (
     <View style={{ flex: 1 }}>
       <MapView

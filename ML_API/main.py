@@ -1,7 +1,5 @@
-import os
-
+import os.path
 from flask import Flask, request, jsonify
-from pymongo import MongoClient
 from g4f.client import Client
 from g4f.cookies import set_cookies_dir, read_cookie_files
 
@@ -11,7 +9,8 @@ app = Flask(__name__)
 
 # Initialize the GPT Client
 client = Client()
-
+import g4f.debug
+g4f.debug.logging = True
 # Set the directory where .har file is stored
 cookies_dir = os.path.join(os.path.dirname(__file__), "har_and_cookies")
 set_cookies_dir(cookies_dir)
@@ -24,7 +23,7 @@ system_message = {
     "role": "system",
     "content": (
         "You are an expert agricultural assistant specialized in generating fertilizer schedules in Sri Lankan agriculture. "
-        "You will be given input based on {crop_type}, {soil_condition}, {planting_date}, {area_size}in acres and {weather_forecast}. "
+        "You will be given input based on {crop_type}, {soil_condition}, {planting_date}, {area_size}in hectares and {weather_forecast}. "
         "Your task is to provide a detailed fertilizer schedule in JSON format, specifying the stages of plant growth, the types of fertilizers to be used, the application amounts, "
         "and the recommended dates for application in this format: "
         "{"
@@ -54,7 +53,7 @@ system_message = {
             "}"
         "}"
         "}"
-        "Ensure that the schedule is practical and tailored to the specific needs of the crop and conditions provided based on Sri Lankan agriculture. "
+        "Ensure that the schedule is practical and tailored to the specific needs of the crop and conditions provided based on Sri Lankan agriculture."
         "Once the farmer has provided the input, you will generate the fertilizer schedule based on the given information. "
         "If the farmer regenerates with the same input, you should not generate anything again. "
         "If the farmer regenerates with different input, you will generate a different fertilizer schedule."
@@ -83,7 +82,7 @@ def generate_schedule():
     try:
         # Call the GPT API
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=[system_message, user_input]
         )
 

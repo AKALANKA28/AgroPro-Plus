@@ -18,11 +18,11 @@ import DistributeScreen from "../../screens/DistributeScreen";
 import AddBudgetPlan from "../../components/finance/AddBudgetPlan";
 import BudgetPlansScreen from "../../components/finance/BudgetPlansScreen";
 import BudgetPlanOverviewScreen from "../../components/finance/BudgetPlanOverviewScreen";
-import EditBudgetPlanScreen from '../../components/finance/EditBudgetPlanScreen';
-import MarketPriceTable from '../../components/finance/MarketPriceTable';
-import updateExpenses from '../../components/finance/updateExpenses';
-import AnalysisScreen from '../../components/finance/AnalysisScreen'
-import CropSelectionScreen from '../../components/finance/CropSelectionScreen';
+import EditBudgetPlanScreen from "../../components/finance/EditBudgetPlanScreen";
+import MarketPriceTable from "../../components/finance/MarketPriceTable";
+import updateExpenses from "../../components/finance/updateExpenses";
+import AnalysisScreen from "../../components/finance/AnalysisScreen";
+import MapDisplay from "../DistributorsMap/MapDisplay";
 
 const ScreenMenu = () => {
   //global state
@@ -35,15 +35,34 @@ const ScreenMenu = () => {
     "roboto": require("../../assets/fonts/Roboto-Regular.ttf"),
     "roboto-medium": require("../../assets/fonts/Roboto-Medium.ttf"),
     "roboto-bold": require("../../assets/fonts/Roboto-Bold.ttf"),
+    "roboto-black": require("../../assets/fonts/Roboto-Black.ttf"),
+
     "poppins": require("../../assets/fonts/Poppins-Regular.ttf"),
     "poppins-semibold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
     "poppins-bold": require("../../assets/fonts/Poppins-Bold.ttf"),
-    "roboto-black": require("../../assets/fonts/Roboto-Black.ttf"),
+    
+    "Nunito-Bold": require("../../assets/fonts/Nunito-Bold.ttf"),
+    "Nunito-ExtraLight": require("../../assets/fonts/Nunito-ExtraLight.ttf"),
+    "Nunito-Light": require("../../assets/fonts/Nunito-Light.ttf"),
+    "Nunito-Medium": require("../../assets/fonts/Nunito-Medium.ttf"),
+    "Nunito-Regular": require("../../assets/fonts/Nunito-Regular.ttf"),
+    "Nunito-SemiBold": require("../../assets/fonts/Nunito-SemiBold.ttf"),
+    "Nunito-ExtraBold": require("../../assets/fonts/Nunito-ExtraBold.ttf"),
+
+
   });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <Stack.Navigator initialRouteName="Home">
-      {/* {authenticatedUser ? ( */}
+      {authenticatedUser ? (
       <>
         <Stack.Screen
           name="Home"
@@ -78,6 +97,13 @@ const ScreenMenu = () => {
           }}
         />
         {/* <Stack.Screen
+          name="MapDisplay"
+          component={MapDisplay}
+          options={{
+            headerShown: false,
+          }}
+        /> */}
+        {/* <Stack.Screen
           name="CameraComponent"
           component={CameraComponet}
           options={{
@@ -101,7 +127,7 @@ const ScreenMenu = () => {
         <Stack.Screen name="CropSelectionScreen" component={CropSelectionScreen} options={{headerShown:true,headerTitle: '' }}/>
         <Stack.Screen name="AnalysisScreen" component={AnalysisScreen} options={{headerShown:true,headerTitle: '' }}/>
       </>
-      {/* ) : (
+      ) : (
         <>
           <Stack.Screen
             name="Login"
@@ -114,7 +140,7 @@ const ScreenMenu = () => {
             options={{ headerShown: false }}
           />
         </>
-      ) */}
+      )}
     </Stack.Navigator>
   );
 };
