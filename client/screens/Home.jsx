@@ -238,7 +238,10 @@ const Home = () => {
 
               <Text style={styles.sectionTitle}>Finance</Text>
 
-              <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
+              {/* <Text style={styles.sectionTitle}>Latest Post By Farmers</Text> */}
+              <TouchableOpacity onPress={() => navigation.navigate('ShareExperience')}>
+                <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
+              </TouchableOpacity>
               <HeaderMenu/>
             </ScrollView>
           </View>

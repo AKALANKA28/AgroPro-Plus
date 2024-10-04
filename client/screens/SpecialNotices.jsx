@@ -6,12 +6,14 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  Button,
-  TextInput
+  TextInput,
+  ImageBackground,
 } from 'react-native';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/Feather'; // Import Feather for modern icons
 
 const API_URL = 'http://192.168.238.108:8070/notice';
+const backgroundImage = require('C:\\Users\\udara\\Documents\\GitHub\\AgroPro-Plus\\client\\assets\\images\\stages\\corn-milk-stage.jpeg'); // Update with your image path
 
 const SpecialNotices = () => {
   const [notices, setNotices] = useState([]);
@@ -44,6 +46,7 @@ const SpecialNotices = () => {
       setNewNotice({ heading: '', description: '' });
       setIsAdding(false);
       fetchNotices();
+      Alert.alert('Success', 'Notice added successfully');
     } catch (error) {
       console.error('Error adding notice:', error);
     }
@@ -85,27 +88,21 @@ const SpecialNotices = () => {
         },
       ]);
     } else if (action === 'update') {
-  
-      const foundOne = notices.find((n) => n._id === id)
-      let res
-      if (foundOne) {
-          res = {heading: foundOne.heading, description: foundOne.description};
-      } else {
-          res =  {heading: '', description: ''};
-      }
-      // console.log(res)
-      setNewNotice(res)
+      const foundOne = notices.find((n) => n._id === id);
+      let res = foundOne
+        ? { heading: foundOne.heading, description: foundOne.description }
+        : { heading: '', description: '' };
+      setNewNotice(res);
       setUpdateId(id);
       setIsAdding(true);
       setIsAdd(false);
-      // You might want to provide a way to update the notice
-      // Alert.alert('Update', 'Update functionality not implemented.');
-
     }
   };
 
   const renderItem = ({ item }) => (
     <View style={styles.noticeContainer}>
+      {/* Modern Bell Alert Icon */}
+      <Icon name="bell" size={24} color="#ff9800" style={styles.emergencyIcon} />
       <Text style={styles.noticeHeading}>{item.heading}</Text>
       <Text style={styles.noticeDescription}>{item.description}</Text>
       <View style={styles.actions}>
@@ -120,88 +117,168 @@ const SpecialNotices = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Special Notices</Text>
-      <FlatList
-        data={notices}
-        keyExtractor={(item) => item._id}
-        renderItem={renderItem}
-      />
-      {isAdding ? (
-        <View style={styles.addNoticeContainer}>
-          <TextInput
-            placeholder="Heading"
-            value={newNotice.heading}
-            onChangeText={(text) => setNewNotice({ ...newNotice, heading: text })}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Description"
-            value={newNotice.description}
-            onChangeText={(text) => setNewNotice({ ...newNotice, description: text })}
-            style={styles.input}
-          />
-          <Button title={`${isAdd ? 'Add' : 'Update'} Notice`} onPress={() => isAdd ? addNotice() : updateNotice()} />
-          <Button title="Cancel" onPress={() => setIsAdding(false)} />
-        </View>
-      ) : (
-        <Button title="Add New Notice" onPress={() => {setIsAdding(true); setIsAdd(true);}} />
-      )}
-    </View>
+    <ImageBackground source={backgroundImage} style={styles.background}>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Special Notices</Text>
+        <FlatList
+          data={notices}
+          keyExtractor={(item) => item._id}
+          renderItem={renderItem}
+        />
+        {isAdding ? (
+          <View style={styles.addNoticeContainer}>
+            <TextInput
+              placeholder="Heading"
+              value={newNotice.heading}
+              onChangeText={(text) =>
+                setNewNotice({ ...newNotice, heading: text })
+              }
+              style={styles.input}
+            />
+            <TextInput
+              placeholder="Description"
+              value={newNotice.description}
+              onChangeText={(text) =>
+                setNewNotice({ ...newNotice, description: text })
+              }
+              style={styles.input}
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => (isAdd ? addNotice() : updateNotice())}
+            >
+              <Text style={styles.buttonText}>
+                {isAdd ? 'Add Notice' : 'Update Notice'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.cancelButton]}
+              onPress={() => setIsAdding(false)}
+            >
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => {
+              setIsAdding(true);
+              setIsAdd(true);
+            }}
+          >
+            <Text style={styles.addButtonText}>+</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // Ensure the image covers the whole background
+  },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Add some transparency for readability
+    borderRadius: 15,
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#4CAF50',
-    marginTop: 25,
+    color: '#2e7d32', // Dark green
     marginBottom: 20,
+    textAlign: 'center',
   },
   noticeContainer: {
-    backgroundColor: '#E0F7FA',
+    backgroundColor: '#fff',
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 15,
     marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 6,
+    borderLeftWidth: 5,
+    borderLeftColor: '#2e7d32',
+    position: 'relative',
+  },
+  emergencyIcon: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
   },
   noticeHeading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
-    marginBottom: 5,
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1b5e20',
+    marginLeft: 40, // To align the text away from the icon
   },
   noticeDescription: {
-    fontSize: 14,
-    color: '#666666',
+    fontSize: 16,
+    color: '#424242',
+    marginTop: 8,
+    marginLeft: 40, // To align the text away from the icon
   },
   actions: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     marginTop: 10,
   },
   actionText: {
-    color: '#007BFF',
-    fontWeight: 'bold',
+    color: '#ff9800',
+    fontWeight: '500',
+    marginLeft: 20,
   },
   addNoticeContainer: {
     marginTop: 20,
+    backgroundColor: '#f9f9f9',
+    padding: 20,
+    borderRadius: 15,
+    elevation: 6,
   },
   input: {
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    marginBottom: 10,
-    padding: 8,
+    borderBottomColor: '#bdbdbd',
+    marginBottom: 15,
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+  },
+  button: {
+    backgroundColor: '#2e7d32',
+    padding: 12,
+    borderRadius: 25,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  cancelButton: {
+    backgroundColor: '#d32f2f',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  addButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: '#2e7d32',
+    borderRadius: 30,
+    height: 60,
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 6,
+  },
+  addButtonText: {
+    fontSize: 30,
+    color: '#fff',
   },
 });
 

@@ -12,7 +12,7 @@ import {
   Modal, 
   ScrollView 
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
+import * as ImagePicker from 'expo-image-picker';
 
 const ShareExperience = () => {
   const [experience, setExperience] = useState('');
@@ -30,7 +30,6 @@ const ShareExperience = () => {
     fetchPosts();
   }, []);
 
-  // Fetch posts from the server
   const fetchPosts = async () => {
     try {
       const response = await fetch('http://192.168.238.108:8070/post'); // Replace with your actual IP or URL
@@ -41,12 +40,11 @@ const ShareExperience = () => {
     }
   };
 
-  // Handle posting a new experience
   const handlePost = async () => {
     if (experience.trim()) {
       const post = { text: experience, image: selectedImage };
       try {
-        const response = await fetch('http://192.168.238.108:8070/post', { // Replace with your actual IP or URL
+        const response = await fetch('http://192.168.238.108:8070/post', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -54,7 +52,7 @@ const ShareExperience = () => {
           body: JSON.stringify(post),
         });
         const newPost = await response.json();
-        setPosts([newPost, ...posts]); // Fixing the setPost error
+        setPosts([newPost, ...posts]);
         setExperience('');
         setSelectedImage(null);
       } catch (error) {
@@ -63,7 +61,6 @@ const ShareExperience = () => {
     }
   };
 
-  // Pick an image from the device's library
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -83,24 +80,22 @@ const ShareExperience = () => {
     }
   };
 
-  // Handle expanding a post to show in a modal
   const handleExpandPost = (post) => {
     setExpandedPost(post);
     setExpandedModalVisible(true);
+    setEditedExperience(post.text); // Set the editing experience to the current post text
   };
 
-  // Handle closing the expanded post modal
   const handleCloseExpandedModal = () => {
     setExpandedModalVisible(false);
     setExpandedPost(null);
   };
 
-  // Handle updating a post
   const handleUpdate = async () => {
     if (editedExperience.trim() && editingIndex !== null) {
       const updatedPost = { text: editedExperience, image: posts[editingIndex].image };
       try {
-        const response = await fetch(`http://192.168.238.108:8070/post/${posts[editingIndex]._id}`, { // Replace with your actual IP or URL
+        const response = await fetch(`http://192.168.238.108:8070/post/${posts[editingIndex]._id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -120,34 +115,39 @@ const ShareExperience = () => {
     }
   };
 
-  // Handle deleting a post
-  const handleDelete = async (postId) => {
-    try {
-      await fetch(`http://192.168.238.108:8070/post/${postId}`, {
-        method: 'DELETE',
-      });
-      setPosts(posts.filter(post => post._id !== postId));
-    } catch (error) {
-      console.error('Error deleting post:', error);
-    }
+  const handleDelete = (postId) => {
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete this post?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: async () => {
+            try {
+              await fetch(`http://192.168.238.108:8070/post/${postId}`, {
+                method: 'DELETE',
+              });
+              setPosts(posts.filter((post) => post._id !== postId));
+              handleCloseExpandedModal(); // Close the modal after deletion
+            } catch (error) {
+              console.error('Error deleting post:', error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
-  // Render each post
-  const renderItem = ({ item, index }) => (
-    <View style={styles.postContainer}>
-      <TouchableOpacity onPress={() => handleExpandPost(item)}>
-        <Text style={styles.postText}>{item.text}</Text>
-        {item.image && <Image source={{ uri: item.image }} style={styles.postImage} />}
-      </TouchableOpacity>
-      <View style={styles.buttonContainer}>
-        <Button title="Edit" onPress={() => {
-          setEditingIndex(index);
-          setEditedExperience(item.text);
-          setModalVisible(true);
-        }} />
-        <Button title="Delete" color="red" onPress={() => handleDelete(item._id)} />
-      </View>
-    </View>
+  const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handleExpandPost(item)} style={styles.postContainer}>
+      <Text style={styles.postText}>{item.text}</Text>
+      {item.image && <Image source={{ uri: item.image }} style={styles.postImage} />}
+    </TouchableOpacity>
   );
 
   return (
@@ -176,11 +176,13 @@ const ShareExperience = () => {
           <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
         )}
         
-        <Button 
-          title="Post Experience"
+        <TouchableOpacity 
+          style={styles.submitButton}
           onPress={handlePost}
           disabled={!experience.trim()}
-        />
+        >
+          <Text style={styles.buttonText}>Post Experience</Text>
+        </TouchableOpacity>
         
         <View style={styles.recentPostsContainer}>
           <Text style={styles.recentPostsHeader}>Recent Posts</Text>
@@ -190,7 +192,7 @@ const ShareExperience = () => {
             renderItem={renderItem}
             numColumns={2}
             columnWrapperStyle={styles.gridContainer}
-            scrollEnabled={false}  // Disable FlatList scrolling so ScrollView takes over
+            scrollEnabled={false} 
           />
         </View>
 
@@ -205,11 +207,34 @@ const ShareExperience = () => {
             <View style={styles.modalContent}>
               {expandedPost && (
                 <>
-                  <Text style={styles.modalPostText}>{expandedPost.text}</Text>
+                  {/* <Text style={styles.modalPostText}>{expandedPost.text}</Text> */}
                   {expandedPost.image && (
                     <Image source={{ uri: expandedPost.image }} style={styles.modalPostImage} />
                   )}
-                  <Button title="Close" onPress={handleCloseExpandedModal} />
+                  <Text style={styles.modalPostText}>{expandedPost.text}</Text>
+                  <View style={styles.modalButtonContainer}>
+                    <TouchableOpacity 
+                      style={styles.updateButton} 
+                      onPress={() => {
+                        setModalVisible(true);
+                        setEditingIndex(posts.findIndex(post => post._id === expandedPost._id));
+                      }} 
+                    >
+                      <Text style={styles.buttonText}>Update</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.deleteButton} 
+                      onPress={() => handleDelete(expandedPost._id)}
+                    >
+                      <Text style={styles.buttonText}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <TouchableOpacity 
+                    style={styles.closeButton} 
+                    onPress={handleCloseExpandedModal}
+                  >
+                    <Text style={styles.buttonText}>Close</Text>
+                  </TouchableOpacity>
                 </>
               )}
             </View>
@@ -235,8 +260,14 @@ const ShareExperience = () => {
                 onChangeText={setEditedExperience}
                 multiline
               />
-              <Button title="Update" onPress={handleUpdate} />
-              <Button title="Cancel" onPress={() => setModalVisible(false)} color="red" />
+              <View style={styles.modalButtonContainer}>
+                <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
+                  <Text style={styles.buttonText}>Update</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -259,28 +290,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     color: '#4CAF50',
-    marginTop: 40,
-    marginBottom: 25,
-  },
-  textInput: {
-    height: 100,
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 40,
-    textAlignVertical: 'top',
-  },
-  imageButton: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    alignItems: 'center',
-  },
-  imageButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
+    marginVertical: 10,
   },
   headerImage: {
     width: '100%',
@@ -288,37 +298,54 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
   },
-  imagePreview: {
-    width: '100%',
-    height: 150,
-    borderRadius: 10,
+  textInput: {
+    height: 100,
+    borderColor: '#CCCCCC',
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
     marginBottom: 20,
-    resizeMode: 'cover',
+  },
+  imageButton: {
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  imageButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  submitButton: {
+    backgroundColor: '#4CAF50',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
   },
   recentPostsContainer: {
-    marginTop: 30,
+    marginTop: 20,
   },
   recentPostsHeader: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#4CAF50',
   },
   postContainer: {
-    backgroundColor: '#FFFFFF',
-    padding: 10,
+    flex: 1,
+    backgroundColor: '#F9F9F9',
     borderRadius: 10,
-    marginBottom: 20,
-    width: '48%',
+    padding: 10,
+    margin: 5,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 2,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
   },
   postText: {
     fontSize: 16,
@@ -345,7 +372,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalInput: {
-    height: 100,
+    height: 150,
+    width: '100%', // Increased width for better visibility
     borderColor: '#CCCCCC',
     borderWidth: 1,
     borderRadius: 5,
@@ -365,6 +393,40 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     resizeMode: 'cover',
     marginBottom: 20,
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  updateButton: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+    width: '48%', // Adjusted width
+    alignItems: 'center',
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+    width: '48%', // Adjusted width
+    alignItems: 'center',
+  },
+  closeButton: {
+    backgroundColor: '#FF5733',
+    padding: 10,
+    borderRadius: 5,
+    width: '100%', // Full width for close button
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  cancelButton: {
+    backgroundColor: '#FF5733',
+    padding: 10,
+    borderRadius: 5,
+    width: '48%', // Adjusted width
+    alignItems: 'center',
   },
 });
 
