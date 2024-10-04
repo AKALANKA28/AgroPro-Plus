@@ -122,10 +122,11 @@ const styles = StyleSheet.create({
     right: 20,
     backgroundColor: "#607F0E",
     borderRadius: 50,
-    width: 170,
-    height: 50,
+    width: 180,
+    height: 48,
     justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",  
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -134,9 +135,9 @@ const styles = StyleSheet.create({
   },
   floatingButtonText: {
     color: "#fff",
-    fontSize: 20,
-    // fontFamily: "roboto-medium",
-    fontWeight: "900",
+    fontSize: 19,
+    fontFamily: "Nunito-Bold",
+    textAlign: "center",
   },
 });
 
