@@ -41,11 +41,11 @@ system_message = {
                 "weather_forecast: weather_forecast,"
                 "growth_stages: ["
                     "{"
-                        "stage: stage,"
+                        "stage: stage, give the stage name in Capitalized format,please don't give in Uppercase or Lowercase,"
                         "application_date: application_date,"
                         "fertilizer_type: fertilizer_type,"
                         "amount: amount,"
-                        "cost: cost,"
+                        "cost: cost,this cost should allign with sri lanka's current market prices"
                         "notes: Provide extra notes for farmers. Include information on potential crop diseases relevant to this stage and how to prevent them."
 
                     "}"

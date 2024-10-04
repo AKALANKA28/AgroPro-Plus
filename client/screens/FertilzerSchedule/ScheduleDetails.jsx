@@ -12,6 +12,7 @@ import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import imageMapping from "../../components/Home/ImageData"; // Adjust the path as necessary
+import ScheduleCard from "../../components/Cards/ScheduleCard";
 
 const getImageUri = (crop_type, stage) => {
   if (imageMapping[crop_type] && imageMapping[crop_type][stage]) {
@@ -21,7 +22,7 @@ const getImageUri = (crop_type, stage) => {
 };
 
 const ScheduleDetails = ({ route }) => {
-  const { schedule, isGenerated } = route.params;
+  const { schedule, isGenerated, loading } = route.params; // Access the loading state here
   const navigation = useNavigation(); // Access navigation
 
   const saveScheduleToDB = async () => {
@@ -78,55 +79,124 @@ const ScheduleDetails = ({ route }) => {
           <Ionicons name="ellipsis-vertical" size={20} color="black" />
         </TouchableOpacity>
       </View>
-      
-      <View style={styles.animatedContainer}>
-        <ScrollView
-          contentContainerStyle={styles.container}
-          showsVerticalScrollIndicator={false}
-        >
-          {schedule.growth_stages.map((stage, index) => {
-            const imageSource = getImageUri(schedule.crop_type, stage.stage);
 
-            return (
-              <View key={index} style={styles.stageContainer}>
-                <View style={styles.rowContainer}>
-                  <View style={styles.imageContainer}>
-                    {imageSource ? (
-                      <Image source={imageSource} style={styles.stageImage} />
-                    ) : (
-                      <Text style={styles.noImageText}>No Image Available</Text>
-                    )}
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.stageTitle}>Stage: {stage.stage}</Text>
-                    <Text style={styles.text}>Amount: {stage.amount}</Text>
-                    <Text style={styles.text}>
-                      Application Date: {stage.application_date}
-                    </Text>
-                    <Text style={styles.text}>
-                      Fertilizer Type: {stage.fertilizer_type}
-                    </Text>
-                    <Text style={styles.text}>Notes: {stage.notes}</Text>
-                    <Text style={styles.text}>Cost: Rs. {stage.cost}</Text>
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={styles.spinner}
+        />
+      ) : (
+        <View style={styles.animatedContainer}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            showsVerticalScrollIndicator={false}
+          >
+            {schedule.growth_stages.map((stage, index) => {
+              const imageSource = getImageUri(schedule.crop_type, stage.stage);
+
+              return (
+                <View key={index} style={styles.stageContainer}>
+                  <View style={styles.rowContainer}>
+                    <View style={styles.imageContainer}>
+                      {imageSource ? (
+                        <Image source={imageSource} style={styles.stageImage} />
+                      ) : (
+                        <Text style={styles.noImageText}>
+                          No Image Available
+                        </Text>
+                      )}
+                    </View>
+                    <View style={styles.textContainer}>
+                      <View style={styles.infoBlock}>
+                        <View style={styles.infoRow}>
+                          <Ionicons
+                            name="leaf-outline"
+                            size={18}
+                            style={styles.icon}
+                          />
+                          <Text style={styles.stageTitle}>
+                            Stage: {stage.stage}
+                          </Text>
+                        </View>
+                        <View style={styles.infoRow}>
+                          <Ionicons
+                            name="calendar-outline"
+                            size={18}
+                            style={styles.icon}
+                          />
+                          <Text style={styles.text}>
+                            Application Date: {stage.application_date}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={styles.infoBlock}>
+                        <View style={styles.infoRow}>
+                          <Ionicons
+                            name="barbell-outline"
+                            size={18}
+                            style={styles.icon}
+                          />
+                          <Text style={styles.text}>
+                            Amount: {stage.amount}
+                          </Text>
+                        </View>
+                        <View style={styles.infoRow}>
+                          <Ionicons
+                            name="flask-outline"
+                            size={18}
+                            style={styles.icon}
+                          />
+                          <Text style={styles.text}>
+                            Fertilizer Type: {stage.fertilizer_type}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={styles.infoBlock}>
+                        <View style={styles.infoRow}>
+                          <Ionicons
+                            name="document-text-outline"
+                            size={18}
+                            style={styles.icon}
+                          />
+                          <Text style={styles.text}>Notes: {stage.notes}</Text>
+                        </View>
+                        <View style={styles.infoRow}>
+                          <Ionicons
+                            name="cash-outline"
+                            size={18}
+                            style={styles.icon}
+                          />
+                          <Text style={styles.text}>
+                            Cost: Rs. {stage.cost}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-
-      <View style={styles.saveButtonContainer}>
-        <TouchableOpacity style={styles.saveButton} onPress={saveScheduleToDB}>
-          <Text style={styles.saveButtonText}>Save Schedule</Text>
-        </TouchableOpacity>
-      </View>
+              );
+            })}
+          </ScrollView>
+        </View>
+      )}
+      {isGenerated && (
+        <View style={styles.saveButtonContainer}>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={saveScheduleToDB}
+          >
+            <Text style={styles.saveButtonText}>Save Schedule</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // Keep the same styles but ensure there are no duplicates
   wrapper: { flex: 1 },
   wrapperContainer: {
     flexDirection: "row",
@@ -154,6 +224,7 @@ const styles = StyleSheet.create({
   container: { flexGrow: 1, paddingBottom: 80 },
   stageContainer: {
     marginVertical: 12,
+    marginHorizontal: 2,
     backgroundColor: "#fff",
     borderRadius: 16,
     shadowColor: "#000",
@@ -165,7 +236,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 5,
+    elevation: 4,
   },
   stageImage: {
     width: "100%",
@@ -173,18 +244,43 @@ const styles = StyleSheet.create({
     minHeight: 210,
     resizeMode: "cover",
     borderRadius: 16,
-    // borderTopRightRadius: 0,
-    // borderBottomRightRadius: 0,
   },
   rowContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  textContainer: { flex: 2 },
-  stageTitle: { fontSize: 18, fontWeight: "bold" },
-  text: { fontSize: 16, marginVertical: 4 },
+  textContainer: {
+    flex: 2,
+    paddingVertical: 10,
+  },
+  infoBlock: {
+    marginBottom: 10, // Add some space between blocks
+    padding: 10,
+    backgroundColor: "#f7f7f7", // Light background for separation
+    borderRadius: 10,
+    elevation: 3, // Add shadow for better separation
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 5, // Space between rows
+  },
+  icon: {
+    marginRight: 10, // Space between icon and text
+    color: "#607F0E", // Icon color
+  },
 
+  stageTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    flexShrink: 1, // Ensure text doesn't overflow
+  },
+  text: {
+    fontSize: 16,
+    flexShrink: 1,
+  },
   saveButtonContainer: {
     position: "absolute",
     bottom: 20, // Position at the bottom
@@ -208,6 +304,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: "#fff",
     fontSize: 16,
+    textTransform: "capitalize",
     fontFamily: "poppins-semibold",
   },
 });
