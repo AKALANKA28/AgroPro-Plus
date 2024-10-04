@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const chatSchema = new mongoose.Schema({
   sender: { 
     type: String, 
+<<<<<<< Updated upstream
     required: true, 
   },
   receiver: { 
@@ -13,6 +14,17 @@ const chatSchema = new mongoose.Schema({
   message: { 
     type: String, 
     required: true, 
+=======
+    required: false, 
+  },
+  receiver: { 
+    type: String, 
+    required: false,
+  },
+  message: { 
+    type: String,  
+    required: false, 
+>>>>>>> Stashed changes
   },
   timestamp: { 
     type: Date, 

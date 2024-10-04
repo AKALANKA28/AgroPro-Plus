@@ -47,15 +47,28 @@ const noticeRoute = require("./routes/community/noticeRoute");
 const postRoute = require("./routes/community/postRoute");
 
 
+//udara
+const noticeRoute = require("./routes/community/noticeRoute");
+const postRoute = require("./routes/community/postRoute");
+
 // Use Routes
 app.use("/auth", UserRoute); 
 
 
 //Aashani
 app.use("/distribute", distributeRoute);
+<<<<<<< Updated upstream
 //udara
 app.use("/notice", noticeRoute);
 app.use("/post", postRoute);
+=======
+app.use("/stock", stockRoute);
+
+//udara
+app.use("/notice", noticeRoute);
+app.use("/post", postRoute);
+
+>>>>>>> Stashed changes
 
 
 module.exports = app;

@@ -29,8 +29,17 @@ exports.addNotice = async (req, res) => {
   });
 
   try {
+<<<<<<< Updated upstream
     const newNotice = await notice.save();
     res.status(201).json(newNotice);
+=======
+    //udara
+        // app.use("/notice", noticeRoute);
+        // app.use("/post", postRoute);
+    const newNotice = await notice.save();
+    res.status(201).json(newNotice);
+    
+>>>>>>> Stashed changes
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
