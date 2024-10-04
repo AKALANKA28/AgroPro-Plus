@@ -78,41 +78,12 @@ const ScheduleDetails = ({ route }) => {
           <Ionicons name="ellipsis-vertical" size={20} color="black" />
         </TouchableOpacity>
       </View>
-
-      {/* <View style={styles.headerContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={getImagePath(schedule.crop_type)}
-            style={styles.cropImage}
-          />
-        </View>
-
-        <View style={styles.detailsContainer}>
-          <View style={styles.cropTitleContainer}>
-            <Text style={styles.subtitle}>Fertilizer Schedule for</Text>
-            <Text style={styles.croptitle}>{schedule.crop_type}</Text>
-          </View>
-          <View style={styles.subDetailsContainer}>
-            <Text style={styles.subtitle}>
-              Planting Date: {schedule.planting_date}
-            </Text>
-            <Text style={styles.subtitle}>
-              Est. Cost: Rs. {schedule.estimated_total_cost}
-            </Text>
-            <Text style={styles.subtitle}>
-              Est. Harvesting Date: {schedule.estimated_harvesting_date}
-            </Text>
-
-            <Text style={styles.subtitle}>Area Size: {schedule.area_size}</Text>
-            <Text style={styles.subtitle}>Soil Condition:</Text>
-            <Text>Nitrogen: {schedule.soil_condition.nitrogen}</Text>
-            <Text>pH: {schedule.soil_condition.pH}</Text>
-          </View>
-        </View>
-      </View> */}
-
+      
       <View style={styles.animatedContainer}>
-        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          showsVerticalScrollIndicator={false}
+        >
           {schedule.growth_stages.map((stage, index) => {
             const imageSource = getImageUri(schedule.crop_type, stage.stage);
 
@@ -176,62 +147,9 @@ const styles = StyleSheet.create({
     zIndex: 10,
     padding: 10,
   },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 8,
-    backgroundColor: "#fff",
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
-  },
   imageContainer: { flex: 1, paddingRight: 10, zIndex: 1 },
-  // cropImage: {
-  //   width: "350%",
-  //   height: 580,
-  //   resizeMode: "cover",
-  //   left: "-80%",
-  //   top: "10%",
-  // },
-  // detailsContainer: { flex: 2, paddingLeft: 10 },
-  // cropTitleContainer: {
-  //   top: 10,
-  //   right: -40,
-  //   zIndex: 0,
-  //   backgroundColor: "#fff",
-  //   padding: 10,
-  //   borderRadius: 8,
-  //   shadowColor: "#000",
-  //   shadowOffset: { width: 0, height: 2 },
-  //   shadowOpacity: 0.2,
-  //   shadowRadius: 4,
-  //   elevation: 5,
-  // },
-  // croptitle: {
-  //   fontSize: 40,
-  //   alignSelf: "left",
-  //   fontFamily: "poppins-bold",
-  //   textTransform: "capitalize",
-  // },
-  // subDetailsContainer: { marginTop: 100, paddingLeft: 10 },
-  // subtitle: {
-  //   fontSize: 18,
-  //   marginTop: 8,
-  //   fontFamily: "poppins",
-  //   marginBottom: -8,
-  // },
   animatedContainer: {
-    // position: "absolute",
-    // top: 530,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
-    // backgroundColor: "#f8f8f8",
-    // zIndex: 2,
-    // borderTopLeftRadius: 30,
-    // borderTopRightRadius: 30,
-
     padding: 16,
-
   },
   container: { flexGrow: 1, paddingBottom: 80 },
   stageContainer: {
@@ -248,7 +166,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 5,
-
   },
   stageImage: {
     width: "100%",
@@ -264,7 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  textContainer: { flex: 2,},
+  textContainer: { flex: 2 },
   stageTitle: { fontSize: 18, fontWeight: "bold" },
   text: { fontSize: 16, marginVertical: 4 },
 
@@ -276,9 +193,9 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   saveButton: {
-    backgroundColor: "#183719", // Button background color
-    paddingVertical: 20,
-    paddingHorizontal: 160,
+    backgroundColor: "#607F0E", // Button background color
+    paddingVertical: 16,
+    paddingHorizontal: 150,
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
@@ -291,7 +208,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "poppins-semibold",
   },
 });
 
