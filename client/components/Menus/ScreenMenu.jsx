@@ -62,7 +62,7 @@ const ScreenMenu = () => {
 
   return (
     <Stack.Navigator initialRouteName="Home">
-      {/* {authenticatedUser ? ( */}
+      {authenticatedUser ? (
       <>
         <Stack.Screen
           name="Home"
@@ -154,7 +154,7 @@ const ScreenMenu = () => {
           options={{ headerShown: true, headerTitle: "" }}
         />
       </>
-      {/* ) : (
+      ) : (
         <>
           <Stack.Screen
             name="Login"
@@ -167,7 +167,7 @@ const ScreenMenu = () => {
             options={{ headerShown: false }}
           />
         </>
-      ) */}
+      )}
     </Stack.Navigator>
   );
 };
