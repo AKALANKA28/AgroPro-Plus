@@ -18,6 +18,7 @@ import VehicleDetails from "./components/transportDashboard/VehicleDetails";
 import ProcessDetails from "./components/transportDashboard/ProcessDetails";
 import CoveringDetails from "./components/transportDashboard/CoveringDetails";
 import ScheduleDetails from "./components/transportDashboard/ScheduleDetails";
+import DistributerLocationMap from "./components/driver/DistributerLocationMap";
 import DistributeDetails from "./components/driver/DistributeDetails";
 import StockDetails from "./components/driver/StockDetails";
 import Map from "./components/driver/Components/map/Map";
@@ -137,16 +138,33 @@ const router = createBrowserRouter([
   
  
 
-  {
-    path: "/map",
-    element: (
-      <div>
-        <Map />
-      </div>
-    ),
-  },
+  // {
+  //   path: "/Map",
+  //   element: (
+  //     <div>
+  //       <Map />
+  //     </div>
+  //   ),
+  // },
 
 
+
+  // {
+  //   path: "/DistributerLocationMap",
+  //   element: (
+  //     <div>
+  //       <DistributerLocationMap />
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   path: "/Map",
+  //   element: (
+  //     <div>
+  //       <Map />
+  //     </div>
+  //   ),
+  // },
   
 
 
