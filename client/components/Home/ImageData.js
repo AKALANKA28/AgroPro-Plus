@@ -55,12 +55,12 @@ const imageMapping = {
       "Maturity": require("../../assets/images/stages/soybeans-pre-harvest.jpeg"),
 
     },
-    // watermelon: {
-    //   "Seedling": require("../../assets/images/stages/watermelon-seedling.jpeg"),
-    //   "Vegetative": require("../../assets/images/stages/watermelon-vegetative.jpeg"),
-    //   "Flowering": require("../../assets/images/stages/watermelon-flowering.jpeg"),
-    //   "Fruiting": require("../../assets/images/stages/watermelon-fruiting.jpeg"),
-    // },
+    watermelon: {
+      "Seedling": require("../../assets/images/stages/watermelon-seedling.jpeg"),
+      "Vegetative": require("../../assets/images/stages/watermelon-vegetative.jpg"),
+      "Flowering": require("../../assets/images/stages/watermelon-flowering.jpg"),
+      "Fruiting": require("../../assets/images/stages/watermelon-fruiting.jpg"),
+    },
   };
   
   export default imageMapping;

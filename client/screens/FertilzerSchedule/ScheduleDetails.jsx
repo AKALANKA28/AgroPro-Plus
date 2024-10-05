@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   stageImage: {
     width: "100%",
     height: 200,
-    minHeight: 240,
+    minHeight: 230,
     resizeMode: "cover",
     borderRadius: 16,
   },
