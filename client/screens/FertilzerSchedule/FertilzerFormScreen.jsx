@@ -10,7 +10,7 @@ const FertilizerFormScreen = ({ navigation }) => {
 
   // Create a reusable instance of axios
   const fertilizerAPI = axios.create({
-    baseURL: "http://192.168.1.159:8000",
+    baseURL: "http://192.168.43.12:8000",
     timeout: 50000,
   });
 
