@@ -64,7 +64,7 @@
 .btn-edit, .btn-delete{
   padding: 5px 10px; 
   background: #ffffff;
-  border: 1px solid #DDDDDD;
+  border: 1px solid #610c0c;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
@@ -122,10 +122,18 @@
   gap: 10px;
 }
 
-.buttons button {
+/* .buttons button {
   align-self: center;
+  border-color: #000;
+} */
+
+.btn-edit i{
+  color: #ffbb00;
 }
 
+.btn-delete i{
+  color: #ff0000;
+}
 /*-------------------------------- Searchbar ------------------------------------*/
 
 .search-bar{
