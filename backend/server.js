@@ -45,6 +45,9 @@ const scheduleRoute = require("./routes/schedules/scheduleRoute");
 const distributeRoute = require("./routes/distributors/distributeRoute");
 const stockRoute = require("./routes/distributors/stockRoute");
 
+//udara
+const noticeRoute = require("./routes/community/noticeRoute");
+const postRoute = require("./routes/community/postRoute");
 
 
 
@@ -56,11 +59,17 @@ app.use("/schedule", scheduleRoute);
 
 //Aashani
 app.use("/distribute", distributeRoute);
+
 app.use("/stock", stockRoute);
 
 //finance
 const financeRoute = require("./routes/finance/financeRoute");
 app.use("/finance", financeRoute);
+
+//udara
+app.use("/notice", noticeRoute);
+app.use("/post", postRoute);
+
 
 
 module.exports = app;

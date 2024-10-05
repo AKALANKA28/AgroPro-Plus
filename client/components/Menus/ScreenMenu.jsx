@@ -27,7 +27,10 @@ import AnalysisScreen from "../../components/finance/AnalysisScreen";
 import MapDisplay from "../DistributorsMap/MapDisplay";
 import LoadingOverlay from "../LoadingOverlay";
 import CropSelectionScreen from "../../components/finance/CropSelectionScreen";
-
+import Community from "../../screens/Community";
+import SpecialNotices from "../../screens/SpecialNotices";
+import ShareExperience from "../../screens/ShareExperience";
+import ChatApp from "../../screens/ChatApp";
 const ScreenMenu = () => {
   //global state
   const [state] = useContext(AuthContext);
@@ -78,6 +81,7 @@ const ScreenMenu = () => {
             headerRight: () => <HeaderMenu />,
           }}
         />
+        
         <Stack.Screen
           name="FertilizerSchedule"
           component={FertilizerSchedule}
@@ -97,6 +101,36 @@ const ScreenMenu = () => {
         <Stack.Screen
           name="DistributeScreen"
           component={DistributeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Community"
+          component={Community}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SpecialNotices"
+          component={SpecialNotices}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="ShareExperience"
+          component={ShareExperience}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="ChatApp"
+          component={ChatApp}
           options={{
             headerShown: false,
           }}
