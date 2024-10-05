@@ -3,20 +3,30 @@ import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 import BackIcon from './BackIcon'; // Assuming BackIcon is in the same directory
+import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native';
 
-const MapDisplay = ({ locations, navigation }) => {
+const MapDisplay = ({ locations }) => {
   const [userLocation, setUserLocation] = useState(null);
   const mapRef = useRef(null);
-
-  // Hardcoded user location (latitude and longitude)
-  const hardcodedUserLocation = {
-    latitude: 6.8588258, // Example latitude (Bangalore, India)
-    longitude: 80.0246893, // Example longitude (Bangalore, India)
-  };
+  const navigation = useNavigation(); // Get navigation object here
 
   useEffect(() => {
-    // Set hardcoded user location instead of fetching dynamically
-    setUserLocation(hardcodedUserLocation);
+    const getUserLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    };
+
+    getUserLocation();
   }, []);
 
   const centerMapOnUserLocation = () => {
@@ -47,7 +57,9 @@ const MapDisplay = ({ locations, navigation }) => {
         1000
       );
     }
+
   }, [locations]);
+
 
   return (
     <View style={{ flex: 1 }}>
