@@ -17,12 +17,15 @@ import DistributeScreen from "../../screens/DistributeScreen";
 
 import AddBudgetPlan from "../../components/finance/AddBudgetPlan";
 import BudgetPlansScreen from "../../components/finance/BudgetPlansScreen";
+import BudgetPlansScreen2 from "../../components/finance/BudgetPlansScreen2";
 import BudgetPlanOverviewScreen from "../../components/finance/BudgetPlanOverviewScreen";
+import BudgetPlanOverviewScreen2 from "../../components/finance/BudgetPlanOverviewScreen2";
 import EditBudgetPlanScreen from "../../components/finance/EditBudgetPlanScreen";
 import MarketPriceTable from "../../components/finance/MarketPriceTable";
 import updateExpenses from "../../components/finance/updateExpenses";
 import AnalysisScreen from "../../components/finance/AnalysisScreen";
 import MapDisplay from "../DistributorsMap/MapDisplay";
+import CropSelectionScreen from "../../components/finance/CropSelectionScreen";
 
 const ScreenMenu = () => {
   //global state
@@ -118,41 +121,16 @@ const ScreenMenu = () => {
             headerShown: false,
           }}
         />
-        <Stack.Screen
-          name="AddBudgetPlan"
-          component={AddBudgetPlan}
-          options={{ headerShown: true, headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="BudgetPlansScreen"
-          component={BudgetPlansScreen}
-          options={{ headerShown: true, headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="Budget Plan Overview"
-          component={BudgetPlanOverviewScreen}
-          options={{ headerShown: true, headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="EditBudgetPlanScreen"
-          component={EditBudgetPlanScreen}
-          options={{ headerShown: true, headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="MarketPriceTable"
-          component={MarketPriceTable}
-          options={{ headerShown: true, headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="updateExpenses"
-          component={updateExpenses}
-          options={{ headerShown: true, headerTitle: "" }}
-        />
-        <Stack.Screen
-          name="AnalysisScreen"
-          component={AnalysisScreen}
-          options={{ headerShown: true, headerTitle: "" }}
-        />
+         <Stack.Screen name="AddBudgetPlan" component={AddBudgetPlan} options={{headerShown:true,headerTitle: 'Create Budget Plan' }}/>
+        <Stack.Screen name="BudgetPlansScreen" component={BudgetPlansScreen} options={{headerShown:true,headerTitle: 'Finance' }}/>
+        <Stack.Screen name="BudgetPlansScreen2" component={BudgetPlansScreen2} options={{headerShown:true,headerTitle: 'Finance' }}/>
+        <Stack.Screen name="Budget Plan Overview" component={BudgetPlanOverviewScreen} options={{headerShown:true,headerTitle: 'Overview' }}/>
+        <Stack.Screen name="Budget Plan Overview2" component={BudgetPlanOverviewScreen2} options={{headerShown:true,headerTitle: 'Overview' }}/>
+        <Stack.Screen name="EditBudgetPlanScreen" component={EditBudgetPlanScreen} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="MarketPriceTable" component={MarketPriceTable} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="updateExpenses" component={updateExpenses} options={{headerShown:true,headerTitle: '' }}/>
+        <Stack.Screen name="CropSelectionScreen" component={CropSelectionScreen} options={{headerShown:true,headerTitle: 'Create Budget Plan' }}/>
+        <Stack.Screen name="AnalysisScreen" component={AnalysisScreen} options={{headerShown:true,headerTitle: '' }}/>
       </>
       ) : (
         <>
