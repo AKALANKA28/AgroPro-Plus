@@ -4,16 +4,17 @@ import DistributerLocationMap from './DistributerLocationMap';
 import Sidebar from '../driver/sidebar/Sidebar';
 import Footer from '../driver/footer/Footer';
 
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+axios.defaults.baseURL = "http://127.0.0.1:8000"; // Your backend base URL
 
 const Map = () => {
   const [Distributes, setDistributes] = useState([]);
 
+  // Fetch distributor data from the backend
   useEffect(() => {
     const fetchDistributes = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/distribute/');
-        setDistributes(response.data);
+        const response = await axios.get('/distribute/'); // Fetch data from your API
+        setDistributes(response.data); // Store the distributor data
       } catch (error) {
         console.error('Error fetching Distributes:', error);
       }

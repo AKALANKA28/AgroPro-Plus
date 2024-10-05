@@ -1,29 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Alert, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/Ionicons';
+import BackIcon from './BackIcon'; // Assuming BackIcon is in the same directory
 
-const MapDisplay = ({ locations }) => {
+const MapDisplay = ({ locations, navigation }) => {
   const [userLocation, setUserLocation] = useState(null);
   const mapRef = useRef(null);
 
+  // Hardcoded user location (latitude and longitude)
+  const hardcodedUserLocation = {
+    latitude: 6.8588258, // Example latitude (Bangalore, India)
+    longitude: 80.0246893, // Example longitude (Bangalore, India)
+  };
+
   useEffect(() => {
-    const getUserLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission to access location was denied');
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setUserLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-    };
-
-    getUserLocation();
+    // Set hardcoded user location instead of fetching dynamically
+    setUserLocation(hardcodedUserLocation);
   }, []);
 
   const centerMapOnUserLocation = () => {
@@ -54,12 +47,13 @@ const MapDisplay = ({ locations }) => {
         1000
       );
     }
-
   }, [locations]);
 
-  
   return (
     <View style={{ flex: 1 }}>
+      {/* Back icon button */}
+      <BackIcon onPress={() => navigation.goBack()} />
+
       <MapView
         ref={mapRef}
         style={{ flex: 1 }}
@@ -77,17 +71,21 @@ const MapDisplay = ({ locations }) => {
             coordinate={{ latitude: location.lat, longitude: location.lng }}
             title={location.business_name} // Display business name as title
           >
+            {/* Custom icon for distributor locations using Image */}
+            <Image
+              source={require('../../assets/mapIcon.png')}
+              style={{ width: 30, height: 30 }} // Adjust the width and height here to control icon size
+            />
             {/* Callout for additional information */}
             <Callout>
               <View>
                 <Text>{location.business_name}</Text>
-                {/* <Text>{location.situated_place || "Location not specified"}</Text> */}
               </View>
             </Callout>
           </Marker>
         ))}
 
-        {/* User's location marker */}
+        {/* User's hardcoded location marker */}
         {userLocation && (
           <Marker
             coordinate={{
@@ -95,7 +93,7 @@ const MapDisplay = ({ locations }) => {
               longitude: userLocation.longitude,
             }}
             title="You are here"
-            pinColor="blue"
+            pinColor="red"
           />
         )}
       </MapView>
@@ -106,7 +104,7 @@ const MapDisplay = ({ locations }) => {
           style={styles.userLocationButton}
           onPress={centerMapOnUserLocation}
         >
-          <Icon name="locate-outline" size={30} color="white" />
+          <Icon name="locate-outline" size={20} color="white" />
         </TouchableOpacity>
       )}
     </View>
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 80,
     right: 20,
-    backgroundColor: 'blue',
+    backgroundColor: "#607F0E",
     borderRadius: 30,
     padding: 10,
     elevation: 5,
