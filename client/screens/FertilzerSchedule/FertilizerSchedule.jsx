@@ -10,25 +10,25 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import Header from "../../components/Header";
 import ScheduleCard from "../../components/Cards/ScheduleCard";
-import { Ionicons } from "@expo/vector-icons";
 
 const FertilizerSchedule = () => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [savedSchedule, setSavedSchedule] = useState([]); // Initialize as empty array
+  const [savedSchedule, setSavedSchedule] = useState([]);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    fetchSavedSchedule();
+    fetchSavedSchedule(); // Initial fetch
   }, []);
 
   // Fetch the schedules from the database
-  const fetchSavedSchedule = async () => {
-    setLoading(true);
+  const fetchSavedSchedule = async (isRefreshing = false) => {
+    setLoading(isRefreshing); // Set loading state based on whether it's a refresh
+    if (isRefreshing) setRefreshing(true); // Set refreshing state if it's a refresh
+
     try {
       const response = await axios.get("/schedule/");
       setSavedSchedule(response.data || []); // Ensure it's an array
@@ -36,16 +36,14 @@ const FertilizerSchedule = () => {
       console.error("Failed to fetch saved schedule:", error);
     } finally {
       setLoading(false);
+      if (isRefreshing) setRefreshing(false); // Reset refreshing state after fetch
     }
   };
 
   // Handle the deletion of a schedule
   const handleDelete = async (id) => {
     try {
-      // Send a DELETE request to the backend
       await axios.delete(`/schedule/${id}`);
-
-      // After successful deletion, remove the card from the state
       setSavedSchedule((prevSchedules) =>
         prevSchedules.filter((schedule) => schedule._id !== id)
       );
@@ -55,30 +53,49 @@ const FertilizerSchedule = () => {
   };
 
   const handleCardClick = (schedule) => {
-    navigation.navigate("ScheduleDetails", { schedule }); // Navigate to ScheduleDetails with the schedule data
+    navigation.navigate("ScheduleDetails", { schedule });
   };
 
   const renderCard = (schedule) => {
-    const { _id, crop_type, imageUri, week } = schedule || {};
-
+    const {
+      _id,
+      crop_type,
+      imageUri,
+      estimated_harvesting_date,
+      estimated_total_cost,
+      planting_date,
+      area_size,
+      soil_condition,
+    } = schedule || {};
+  
     return (
       <ScheduleCard
         key={_id}
         imageUri={imageUri}
         crop_type={crop_type}
-        week={week}
-        onPress={() => handleCardClick(schedule)} // When a card is clicked, navigate with schedule data
-        onDelete={() => handleDelete(_id)} // Pass the delete handler
+        estimated_harvesting_date={estimated_harvesting_date}
+        estimated_total_cost={estimated_total_cost}
+        planting_date={planting_date}
+        area_size={area_size}
+        soil_condition={soil_condition}
+        onPress={() => handleCardClick(schedule)} 
+        onDelete={() => handleDelete(_id)} 
       />
     );
   };
+  
 
   return (
     <>
       <Header title="Fertilizer Schedule" />
       <ScrollView
         contentContainerStyle={styles.container}
-        refreshControl={<RefreshControl refreshing={refreshing} />}
+        refreshControl={
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={() => fetchSavedSchedule(true)} // Fetch data when refreshing
+          />
+        }
       >
         {loading ? (
           <View style={styles.loadingContainer}>
@@ -96,10 +113,9 @@ const FertilizerSchedule = () => {
       </ScrollView>
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => navigation.navigate("FertilizerFormScreen")} // Navigate to the new form screen
+        onPress={() => navigation.navigate("FertilizerFormScreen")}
       >
         <Text style={styles.floatingButtonText}>Generate Schedule</Text>
-        {/* <Ionicons name="add" size={40} color="#fff" /> */}
       </TouchableOpacity>
     </>
   );
@@ -126,7 +142,6 @@ const styles = StyleSheet.create({
     height: 48,
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center",  
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },

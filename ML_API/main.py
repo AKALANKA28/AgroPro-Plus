@@ -29,7 +29,7 @@ system_message = {
         "{"
         "schedule: {"
             "fertilizer_schedule: {"
-                "crop_type: crop_type,"
+                "crop_type: crop_type, give the stage name in lowercase format,please don't give in Uppercase or capitalized,"
                 "planting_date: planting_date"","
                 "estimated_harveting_date: harveting_date"","
                 "estimated_total_cost: total_cost"","
@@ -69,7 +69,7 @@ def generate_schedule():
     user_input = {
         "role": "user",
         "content": (
-            "Generate the fertilizer schedule based on the provided input as instructions. All the details should align with the current economy and state of Sri Lankan agriculture. Only provide the fertilizer schedule in JSON format, without any additional comments."            "Here is the input: "
+            "Generate the fertilizer schedule based on the provided input as instructions with all the possible stages,give at least 5 stages. All the details should align with the current economy and state of Sri Lankan agriculture. Only provide the fertilizer schedule in JSON format, without any additional comments."            "Here is the input: "
             f"Crop type: {data.get('crop_type')}, "
             f"Planting date: {data.get('planting_date')}, "
             f"Area size: {data.get('area_size')}, "

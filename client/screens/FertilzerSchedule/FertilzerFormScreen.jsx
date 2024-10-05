@@ -35,13 +35,13 @@ const FertilizerFormScreen = ({ navigation }) => {
           loading: loading,  // Pass the loading state
         });
       } else {
-        console.error("No valid fertilizer schedule data received:", data);
+        // console.error("No valid fertilizer schedule data received:", data);
         Alert.alert("Error", "No valid schedule data received.");
       }
 
     } catch (error) {
-      console.error("Failed to fetch the fertilizer schedule:", error);
-      Alert.alert("Error", "Failed to fetch the fertilizer schedule.");
+      // console.error("Failed to fetch the fertilizer schedule:", error);
+      Alert.alert("Error", "Failed to fetch the fertilizer schedule.Please Generate Schedule Again.");
     } finally {
       setLoading(false);
     }
