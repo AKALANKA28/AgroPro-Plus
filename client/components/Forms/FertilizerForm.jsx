@@ -55,16 +55,7 @@ const FertilizerForm = ({ onSubmit }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Header with back arrow and centered title */}
-      {/* <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Add Details</Text>
-        <View style={{ width: 24 }} />
-      </View> */}
-
-<Header title="Add Details"/>
+      <Header title="Add Details" />
 
       <View style={styles.form}>
         <Text style={styles.label}>Crop Type:</Text>
@@ -75,10 +66,17 @@ const FertilizerForm = ({ onSubmit }) => {
             { label: "Corn", value: "corn" },
             { label: "Soybeans", value: "soybeans" },
             { label: "Watermelon", value: "watermelon" },
-            { label: "Onion", value: "onion" },
-
+            { label: "Big Onion", value: "big onion" },
+            { label: "Red Onion", value: "red onion" },
+            { label: "Cowpea", value: "cowpea" },
+            { label: "Chili", value: "big onion" },
+            { label: "Potato", value: "potato" },
           ]}
-          placeholder={{ label: "Select a crop type", value: null }}
+          placeholder={{
+            label: "Select a crop type",
+            value: null,
+            color: "#9EA0A4", // Placeholder color
+          }}
           style={pickerSelectStyles}
         />
         <Text style={styles.label}>Planting Date:</Text>
@@ -124,12 +122,16 @@ const FertilizerForm = ({ onSubmit }) => {
             { label: "Alluvial Soils", value: "Alluvial Soils" },
             { label: "Regosols", value: "Regosols" },
           ]}
-          placeholder={{ label: "Select soil condition", value: null }}
+          placeholder={{
+            label: "Select soil condition",
+            value: null,
+            color: "#9EA0A4", // Placeholder color
+          }}
           style={pickerSelectStyles}
         />
         <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
           <View style={styles.button}>
-            <Text style={styles.buttonText}>Fetch Schedule</Text>
+            <Text style={styles.buttonText}>Generate Schedule</Text>
           </View>
         </TouchableOpacity>
         {error && <Text style={styles.errorText}>{error}</Text>}
@@ -139,21 +141,6 @@ const FertilizerForm = ({ onSubmit }) => {
 };
 
 const styles = StyleSheet.create({
-  // header: {
-  //   height: 60,
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   marginVertical: 20,
-  //   paddingHorizontal: 16,
-  //   borderBottomWidth: 1,
-  //   borderBottomColor: "#ccc",
-  // },
-  // headerTitle: {
-  //   flex: 1,
-  //   textAlign: "center",
-  //   fontSize: 20,
-  //   fontWeight: "bold",
-  // },
   form: {
     marginBottom: 20,
     marginTop: 10,
@@ -161,15 +148,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   label: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 14,
+    fontFamily: "poppins-bold",
     color: "#333",
     marginBottom: 5,
   },
   input: {
     borderWidth: 1,
     borderColor: "#d1d1d1",
-    borderRadius: 25,
+    borderRadius: 8,
     padding: 12,
     fontSize: 16,
     backgroundColor: "#fafafa",
@@ -179,17 +166,29 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 8,
     overflow: "hidden",
+    
   },
   button: {
     backgroundColor: "#607F0E",
-    paddingVertical: 20,
-    borderRadius: 25,
+    paddingVertical: 14,
+    borderRadius: 40,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 30,
+    // For Android
+    elevation: 5, 
+    
+    // For iOS
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84, // Adjust for softer shadow
   },
+  
   buttonText: {
     fontSize: 18,
-    fontWeight: "600",
+    fontFamily: "Nunito-Bold",
+    // fontWeight: "900",
     color: "#fff",
   },
   errorText: {
@@ -207,21 +206,33 @@ const pickerSelectStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 4,
+    borderColor: "#d1d1d1", // Border color
+    borderRadius: 25,       // Border radius for iOS
+    backgroundColor: "#fafafa",
     color: "black",
-    paddingRight: 30,
+    paddingRight: 30,        // Padding for right side
+    borderWidth: 1,
+    borderColor: "#d1d1d1",
+    marginBottom: 20,
   },
   inputAndroid: {
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "gray",
-    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#d1d1d1", // Border color
+    borderRadius: 25,       // Border radius for Android
+    backgroundColor: "#fafafa",
     color: "black",
-    paddingRight: 30,
+    paddingRight: 30,        // Padding for right side
+    marginBottom: 10,
+
+  },
+  placeholder: {
+    color: "#9EA0A4",        // Placeholder text color
+    
   },
 });
+
 
 export default FertilizerForm;

@@ -21,6 +21,8 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import NearLocation from "../components/Home/NearLocation";
 import CropCard from "../components/Home/CropCards";
+import HeaderMenu from "../components/Menus/HeaderMenu";
+import UserInfo from "../components/Home/UserInfo";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -145,7 +147,7 @@ const Home = () => {
       text: "Fertilizer Schedule",
       navigateTo: "FertilizerSchedule",
     },
-    { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
+    // { id: "2", icon: "camera", text: "Camera", navigateTo: "" },
     {
       id: "3",
       icon: "chart",
@@ -158,7 +160,7 @@ const Home = () => {
       text: "Distributors",
       navigateTo: "DistributeScreen",
     },
-    { id: "5", icon: "user", text: "Community", navigateTo: "" },
+    { id: "5", icon: "user", text: "Community", navigateTo: "Community" },
   ];
   const renderCropButton = ({ item }) => (
     <View style={styles.cropButtonContainer}>
@@ -201,7 +203,7 @@ const Home = () => {
           <View style={styles.topView}>
             <View>
               <Text style={styles.welcome}>Welcome</Text>
-              <Text style={styles.userName}>Akalanka Dias</Text>
+              <UserInfo/>
             </View>
           </View>
 
@@ -230,14 +232,14 @@ const Home = () => {
               <Text style={styles.sectionTitle}>Next Fertilization Phase</Text>
               <CropCard />
 
-              <Text style={styles.sectionTitle}>Nearby Distributor</Text>
+              <Text style={styles.sectionTitle}>Nearby Distributors</Text>
               <NearLocation />
 
+
               <Text style={styles.sectionTitle}>Finance</Text>
-             
 
               <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
-             
+              <HeaderMenu/>
             </ScrollView>
           </View>
         </Animated.View>
@@ -322,8 +324,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 19,
+    // fontStyle: "italic",
+    fontFamily: "Nunito-ExtraBold",
+    // fontWeight: "bold",
     marginBottom: 10,
     color: "#1e441f", // Fixed the color to have a valid hex value
   },

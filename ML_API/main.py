@@ -29,7 +29,7 @@ system_message = {
         "{"
         "schedule: {"
             "fertilizer_schedule: {"
-                "crop_type: crop_type,"
+                "crop_type: crop_type, give the stage name in lowercase format,please don't give in Uppercase or capitalized,"
                 "planting_date: planting_date"","
                 "estimated_harveting_date: harveting_date"","
                 "estimated_total_cost: total_cost"","
@@ -41,11 +41,11 @@ system_message = {
                 "weather_forecast: weather_forecast,"
                 "growth_stages: ["
                     "{"
-                        "stage: stage,"
+                        "stage: stage, give the stage name in Capitalized format,please don't give in Uppercase or Lowercase,"
                         "application_date: application_date,"
                         "fertilizer_type: fertilizer_type,"
                         "amount: amount,"
-                        "cost: cost,"
+                        "cost: cost,this cost should allign with sri lanka's current market prices"
                         "notes: Provide extra notes for farmers. Include information on potential crop diseases relevant to this stage and how to prevent them."
 
                     "}"
@@ -69,7 +69,7 @@ def generate_schedule():
     user_input = {
         "role": "user",
         "content": (
-            "Generate the fertilizer schedule based on the provided input as instructions. All the details should align with the current economy and state of Sri Lankan agriculture. Only provide the fertilizer schedule in JSON format, without any additional comments."            "Here is the input: "
+            "Generate the fertilizer schedule based on the provided input as instructions with all the possible stages,give at least 5 stages. All the details should align with the current economy and state of Sri Lankan agriculture. Only provide the fertilizer schedule in JSON format, without any additional comments."            "Here is the input: "
             f"Crop type: {data.get('crop_type')}, "
             f"Planting date: {data.get('planting_date')}, "
             f"Area size: {data.get('area_size')}, "
