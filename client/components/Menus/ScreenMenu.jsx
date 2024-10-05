@@ -81,6 +81,7 @@ const ScreenMenu = () => {
             headerRight: () => <HeaderMenu />,
           }}
         />
+        
         <Stack.Screen
           name="FertilizerSchedule"
           component={FertilizerSchedule}
@@ -100,6 +101,13 @@ const ScreenMenu = () => {
         <Stack.Screen
           name="DistributeScreen"
           component={DistributeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Community"
+          component={Community}
           options={{
             headerShown: false,
           }}

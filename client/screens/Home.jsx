@@ -239,7 +239,7 @@ const Home = () => {
               <Text style={styles.sectionTitle}>Finance</Text>
 
               {/* <Text style={styles.sectionTitle}>Latest Post By Farmers</Text> */}
-              <TouchableOpacity onPress={() => navigation.navigate('ShareExperience')}>
+              <TouchableOpacity onPress={() => navigation.navigate('Community')}>
                 <Text style={styles.sectionTitle}>Latest Post By Farmers</Text>
               </TouchableOpacity>
               <HeaderMenu/>
