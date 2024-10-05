@@ -5,12 +5,21 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const DistributeSchema = yup.object({
-  business_name: yup.string().required("Business Name is required"),
-  registation_no: yup.string().required("Registration Number is required"),
-  situated_place: yup.string().required("Situated Place is required"),
+  business_name: yup
+    .string()
+    .matches(/^[A-Z][a-zA-Z\s]*$/, "Business Name must start with a capital letter and contain only letters")
+    .required("Business Name is required"),
+  registation_no: yup
+    .string()
+    .matches(/^[A-Z]+-\d+$/, "Registration Number must start with capital letters, followed by a hyphen and numbers")
+    .required("Registration Number is required"),
+  situated_place: yup
+    .string()
+    .matches(/^[A-Z][a-zA-Z\s]*$/, "Situated Place must start with a capital letter and contain only letters")
+    .required("Situated Place is required"),
   Owner_name: yup
     .string()
-    .matches(/^[A-Za-z\s]+$/, "Owner Name must contain only letters")
+    .matches(/^[A-Z][a-zA-Z\s]*$/, "Owner Name must start with a capital letter and contain only letters")
     .required("Owner Name is required"),
   email: yup
     .string()
@@ -21,6 +30,7 @@ const DistributeSchema = yup.object({
     .matches(/^\d+$/, "Phone Number must contain only numbers")
     .required("Phone Number is required"),
 });
+
 
 const DistributeForm = ({ handleSubmit, initialData }) => {
   const dispatch = useDispatch();

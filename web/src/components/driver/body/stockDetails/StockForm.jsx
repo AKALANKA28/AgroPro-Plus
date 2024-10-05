@@ -6,15 +6,15 @@ import * as yup from "yup";
 
 const StockSchema = yup.object({
   business_name: yup
-  .string()
-  .required("Business Name is required"),
+    .string()
+    .matches(/^[A-Z][a-zA-Z\s]*$/, "Business Name must start with a capital letter and contain only letters")
+    .required("Business Name is required"),
   ferti_name: yup
     .string()
     .required("Fertilizer Name is required"),
   amount: yup
     .number()
     .typeError("Amount must be a number")
-    // .positive("Amount must be a positive number")
     .required("Stock Amount is required"), 
   price: yup
     .number()
@@ -26,8 +26,10 @@ const StockSchema = yup.object({
     .required("Description is required"),
   availability: yup
     .string()
+    .matches(/^[A-Z][a-zA-Z\s]*$/, "Availability status must start with a capital letter and contain only letters")
     .required("Availability status is required"),
 });
+
 
 const StockForm = ({ handleSubmit, initialData }) => {
   const dispatch = useDispatch();

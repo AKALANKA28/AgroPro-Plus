@@ -15,7 +15,7 @@ const LocationMarker = () => {
   });
 
   const markerIcon3 = new L.Icon({
-    iconUrl: require("../../../../assests/box-truck.png"),
+    iconUrl: require("../../../../assests/placeholder.png"),
     iconSize: [45, 45],
     iconAnchor: [17, 45], //[left/right, top/bottom]
     popupAnchor: [0, -46]
