@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#e6ffe6', // Light green chat item
+    backgroundColor: '#e6ffe6',
     borderRadius: 8,
     marginBottom: 10,
   },
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     color: '#666666',
   },
   newChatButton: {
-    backgroundColor: '#004d00', // Dark green for new chat button
+    backgroundColor: '#617F0F',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -293,13 +293,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   sendButton: {
-    backgroundColor: '#004d00', // Dark green send button
+    backgroundColor: '#617F0F',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 25,
   },
   sendButtonText: {
-    color: '#FFFFFF',
+    color: '#617F0F',
     fontSize: 16,
   },
   modalContainer: {
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   modalButton: {
-    backgroundColor: '#004d00',
+    backgroundColor: 'black',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',

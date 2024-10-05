@@ -288,8 +288,10 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 30,
     textAlign: 'center',
+    marginTop: 15,
+    marginBottom: 15,
     fontWeight: 'bold',
-    color: '#4CAF50',
+    color: '#617F0F',
     marginVertical: 10,
   },
   headerImage: {
@@ -307,7 +309,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   imageButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: 'black',
     padding: 15,
     borderRadius: 5,
     marginBottom: 20,
@@ -318,7 +320,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   submitButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#617F0F',
     padding: 15,
     borderRadius: 5,
     marginBottom: 20,
@@ -373,7 +375,7 @@ const styles = StyleSheet.create({
   },
   modalInput: {
     height: 150,
-    width: '100%', // Increased width for better visibility
+    width: '100%',
     borderColor: '#CCCCCC',
     borderWidth: 1,
     borderRadius: 5,
@@ -400,32 +402,32 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   updateButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#617F0F',
     padding: 10,
     borderRadius: 5,
-    width: '48%', // Adjusted width
+    width: '48%',
     alignItems: 'center',
   },
   deleteButton: {
     backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,
-    width: '48%', // Adjusted width
+    width: '48%',
     alignItems: 'center',
   },
   closeButton: {
     backgroundColor: '#FF5733',
     padding: 10,
     borderRadius: 5,
-    width: '100%', // Full width for close button
+    width: '100%',
     alignItems: 'center',
     marginTop: 10,
   },
   cancelButton: {
-    backgroundColor: '#FF5733',
+    backgroundColor: '#617F0F',
     padding: 10,
     borderRadius: 5,
-    width: '48%', // Adjusted width
+    width: '48%',
     alignItems: 'center',
   },
 });

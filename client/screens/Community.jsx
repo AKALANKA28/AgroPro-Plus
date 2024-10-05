@@ -20,7 +20,7 @@ const Community = () => {
   return (
     // Use ImageBackground for the background image
     <ImageBackground
-      source={require('C:\\Users\\udara\\Documents\\GitHub\\AgroPro-Plus\\client\\assets\\images\\stages\\rice-panicle-initiation.jpeg')} // Replace with the path to your image
+      source={require('C:\\Users\\udara\\Documents\\GitHub\\AgroPro-Plus\\client\\assets\\images\\farming-machine.jpg')} // Replace with the path to your image
       style={styles.background}
     >
       <SafeAreaView style={styles.container}>
@@ -36,10 +36,10 @@ const Community = () => {
           </TouchableOpacity>
           
           {/* Logo */}
-          <Image
+          {/* <Image
             source={{ uri: 'https://png.pngtree.com/png-vector/20211208/ourmid/pngtree-agricultural-logo-design-png-image_4051578.png' }} 
             style={styles.logo}
-          />
+          /> */}
           
           {/* Header Text */}
           <Text style={styles.headerText}>Enhance your communication</Text>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',     
   },
   button: {
-    backgroundColor: '#4CAF50', 
+    backgroundColor: '#617F0F', 
     paddingVertical: 20,        
     paddingHorizontal: 60,      
     borderRadius: 10,
