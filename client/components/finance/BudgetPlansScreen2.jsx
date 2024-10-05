@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  TextInput,
   Alert,
 } from "react-native";
 import axios from "axios";
@@ -16,11 +17,15 @@ import { BASE_URL } from '../../constants/constants';
 const BudgetPlansScreen = ({ navigation }) => {
   const [budgetPlans, setBudgetPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  console.log("API Base URL:", BASE_URL);
 
   const fetchBudgetPlans = async () => {
     try {
-      const response = await axios.get(`/finance/`);
+      const response = await axios.get(`/finance/2`);
       setBudgetPlans(response.data);
+      console.log(response.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -47,7 +52,7 @@ const BudgetPlansScreen = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate("Budget Plan Overview", { id: item._id })}
+      onPress={() => navigation.navigate("Budget Plan Overview2", { id: item._id })}
     >
       <Text style={styles.cardTitle}>{item.title}</Text>
       <Text style={styles.cardDetails}>
@@ -59,40 +64,26 @@ const BudgetPlansScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-    
-
-      {/* Filter Buttons */}
       <View style={styles.filterContainer}>
-        <TouchableOpacity
-          style={styles.filterButtona}
-          onPress={() => navigation.navigate("BudgetPlansScreen")}
-        >
-          <Text style={styles.filterTexta}>Custom</Text>
+        <TouchableOpacity style={styles.filterButton} onPress={() => navigation.navigate("BudgetPlansScreen")}>
+          <Text style={styles.filterText}>Custom</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.filterButton}
-          onPress={() => navigation.navigate("BudgetPlansScreen2")}
-        >
-          <Text style={styles.filterText}>Templates</Text>
+        <TouchableOpacity style={styles.filterButtona} >
+          <Text style={styles.filterTexta}>Templates</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.filterButton}
-          onPress={() => navigation.navigate("MarketPrices")}
-        >
+        <TouchableOpacity style={styles.filterButton} onPress={() => navigation.navigate("MarketPriceTable")}>
           <Text style={styles.filterText}>Market Prices</Text>
         </TouchableOpacity>
       </View>
-
-      <Text style={styles.recentText}>Recent Plans</Text>
+      <Text style={styles.recentText}>Recent</Text>
       <FlatList
         data={budgetPlans}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
       />
-
       {/* Add Button */}
-      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("AddBudgetPlan")}>
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("CropSelectionScreen")}>
         <FontAwesome name="plus" size={24} color="white" />
       </TouchableOpacity>
     </View>
@@ -112,10 +103,22 @@ const styles = StyleSheet.create({
     color: "#607F0E",
     marginBottom: 20,
   },
+  searchSection: {
+    marginBottom: 20,
+  },
+  searchInput: {
+    backgroundColor: "#F5F5F5",
+    borderRadius: 25,
+    padding: 10,
+    paddingLeft: 40,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+  },
   filterContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
+    justifyContent: "space-around",
+    marginBottom: 10,
   },
   filterButton: {
     flex: 1,
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 2, // Set the border width
+    borderWidth: 2,
     borderColor: "#607F0E",
   },
   filterText: {

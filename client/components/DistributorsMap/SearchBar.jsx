@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute', // Set position to absolute for floating effect
     top: 40, // Adjust the distance from the top of the screen
-    left: 10,
+    left: 70,
     right: 10,
     flexDirection: 'row',
     alignItems: 'center',
