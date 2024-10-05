@@ -33,32 +33,111 @@ const CropSelectionScreen = () => {
   const [errors, setErrors] = useState({}); // To store validation errors
 
   // Hardcoded crop details
+
+  
+
   const cropDetails = {
     paddy: {
       zones: {
         'Dry & Intermediate Zone (Rainfed)': {
-          yieldPerAcre: 800,
-          marketPricePerKg: 450,
+          yieldPerAcre: 1376,
+          marketPricePerKg: 230,
           expenditures: {
-            seedsCost: 2000,
-            pesticidesCost: 1500,
-            laborCost: 1200,
-            waterCost: 300,
+            LandPreparationBundPreparation: 16000,
+            SeedAndFieldEstablishment: 8600,
+            FertilizerApplication: 5800,
+            Maintenance: 2260,
+            HarvestingDryingAndTransport: 12440,
           },
         },
         'Wet Zone': {
-          yieldPerAcre: 1000,
-          marketPricePerKg: 500,
+          yieldPerAcre: 1450,
+          marketPricePerKg: 230,
           expenditures: {
-            seedsCost: 2500,
-            pesticidesCost: 2000,
-            laborCost: 1300,
-            waterCost: 400,
+            LandPreparationAndBundPreparation: 14000,
+            FertilizerApplication: 8600,
+            Maintenance: 1600,
+            HarvestingDryingAndTransport: 4500,
           },
         },
       },
     },
-    tea: {
+    redonion: {
+      zones: {
+        'Dry & Intermediate Zone (Rainfed)': {
+          yieldPerAcre: 1376,
+          marketPricePerKg: 230,
+          expenditures: {
+            LandPreparationBundPreparation: 16000,
+            SeedAndFieldEstablishment: 8600,
+            FertilizerApplication: 5800,
+            Maintenance: 2260,
+            HarvestingDryingAndTransport: 12440,
+          },
+        },
+        'Wet Zone': {
+          yieldPerAcre: 1450,
+          marketPricePerKg: 230,
+          expenditures: {
+            LandPreparationAndBundPreparation: 14000,
+            FertilizerApplication: 8600,
+            Maintenance: 1600,
+            HarvestingDryingAndTransport: 4500,
+          },
+        },
+      },
+    },
+    cowpea: {
+      zones: {
+        'Dry & Intermediate Zone (Rainfed)': {
+          yieldPerAcre: 1376,
+          marketPricePerKg: 230,
+          expenditures: {
+            LandPreparationBundPreparation: 16000,
+            SeedAndFieldEstablishment: 8600,
+            FertilizerApplication: 5800,
+            Maintenance: 2260,
+            HarvestingDryingAndTransport: 12440,
+          },
+        },
+        'Wet Zone': {
+          yieldPerAcre: 1450,
+          marketPricePerKg: 230,
+          expenditures: {
+            LandPreparationAndBundPreparation: 14000,
+            FertilizerApplication: 8600,
+            Maintenance: 1600,
+            HarvestingDryingAndTransport: 4500,
+          },
+        },
+      },
+    },
+    chillie: {
+      zones: {
+        'Dry & Intermediate Zone (Rainfed)': {
+          yieldPerAcre: 1376,
+          marketPricePerKg: 230,
+          expenditures: {
+            LandPreparationBundPreparation: 16000,
+            SeedAndFieldEstablishment: 8600,
+            FertilizerApplication: 5800,
+            Maintenance: 2260,
+            HarvestingDryingAndTransport: 12440,
+          },
+        },
+        'Wet Zone': {
+          yieldPerAcre: 1450,
+          marketPricePerKg: 230,
+          expenditures: {
+            LandPreparationAndBundPreparation: 14000,
+            FertilizerApplication: 8600,
+            Maintenance: 1600,
+            HarvestingDryingAndTransport: 4500,
+          },
+        },
+      },
+    },
+    bigonion: {
       zones: {
         'Dry & Intermediate Zone (Irrigated)': {
           yieldPerAcre: 600,
@@ -162,11 +241,12 @@ const CropSelectionScreen = () => {
         const yieldEstimate = cropInfo.yieldPerAcre * area;
         const revenueEstimate = yieldEstimate * cropInfo.marketPricePerKg;
 
-        const seedsCostTotal = cropInfo.expenditures.seedsCost * area;
-        const pesticidesCostTotal = cropInfo.expenditures.pesticidesCost * area;
-        const laborCostTotal = cropInfo.expenditures.laborCost * area;
-        const waterCostTotal = cropInfo.expenditures.waterCost * area;
-        const totalExpenditure = seedsCostTotal + pesticidesCostTotal + laborCostTotal + waterCostTotal + parseFloat(fertilizerCost);
+        const seedsCostTotal = cropInfo.expenditures.LandPreparationBundPreparation * area;
+        const pesticidesCostTotal = cropInfo.expenditures.FertilizerApplication * area;
+        const laborCostTotal = cropInfo.expenditures.Maintenance * area;
+        const waterCostTotal = cropInfo.expenditures.HarvestingDryingAndTransport * area;
+        const SeedAndFieldEstablishmentCostTotal = cropInfo.expenditures.SeedAndFieldEstablishment * area;
+        const totalExpenditure = seedsCostTotal + pesticidesCostTotal + laborCostTotal + waterCostTotal +SeedAndFieldEstablishmentCostTotal + parseFloat(fertilizerCost);
 
         setTotalYield(yieldEstimate);
         setEstimatedIncome(revenueEstimate);
@@ -275,7 +355,14 @@ const CropSelectionScreen = () => {
       >
         <Picker.Item label="Select a Crop" value="" />
         <Picker.Item label="Paddy" value="paddy" />
-        <Picker.Item label="Tea" value="tea" />
+        <Picker.Item label="Big Onion" value="bigonion" />
+        <Picker.Item label="Red Onion" value="redonion" />
+        <Picker.Item label="Cowpea" value="cowpea" />
+        <Picker.Item label="Chillie" value="chillie" />
+        <Picker.Item label="Finger Millet" value="Finger Millet" />
+        <Picker.Item label="Green Gram" value="Green Gram" />
+        <Picker.Item label="Ground Nut" value="Ground Nut" />
+        <Picker.Item label="Maize" value="Maize" />
       </Picker>
   
       <Text>Select Climatic Zone</Text>
@@ -326,7 +413,7 @@ const CropSelectionScreen = () => {
         <Text style={styles.resultText}>Total Expenditure: Rs. {totalExpenditure}</Text>
         <Text style={styles.resultText}>Total Yield: {totalYield} kg</Text>
         <Text style={styles.resultText}>Estimated Income: Rs. {estimatedIncome}</Text>
-        <Text style={styles.resultText}>Profit: Rs. {profit}</Text>
+        <Text style={styles.resultText}>Est. Profit: Rs. {profit}</Text>
       </View>
   
       <TouchableOpacity style={styles.saveButton} onPress={handleSaveBudgetPlan}>
