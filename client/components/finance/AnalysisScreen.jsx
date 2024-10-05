@@ -99,7 +99,7 @@ const AnalysisScreen = ({ route }) => {
               color: () => `rgba(0, 0, 255, 0.5)` // Estimated expenses color
             },
             {
-              data: [budgetPlan.aseedsCost, budgetPlan.afertilizerCost, budgetPlan.apesticidesCost, budgetPlan.aotherCost],
+              data: [budgetPlan.seedsCost, budgetPlan.fertilizerCost, budgetPlan.pesticidesCost, budgetPlan.otherCost],
               color: () => `rgba(0, 255, 0, 0.5)` // Actual expenses color
             },
           ]
@@ -132,8 +132,8 @@ const AnalysisScreen = ({ route }) => {
       />
 
       <Text style={styles.sectionHeader}>Profit Analysis</Text>
-      <Text>Expected Profit: ₹{expectedProfit.toFixed(2)}</Text>
-      <Text>Actual Profit: ₹{actualProfit.toFixed(2)}</Text>
+      <Text>Expected Profit: Rs.{expectedProfit.toFixed(2)}</Text>
+      <Text>Actual Profit: Rs.{actualProfit.toFixed(2)}</Text>
 
       <TouchableOpacity onPress={downloadPdf} style={styles.downloadButton}>
         <Text style={styles.downloadButtonText}>Download PDF Report</Text>

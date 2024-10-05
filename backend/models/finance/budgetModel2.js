@@ -86,6 +86,6 @@ const bp = mongoose.Schema({
    
 })
 
-const budgetPlans = mongoose.model("bp", bp);
+const budgetPlans2 = mongoose.model("bp2", bp);
 
-module.exports = budgetPlans;
+module.exports = budgetPlans2;
