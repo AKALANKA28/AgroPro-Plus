@@ -85,7 +85,7 @@ const NearLocation = () => {
             >
               <View style={styles.card}>
                 <Image
-                  source={{ uri: item.shop_image }}
+                  source={{ uri: item.imgUrl }}
                   style={styles.shopImage}
                 />
                 <View style={styles.detailsContainer}>
@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 8,
-    padding: 15,
-    marginLeft: 15, // Adjust margin for horizontal layout
+    padding: 5,
+    // marginLeft: 15, // Adjust margin for horizontal layout
     // elevation: 3,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -148,13 +148,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   shopImage: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     borderRadius: 8,
     marginRight: 15,
   },
   detailsContainer: {
     flex: 1,
+
   },
   businessName: {
     fontSize: 18,
@@ -174,6 +175,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignSelf: "flex-c",
     marginLeft: 10,
+    marginRight: 10,
+
   },
 });
 

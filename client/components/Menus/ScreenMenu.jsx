@@ -25,6 +25,7 @@ import MarketPriceTable from "../../components/finance/MarketPriceTable";
 import updateExpenses from "../../components/finance/updateExpenses";
 import AnalysisScreen from "../../components/finance/AnalysisScreen";
 import MapDisplay from "../DistributorsMap/MapDisplay";
+import LoadingOverlay from "../LoadingOverlay";
 import CropSelectionScreen from "../../components/finance/CropSelectionScreen";
 
 const ScreenMenu = () => {
@@ -57,9 +58,10 @@ const ScreenMenu = () => {
 
   if (!fontsLoaded) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Loading...</Text>
-      </View>
+      // <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      //   <Text>Loading...</Text>
+      // </View>
+      <LoadingOverlay/>
     );
   }
 
