@@ -10,7 +10,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import axios from 'axios';
-import Icon from 'react-native-vector-icons/Feather'; // Import Feather for modern icons
+import Icon from 'react-native-vector-icons/Feather';
 
 const API_URL = 'http://192.168.238.108:8070/notice';
 const backgroundImage = require('C:\\Users\\udara\\Documents\\GitHub\\AgroPro-Plus\\client\\assets\\images\\stages\\corn-milk-stage.jpeg'); // Update with your image path
@@ -177,18 +177,19 @@ const SpecialNotices = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover', // Ensure the image covers the whole background
+    resizeMode: 'cover',
   },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Add some transparency for readability
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: 15,
   },
   headerText: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#2e7d32', // Dark green
+    color: '#617F0F',
+    marginTop: 15,
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 6,
     borderLeftWidth: 5,
-    borderLeftColor: '#2e7d32',
+    borderLeftColor: '#617F0F',
     position: 'relative',
   },
   emergencyIcon: {
@@ -214,14 +215,14 @@ const styles = StyleSheet.create({
   noticeHeading: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1b5e20',
-    marginLeft: 40, // To align the text away from the icon
+    color: '#617F0F',
+    marginLeft: 40,
   },
   noticeDescription: {
     fontSize: 16,
-    color: '#424242',
+    color: '#617F0F',
     marginTop: 8,
-    marginLeft: 40, // To align the text away from the icon
+    marginLeft: 40,
   },
   actions: {
     flexDirection: 'row',
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   button: {
-    backgroundColor: '#2e7d32',
+    backgroundColor: '#617F0F',
     padding: 12,
     borderRadius: 25,
     alignItems: 'center',
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     bottom: 30,
-    backgroundColor: '#2e7d32',
+    backgroundColor: '#617F0F',
     borderRadius: 30,
     height: 60,
     width: 60,
