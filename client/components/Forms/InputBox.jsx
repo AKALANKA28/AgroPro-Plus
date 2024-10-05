@@ -19,7 +19,7 @@ const InputBox = ({
         autoComplete={autoComplete}
         secureTextEntry={secureTextEntry}
         value={value}
-        onChangeText={(text) => setValue()}
+        onChangeText={(text) => setValue(text)} // Pass text here
       />
     </View>
   );

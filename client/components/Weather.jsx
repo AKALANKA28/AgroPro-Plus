@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather"; // Install this package if not already
@@ -34,7 +33,6 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
       );
       const dailyData = await dailyResults.json();
       setDailyWeather(dailyData);
-      // console.log("Daily weather data:", dailyData);
 
       const hourlyResults = await fetch(
         `${WeatherHourlyURL}?lat=${latitude}&lon=${longitude}&key=${Weather_API}`
@@ -44,7 +42,6 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
 
       // Pass the weather data to the parent component
       if (onWeatherDataUpdate && typeof onWeatherDataUpdate === "function") {
-        // console.log("Weather Data to be Passed:");
         onWeatherDataUpdate(dailyData);
       }
     } catch (error) {
@@ -83,12 +80,9 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
     );
   }
 
-  if (!dailyWeather || !hourlyWeather || !dailyWeather.data || !hourlyWeather.data) {
-    return <ActivityIndicator size="large" color="#000" style={styles.loading} />;
-  }
-  
-  const todayWeather = dailyWeather.data.length > 0 ? dailyWeather.data[0] : null;
-  
+  const todayWeather =
+    dailyWeather && dailyWeather.data.length > 0 ? dailyWeather.data[0] : null;
+
   if (!todayWeather) {
     return (
       <View style={styles.errorContainer}>
@@ -96,7 +90,6 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
       </View>
     );
   }
-  
 
   return (
     <View style={styles.container}>
@@ -176,7 +169,9 @@ const WeatherApp = ({ onToggle, onWeatherDataUpdate }) => {
                   ) : (
                     <Text style={styles.noIcon}>No Icon</Text>
                   )}
-                  <Text style={styles.hourTemp}>{Math.round(hour.temp)}°C</Text>
+                  <Text style={styles.hourTemp}>
+                    {Math.round(hour.temp)}°C
+                  </Text>
                 </View>
               ))}
             </ScrollView>

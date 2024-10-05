@@ -1,8 +1,16 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Animated } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons"; // Import Ionicons for the delete icon
+import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient for gradients
 
-// Import the images (or require them dynamically)
 const cropImages = {
   rice: require("../../assets/images/plantImages/rice.jpeg"),
   corn: require("../../assets/images/plantImages/corn.jpeg"),
@@ -11,14 +19,16 @@ const cropImages = {
 };
 
 const ScheduleCard = ({
-  crop_type, // Use crop_type to display image based on this
-  health,
-  week,
+  crop_type,
+  estimated_total_cost,
+  estimated_harvesting_date,
+  planting_date, // New prop
+  area_size, // New prop
+  soil_condition, // New prop
   alerts = [],
   onPress,
-  onDelete, // Function to handle delete
+  onDelete,
 }) => {
-  // Swipeable renderRightActions to display the delete button
   const renderRightActions = (progress, dragX) => {
     const scale = dragX.interpolate({
       inputRange: [-100, 0],
@@ -27,42 +37,90 @@ const ScheduleCard = ({
     });
 
     return (
-      <TouchableOpacity onPress={onDelete}>
-        <Animated.View style={[styles.deleteButton, { transform: [{ scale }] }]}>
-          <Text style={styles.deleteText}>Delete</Text>
-        </Animated.View>
-      </TouchableOpacity>
+      <Animated.View style={[styles.deleteButton, { transform: [{ scale }] }]}>
+        <TouchableOpacity
+          onPress={onDelete}
+          style={styles.deleteInnerContainer}
+        >
+          <Ionicons name="trash-outline" size={24} color="#fff" />
+        </TouchableOpacity>
+      </Animated.View>
     );
   };
 
-  // Use the crop_type to dynamically choose the image
-  const cropImage = cropImages[crop_type] || require("../../assets/images/plantImages/rice.jpeg");
+  const cropImage =
+    cropImages[crop_type] ||
+    require("../../assets/images/plantImages/rice.jpeg");
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableOpacity onPress={onPress} style={styles.card}>
-        {/* Left side: Image */}
         <View style={styles.imageContainer}>
           <Image source={cropImage} style={styles.cropImage} />
         </View>
-
-        {/* Right side: Text information */}
         <View style={styles.infoContainer}>
-          {/* Crop Type */}
           <Text style={styles.cropTypeText}>{crop_type}</Text>
 
-          {/* Week and other details */}
-          <Text style={styles.detailText}>Week: {week}</Text>
+          {/* <View style={styles.detailContainer}>
+              <Ionicons
+                name="calendar-outline"
+                size={16}
+                color="#666"
+                style={styles.icon}
+              />
+              <View>
+                <Text style={styles.detailText}>Planting Date</Text>
+                <Text style={styles.detailValue}>{planting_date}</Text>
+              </View>
+            </View> */}
 
-          {/* Fertilizer Information */}
-          <View style={styles.fertilizerInfo}>
-            <Text style={styles.detailText}>
-              Est. Harverting Date: <Text style={styles.detailValue}>25 Jan 03</Text>
-            </Text>
-            <Text style={styles.detailText}>
-               Est. Total Cost: <Text style={styles.detailValue}>Rs. 100000.00</Text>
-            </Text>
+          <View style={styles.detailContainer}>
+            <Ionicons
+              name="calendar-outline"
+              size={16}
+              color="#607F0E"
+              style={styles.icon}
+            />
+            <View>
+              <Text style={styles.detailText}> Est. Harvesting Date</Text>
+              <Text style={styles.detailValue}>
+                {estimated_harvesting_date}
+              </Text>
+            </View>
           </View>
+          <View style={styles.detailContainer2}>
+            <Ionicons
+              name="wallet-outline"
+              size={16}
+              color="#607F0E"
+              style={styles.icon}
+            />
+            <View>
+              <Text style={styles.detailText}>
+                {" "}
+                Est. Total Cost:{" "}
+                <Text style={styles.detailValue2}>
+                  Rs.{estimated_total_cost}
+                </Text>
+              </Text>
+            </View>
+          </View>
+
+          {/* <View style={styles.fertilizerInfo}></View>
+          <Text style={styles.detailText}>
+            Area Size: <Text style={styles.detailValue}>{area_size} acres</Text>
+          </Text>
+
+          <View style={styles.soilCondition}>
+            <Text style={styles.detailText}>Soil Condition:</Text>
+            <Text style={styles.detailText}>
+              Nitrogen:{" "}
+              <Text style={styles.detailValue}>{soil_condition.nitrogen}</Text>
+            </Text>
+            <Text style={styles.detailText}>
+              pH: <Text style={styles.detailValue}>{soil_condition.pH}</Text>
+            </Text>
+          </View> */}
         </View>
       </TouchableOpacity>
     </Swipeable>
@@ -81,13 +139,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     width: 390,
-    // padding: 10,
-
+    elevation: 3,
 
   },
   imageContainer: {
     width: 110,
-    height: 117,
+    height: 118,
     marginRight: 10,
     alignItems: "center",
   },
@@ -97,30 +154,48 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-
   },
   infoContainer: {
     flex: 1,
     justifyContent: "flex-start",
     paddingTop: 10,
     paddingBottom: 10,
-
   },
   cropTypeText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 10,
+    fontSize: 20,
+    color: "#353c22",
+    fontFamily: "poppins-bold",
+    marginBottom: 5,
     textTransform: "capitalize",
+  },
+  detailContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 6, // Space between items
+  },
+  detailContainer2: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 0, // Space between items
+  },
+  icon: {
+    marginRight: 10, // Space between icon and text
   },
   detailText: {
     fontSize: 14,
     color: "#666",
-    marginBottom: 5,
+    fontFamily: "Nunito-SemiBold",
+    marginLeft: -4,
+    marginBottom: -3,
   },
   detailValue: {
-    fontWeight: "bold",
-    color: "#333",
+    fontFamily: "poppins-bold",
+    color: "#564b04",
+  },
+  detailValue2: {
+    fontSize: 18,
+    fontFamily: "poppins-bold",
+    color: "#564b04",
   },
   fertilizerInfo: {
     marginTop: 10,
@@ -128,15 +203,23 @@ const styles = StyleSheet.create({
   deleteButton: {
     backgroundColor: "#ff5e5e",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-end",
     width: 100,
-    height: "100%",
-    borderRadius: 10,
+    height: 118, // Match the height of the card
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    marginRight: 8
   },
-  deleteText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
+  deleteInnerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
 });
 

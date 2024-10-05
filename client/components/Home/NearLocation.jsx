@@ -304,21 +304,23 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 8,
-    padding: 2,
-    marginLeft: 15, // Adjust margin for horizontal layout
-    borderWidth: 2,
+    padding: 5,
+    // marginLeft: 15, // Adjust margin for horizontal layout
+    // elevation: 3,
+    borderWidth: 1,
     borderColor: "#ccc",
     flexDirection: "row",
     alignItems: "center",
   },
   shopImage: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     borderRadius: 8,
     marginRight: 15,
   },
   detailsContainer: {
     flex: 1,
+
   },
   businessName: {
     fontSize: 18,
@@ -336,7 +338,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#607F0E",
     padding: 10,
     borderRadius: 5,
-    marginLeft: 20,
+    alignSelf: "flex-c",
+    marginLeft: 10,
+    marginRight: 10,
+
   },
 });
 

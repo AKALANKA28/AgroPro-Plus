@@ -12,6 +12,7 @@ import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import imageMapping from "../../components/Home/ImageData"; // Adjust the path as necessary
+import ScheduleCard from "../../components/Cards/ScheduleCard";
 
 const getImageUri = (crop_type, stage) => {
   if (imageMapping[crop_type] && imageMapping[crop_type][stage]) {
@@ -21,7 +22,7 @@ const getImageUri = (crop_type, stage) => {
 };
 
 const ScheduleDetails = ({ route }) => {
-  const { schedule, isGenerated } = route.params;
+  const { schedule, isGenerated, loading } = route.params; // Access the loading state here
   const navigation = useNavigation(); // Access navigation
 
   const saveScheduleToDB = async () => {
@@ -79,96 +80,137 @@ const ScheduleDetails = ({ route }) => {
         </TouchableOpacity>
       </View>
 
-      {/* <View style={styles.headerContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={getImagePath(schedule.crop_type)}
-            style={styles.cropImage}
-          />
-        </View>
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={styles.spinner}
+        />
+      ) : (
+        <View style={styles.animatedContainer}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            showsVerticalScrollIndicator={false}
+          >
+            {schedule.growth_stages.map((stage, index) => {
+              const imageSource = getImageUri(schedule.crop_type, stage.stage);
 
-        <View style={styles.detailsContainer}>
-          <View style={styles.cropTitleContainer}>
-            <Text style={styles.subtitle}>Fertilizer Schedule for</Text>
-            <Text style={styles.croptitle}>{schedule.crop_type}</Text>
-          </View>
-          <View style={styles.subDetailsContainer}>
-            <Text style={styles.subtitle}>
-              Planting Date: {schedule.planting_date}
-            </Text>
-            <Text style={styles.subtitle}>
-              Est. Cost: Rs. {schedule.estimated_total_cost}
-            </Text>
-            <Text style={styles.subtitle}>
-              Est. Harvesting Date: {schedule.estimated_harvesting_date}
-            </Text>
+              return (
+                <View key={index} style={styles.stageContainer}>
+                  <View style={styles.rowContainer}>
+                    <View style={styles.imageContainer}>
+                      {imageSource ? (
+                        <Image source={imageSource} style={styles.stageImage} />
+                      ) : (
+                        <Text style={styles.noImageText}>
+                          No Image Available
+                        </Text>
+                      )}
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.stageTitle}>
+                        <Ionicons
+                          name="leaf-outline"
+                          size={18}
+                          style={styles.stageIcon} // Updated style for the icon
+                        />
+                        Stage:{" "}
+                        <Text style={styles.stageContent}>{stage.stage}</Text>
+                      </Text>
+                      <Text style={styles.text}>
+                        <Text style={styles.label}>Amount: </Text>
+                        <Text style={styles.content}>{stage.amount}</Text>
+                      </Text>
 
-            <Text style={styles.subtitle}>Area Size: {schedule.area_size}</Text>
-            <Text style={styles.subtitle}>Soil Condition:</Text>
-            <Text>Nitrogen: {schedule.soil_condition.nitrogen}</Text>
-            <Text>pH: {schedule.soil_condition.pH}</Text>
-          </View>
-        </View>
-      </View> */}
+                      <Text style={styles.text}>
+                        {/* <Ionicons
+                          name="calendar-outline"
+                          size={18}
+                          style={styles.icon}
+                        /> */}
+                        <Text style={styles.label}>Application Date: </Text>
+                        <Text style={styles.content}>
+                          {stage.application_date}
+                        </Text>
+                      </Text>
 
-      <View style={styles.animatedContainer}>
-        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-          {schedule.growth_stages.map((stage, index) => {
-            const imageSource = getImageUri(schedule.crop_type, stage.stage);
+                      <Text style={styles.text}>
+                        <Text style={styles.label}>Fertilizer Type: </Text>
+                        <Text style={styles.content}>
+                          {stage.fertilizer_type}
+                        </Text>
+                      </Text>
+                      <Text style={styles.text}>
+                        <Text style={styles.label}>Est. Cost: </Text>
+                        <Text style={styles.content}>Rs. {stage.cost}</Text>
+                      </Text>
 
-            return (
-              <View key={index} style={styles.stageContainer}>
-                <View style={styles.rowContainer}>
-                  <View style={styles.imageContainer}>
-                    {imageSource ? (
-                      <Image source={imageSource} style={styles.stageImage} />
-                    ) : (
-                      <Text style={styles.noImageText}>No Image Available</Text>
-                    )}
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.stageTitle}>Stage: {stage.stage}</Text>
-                    <Text style={styles.text}>Amount: {stage.amount}</Text>
-                    <Text style={styles.text}>
-                      Application Date: {stage.application_date}
-                    </Text>
-                    <Text style={styles.text}>
-                      Fertilizer Type: {stage.fertilizer_type}
-                    </Text>
-                    <Text style={styles.text}>Notes: {stage.notes}</Text>
-                    <Text style={styles.text}>Cost: Rs. {stage.cost}</Text>
+                      <View style={styles.hr} />
+
+                      <Text style={styles.text}>
+                        <Ionicons
+                          name="document-text-outline"
+                          size={18}
+                          style={styles.icon}
+                        />
+
+                        <Text style={styles.label}>Notes: </Text>
+                        <Text style={styles.notesContent}>{stage.notes}</Text>
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-
-      <View style={styles.saveButtonContainer}>
-        <TouchableOpacity style={styles.saveButton} onPress={saveScheduleToDB}>
-          <Text style={styles.saveButtonText}>Save Schedule</Text>
-        </TouchableOpacity>
-      </View>
+              );
+            })}
+          </ScrollView>
+        </View>
+      )}
+      {isGenerated && (
+        <View style={styles.saveButtonContainer}>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={saveScheduleToDB}
+          >
+            <Text style={styles.saveButtonText}>Save Schedule</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // Keep the same styles but ensure there are no duplicates
   wrapper: { flex: 1 },
   wrapperContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    backgroundColor: "#FFFFFF", // Add white background color
+    padding: 10, // Optional: Add padding for better spacing
+    borderRadius: 8, // Optional: Add rounded corners for a smoother look
+    shadowColor: "#000", // Optional: Add shadow for better visibility
+    shadowOffset: { width: 0, height: 2 }, // Optional: Control shadow offset
+    shadowOpacity: 0.1, // Optional: Control shadow transparency
+    shadowRadius: 4, // Optional: Control how much the shadow spreads
+    elevation: 2, // Optional: For Android shadow effect
+    zIndex: 10,
   },
+  
   backButton: {
     position: "absolute",
     top: 40,
     left: 20,
     zIndex: 10,
     padding: 10,
+    backgroundColor: "#FFFFFF", // Add white background color
+    borderRadius: 60, // Optional: Add rounded corners for a more polished look
+    shadowColor: "#000", // Optional: Add shadow for better visibility
+    shadowOffset: { width: 0, height: 2 }, // Optional: Control shadow offset
+    shadowOpacity: 0.2, // Optional: Control shadow transparency
+    shadowRadius: 4, // Optional: Control how much the shadow spreads
+    elevation: 5, // Optional: For Android, to give a similar shadow effect
   },
+  
   menuIcon: {
     position: "absolute",
     top: 40,
@@ -176,98 +218,63 @@ const styles = StyleSheet.create({
     zIndex: 10,
     padding: 10,
   },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 8,
-    backgroundColor: "#fff",
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
+  stageIcon: {
+    marginRight: 30, // Add some spacing between the icon and the text
+    color: "#4A7C59", // Matching the icon color with the stage title text
   },
   imageContainer: { flex: 1, paddingRight: 10, zIndex: 1 },
-  // cropImage: {
-  //   width: "350%",
-  //   height: 580,
-  //   resizeMode: "cover",
-  //   left: "-80%",
-  //   top: "10%",
-  // },
-  // detailsContainer: { flex: 2, paddingLeft: 10 },
-  // cropTitleContainer: {
-  //   top: 10,
-  //   right: -40,
-  //   zIndex: 0,
-  //   backgroundColor: "#fff",
-  //   padding: 10,
-  //   borderRadius: 8,
-  //   shadowColor: "#000",
-  //   shadowOffset: { width: 0, height: 2 },
-  //   shadowOpacity: 0.2,
-  //   shadowRadius: 4,
-  //   elevation: 5,
-  // },
-  // croptitle: {
-  //   fontSize: 40,
-  //   alignSelf: "left",
-  //   fontFamily: "poppins-bold",
-  //   textTransform: "capitalize",
-  // },
-  // subDetailsContainer: { marginTop: 100, paddingLeft: 10 },
-  // subtitle: {
-  //   fontSize: 18,
-  //   marginTop: 8,
-  //   fontFamily: "poppins",
-  //   marginBottom: -8,
-  // },
   animatedContainer: {
-    // position: "absolute",
-    // top: 530,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
-    // backgroundColor: "#f8f8f8",
-    // zIndex: 2,
-    // borderTopLeftRadius: 30,
-    // borderTopRightRadius: 30,
-
     padding: 16,
-
   },
   container: { flexGrow: 1, paddingBottom: 80 },
   stageContainer: {
     marginVertical: 12,
+    marginHorizontal: 2,
     backgroundColor: "#fff",
     borderRadius: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     justifyContent: "center", // Center vertically
     padding: 14,
-    paddingLeft: 8,
+    paddingLeft: 6,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 5,
-
+    elevation: 4,
   },
   stageImage: {
     width: "100%",
     height: 200,
-    minHeight: 210,
+    minHeight: 220,
     resizeMode: "cover",
     borderRadius: 16,
-    // borderTopRightRadius: 0,
-    // borderBottomRightRadius: 0,
   },
   rowContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  textContainer: { flex: 2,},
-  stageTitle: { fontSize: 18, fontWeight: "bold" },
+  textContainer: { flex: 2 },
+  stageTitle: {
+    fontSize: 18, // Larger font size for the title
+    fontFamily: "Nunito-Bold", // Bold font for emphasis
+    color: "#4A7C59", // Greenish color to match the theme
+    flexDirection: "row", // Ensures proper alignment between text and icon
+    // alignItems: "center", // Vertically align icon with text
+    marginBottom: 10, // Space between the title and other content
+    // marginLeft: 6,
+    // gap: 8,
+    textTransform: "capitalize",
+    justifyContent: "space-between",
+  },
+  stageContent: {
+    fontSize: 18, // Same size for stage content
+    fontFamily: "Nunito-ExtraBold", // Regular font for the content
+    color: "#333", // Dark color for the stage content
+    textTransform: "uppercase",
+  },
   text: { fontSize: 16, marginVertical: 4 },
-
   saveButtonContainer: {
     position: "absolute",
     bottom: 20, // Position at the bottom
@@ -276,9 +283,9 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   saveButton: {
-    backgroundColor: "#183719", // Button background color
-    paddingVertical: 20,
-    paddingHorizontal: 160,
+    backgroundColor: "#607F0E", // Button background color
+    paddingVertical: 16,
+    paddingHorizontal: 150,
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
@@ -291,7 +298,42 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "bold",
+    textTransform: "capitalize",
+    fontFamily: "poppins-semibold",
+  },
+
+  text: {
+    marginBottom: 8, // Add spacing between each text block
+  },
+  label: {
+    fontSize: 13, // Slightly larger font for labels
+    fontFamily: "Nunito-Bold", // Bold font for emphasis
+    color: "#555", // Dark gray color for labels
+  },
+  content: {
+    fontSize: 18, // Regular font size for content
+    fontFamily: "Nunito-ExtraBold", // Normal font for content
+    color: "#333", // Darker color for content
+  },
+  icon: {
+    marginRight: 5, // Add spacing between the icon and the text
+    color: "#555", // Match icon color with the label text
+  },
+  notesContent: {
+    fontSize: 16, // Same size as other content
+    fontFamily: "Nunito-Bold", // Italic font for notes content
+    color: "#4e3c11", // Darker color for readability
+    // backgroundColor: "#F0F8E8", // Light green background for the notes section
+    padding: 10, // Add some padding to give the notes section more space
+    borderRadius: 5, // Rounded corners to make it visually distinct
+    marginTop: 5, // Add some spacing above the notes content
+  },
+  hr: {
+    borderBottomColor: "#ccc", // Light gray color for the line
+    borderBottomWidth: 0.6, // 1px width for the line
+    marginBottom: 10, // Adds space below the line
+    marginTop: 3, // Adds space above the line
+    paddingHorizontal: 20,
   },
 });
 
