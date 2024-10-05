@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   fertilizerButton: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#607F0E",
     padding: 10,
     borderRadius: 30, // Rounded corners for button effect
     marginRight: 10, // Spacing between buttons

@@ -160,7 +160,7 @@ const Home = () => {
       text: "Distributors",
       navigateTo: "DistributeScreen",
     },
-    { id: "5", icon: "user", text: "Community", navigateTo: "" },
+    { id: "5", icon: "user", text: "Community", navigateTo: "Community" },
   ];
   const renderCropButton = ({ item }) => (
     <View style={styles.cropButtonContainer}>
