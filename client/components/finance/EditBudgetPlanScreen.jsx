@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Platform, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  Alert,
+} from "react-native";
 import axios from "axios";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { BASE_URL } from '../../constants/constants';
+import { BASE_URL } from "../../constants/constants";
 
 const EditBudgetPlanScreen = ({ route, navigation }) => {
   const { id } = route.params;
@@ -34,16 +43,27 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
   });
 
   // Validation functions
-  const validateTitle = (text) => text.trim() === "" ? "Title is required." : "";
-  const validateCrop = (text) => text.trim() === "" || /[0-9]/.test(text) ? "Crop name cannot contain numbers." : "";
-  const validateCost = (text) => text !== "" && (isNaN(text) || parseFloat(text) < 0) ? "Cost cannot be negative." : "";
-  const validateStartDate = (date) => new Date(date) < new Date() ? "Start date cannot be in the past." : "";
-  const validateEndDate = (start, end) => new Date(end) <= new Date(start) ? "End date must be after start date." : "";
+  const validateTitle = (text) =>
+    text.trim() === "" ? "Title is required." : "";
+  const validateCrop = (text) =>
+    text.trim() === "" || /[0-9]/.test(text)
+      ? "Crop name cannot contain numbers."
+      : "";
+  const validateCost = (text) =>
+    text !== "" && (isNaN(text) || parseFloat(text) < 0)
+      ? "Cost cannot be negative."
+      : "";
+  const validateStartDate = (date) =>
+    new Date(date) < new Date() ? "Start date cannot be in the past." : "";
+  const validateEndDate = (start, end) =>
+    new Date(end) <= new Date(start)
+      ? "End date must be after start date."
+      : "";
 
   useEffect(() => {
     const fetchBudgetPlan = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/finance/get/${id}`);
+        const response = await axios.get(`/finance/get/${id}`);
         setBudgetPlan(response.data.BudgetPlan);
         setLoading(false);
       } catch (error) {
@@ -82,7 +102,7 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
     }
 
     try {
-      const response = await axios.patch(`${BASE_URL}/finance/update/${id}`, budgetPlan);
+      const response = await axios.patch(`/finance/update/${id}`, budgetPlan);
       if (response.status === 200) {
         Alert.alert("Success", "Budget plan updated successfully!");
         navigation.goBack(); // Navigate back to the overview screen
@@ -114,7 +134,7 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Edit Budget Plan</Text>
-      
+
       <Text style={styles.label}>Title</Text>
       <TextInput
         style={styles.input}
@@ -123,7 +143,9 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
         placeholder="Title"
         placeholderTextColor="#757575"
       />
-      {errors.title ? <Text style={styles.errorText}>{errors.title}</Text> : null}
+      {errors.title ? (
+        <Text style={styles.errorText}>{errors.title}</Text>
+      ) : null}
 
       <Text style={styles.label}>Crop</Text>
       <TextInput
@@ -150,10 +172,14 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
           value={new Date(budgetPlan.startDate)}
           mode="date"
           display="default"
-          onChange={(event, selectedDate) => handleDateChange("startDate", event, selectedDate)}
+          onChange={(event, selectedDate) =>
+            handleDateChange("startDate", event, selectedDate)
+          }
         />
       )}
-      {errors.startDate ? <Text style={styles.errorText}>{errors.startDate}</Text> : null}
+      {errors.startDate ? (
+        <Text style={styles.errorText}>{errors.startDate}</Text>
+      ) : null}
 
       <Text style={styles.label}>End Date</Text>
       <TouchableOpacity onPress={() => setShowEndDatePicker(true)}>
@@ -170,10 +196,14 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
           value={new Date(budgetPlan.endDate)}
           mode="date"
           display="default"
-          onChange={(event, selectedDate) => handleDateChange("endDate", event, selectedDate)}
+          onChange={(event, selectedDate) =>
+            handleDateChange("endDate", event, selectedDate)
+          }
         />
       )}
-      {errors.endDate ? <Text style={styles.errorText}>{errors.endDate}</Text> : null}
+      {errors.endDate ? (
+        <Text style={styles.errorText}>{errors.endDate}</Text>
+      ) : null}
 
       <Text style={styles.label}>Seeds Cost</Text>
       <TextInput
@@ -184,7 +214,9 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
         placeholderTextColor="#757575"
         keyboardType="numeric"
       />
-      {errors.seedsCost ? <Text style={styles.errorText}>{errors.seedsCost}</Text> : null}
+      {errors.seedsCost ? (
+        <Text style={styles.errorText}>{errors.seedsCost}</Text>
+      ) : null}
 
       <Text style={styles.label}>Fertilizer Cost</Text>
       <TextInput
@@ -195,7 +227,9 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
         placeholderTextColor="#757575"
         keyboardType="numeric"
       />
-      {errors.fertilizerCost ? <Text style={styles.errorText}>{errors.fertilizerCost}</Text> : null}
+      {errors.fertilizerCost ? (
+        <Text style={styles.errorText}>{errors.fertilizerCost}</Text>
+      ) : null}
 
       <Text style={styles.label}>Pesticides Cost</Text>
       <TextInput
@@ -206,7 +240,9 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
         placeholderTextColor="#757575"
         keyboardType="numeric"
       />
-      {errors.pesticidesCost ? <Text style={styles.errorText}>{errors.pesticidesCost}</Text> : null}
+      {errors.pesticidesCost ? (
+        <Text style={styles.errorText}>{errors.pesticidesCost}</Text>
+      ) : null}
 
       <Text style={styles.label}>Other Cost</Text>
       <TextInput
@@ -217,7 +253,9 @@ const EditBudgetPlanScreen = ({ route, navigation }) => {
         placeholderTextColor="#757575"
         keyboardType="numeric"
       />
-      {errors.otherCost ? <Text style={styles.errorText}>{errors.otherCost}</Text> : null}
+      {errors.otherCost ? (
+        <Text style={styles.errorText}>{errors.otherCost}</Text>
+      ) : null}
 
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text style={styles.saveButtonText}>Save</Text>
