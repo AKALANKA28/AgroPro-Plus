@@ -77,7 +77,10 @@ const BudgetPlanOverviewScreen = ({ route, navigation }) => {
             try {
               await axios.delete(`/finance/delete2/${id}`);
               Alert.alert("Success", "Budget plan deleted successfully.", [
-                { text: "OK", onPress: () => navigation.navigate("BudgetPlansScreen") },
+                {
+                  text: "OK",
+                  onPress: () => navigation.navigate("BudgetPlansScreen"),
+                },
               ]);
             } catch (error) {
               console.log("Error deleting budget plan:", error);
@@ -93,14 +96,117 @@ const BudgetPlanOverviewScreen = ({ route, navigation }) => {
   const downloadPdf = async () => {
     try {
       const htmlContent = `
-        <h1>Budget Plan Report: ${budgetPlan.title}</h1>
-        <p>Crop: ${budgetPlan.crop}</p>
-        <p>Climate Zone: ${budgetPlan.climateZone}</p>
-        <p>Area of Land: ${budgetPlan.areaOfLand} acres</p>
-        <p>Total Expenditure: Rs.${budgetPlan.totalExpenditure}</p>
-        <p>Total Yield: ${budgetPlan.totalYield} kg</p>
-        <p>Estimated Income: Rs.${budgetPlan.estimatedIncome}</p>
-        <p>Profit: Rs.${budgetPlan.profit}</p>
+        <html>
+          <head>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+              }
+              h1 {
+                color: #34A853;
+                font-size: 28px;
+                text-align: center;
+                margin-bottom: 30px;
+              }
+              h2 {
+                font-size: 22px;
+                color: #34A853;
+                border-bottom: 2px solid #34A853;
+                padding-bottom: 5px;
+                margin-bottom: 15px;
+              }
+              p {
+                font-size: 16px;
+                margin: 5px 0;
+              }
+              .section {
+                margin-bottom: 30px;
+              }
+              .header {
+                background-color: #34A853;
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: center;
+                margin-bottom: 20px;
+              }
+              .info-block {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid #ddd;
+              }
+              .label {
+                font-weight: bold;
+                color: #555;
+              }
+              .value {
+                color: #000;
+              }
+              .total-section {
+                background-color: #f9f9f9;
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+                margin-top: 20px;
+              }
+              .profit-section {
+                background-color: #e5f8e5;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: center;
+                font-size: 20px;
+                font-weight: bold;
+                color: #34A853;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Budget Plan Report</h1>
+  
+            <div class="header">
+              <h2>${budgetPlan.title}</h2>
+            </div>
+  
+            <div class="section">
+              <h2>Overview</h2>
+              <div class="info-block">
+                <span class="label">Crop:</span>
+                <span class="value">${budgetPlan.crop}</span>
+              </div>
+              <div class="info-block">
+                <span class="label">Climate Zone:</span>
+                <span class="value">${budgetPlan.climateZone}</span>
+              </div>
+              <div class="info-block">
+                <span class="label">Area of Land (acres):</span>
+                <span class="value">${budgetPlan.areaOfLand}</span>
+              </div>
+            </div>
+  
+            <div class="section">
+              <h2>Financial Details</h2>
+              <div class="info-block">
+                <span class="label">Total Expenditure:</span>
+                <span class="value">Rs.${budgetPlan.totalExpenditure}</span>
+              </div>
+              <div class="info-block">
+                <span class="label">Total Yield (kg):</span>
+                <span class="value">${budgetPlan.totalYield}</span>
+              </div>
+              <div class="info-block">
+                <span class="label">Estimated Income:</span>
+                <span class="value">Rs.${budgetPlan.estimatedIncome}</span>
+              </div>
+              <div class="profit-section">
+                Profit: Rs.${budgetPlan.profit}
+              </div>
+            </div>
+          </body>
+        </html>
       `;
 
       const { uri } = await Print.printToFileAsync({
@@ -129,7 +235,6 @@ const BudgetPlanOverviewScreen = ({ route, navigation }) => {
 
       {/* Detail Overview */}
       <View style={styles.detailCard}>
-        
         <View style={styles.detailRow}>
           <Text style={styles.label}>Crop:</Text>
           <Text style={styles.value}>{budgetPlan.crop}</Text>
@@ -165,7 +270,7 @@ const BudgetPlanOverviewScreen = ({ route, navigation }) => {
 
       {/* Bar Chart for Financial Overview */}
       <Text style={styles.sectionHeader}>Financial Overview</Text>
-      
+
       <BarChart
         data={{
           labels: ["Total Expenditure", "Estimated Income", "Profit"],
@@ -202,7 +307,6 @@ const BudgetPlanOverviewScreen = ({ route, navigation }) => {
         {/* <TouchableOpacity onPress={handleEdit}>
           <FontAwesome name="edit" size={24} color="#34A853" />
         </TouchableOpacity> */}
-
       </View>
     </ScrollView>
   );
