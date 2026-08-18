@@ -3,6 +3,10 @@
 .env.*
 !.env.example
 
+# Captured session/auth data (HAR files, cookie jars)
+*.har
+har_and_cookies/
+
 # Node
 node_modules/
 npm-debug.log*
